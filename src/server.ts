@@ -11,6 +11,8 @@ import methodOverride from "method-override";
 import { router as indexRouter } from "./routes/index";
 import { router as authorRouter } from "./routes/author";
 import { router as bookRouter } from "./routes/book";
+import { IAuthor } from "./models/author";
+import { IBook } from "./models/book";
 import { connectToDB } from "./database";
 
 // Set app and other variables
@@ -38,8 +40,15 @@ app.set("views", __dirname + "/../views")
 app.set("view engine", "hbs");
 
 // Set customer Handlebars helpers
-Handlebars.registerHelper("stars", function() {
-  return "stars";
+Handlebars.registerHelper("stars", function(blah) {
+  return blah;
+});
+Handlebars.registerHelper("getURL", function(model: IAuthor|IBook, isAuthor: boolean) {
+  if (isAuthor) {
+    return `/authors/${model._id}`;
+  } else {
+    return `/books/${model._id}`;
+  }
 });
 
 // Serve up static assets

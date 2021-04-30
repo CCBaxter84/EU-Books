@@ -1,7 +1,12 @@
 // Import dependencies
 import { Router, Request, Response } from "express";
-import Author from "../models/author";
+import Author, { IAuthor } from "../models/author";
 import Book from "../models/book";
+
+// Define interfaces
+interface IParams {
+  name?: RegExp
+}
 
 // Define and export router
 export const router = Router();
@@ -9,11 +14,18 @@ export const router = Router();
 // @route GET /authors
 // @desc  Render Search Author form and books by author
 router.get("/", async (req: Request, res: Response) => {
+  // Set search options to regex based on req.query
+  let searchOptions: IParams = {};
+  if (req.query.name !== "" && req.query.name != null) {
+    const name = "" + req.query.name;
+    searchOptions.name = new RegExp(name, "i");
+  }
+
   try {
-    console.log(req.query);
-    const authors = await Author.find().lean();
+    const authors = await Author.find(searchOptions).lean();
     res.render("authors/index", {
-      authors
+      authors,
+      searchOptions: req.query
     });
   } catch {
     res.redirect("/");
@@ -54,10 +66,16 @@ router.put("/:id", (req: Request, res: Response) => {
 // @desc  Remove an author from the database
 // *Include a check to prevent deleting an author ASW books
 router.delete("/:id", async (req: Request, res: Response) => {
+  let author: IAuthor|null = null;
   try {
-    console.log(req.params.id)
-    res.send("delete author" + req.params.id);
-  } catch(err) {
-    res.send(err);
+    author = await Author.findById(req.params.id);
+    await author?.remove();
+    res.redirect("/authors");
+  } catch {
+    if (author === null) {
+      res.redirect("/");
+    } else {
+      res.redirect(`/authors/${author.id}`);
+    }
   }
 });
