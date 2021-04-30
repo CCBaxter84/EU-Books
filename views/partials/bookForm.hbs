@@ -1,0 +1,38 @@
+<form method="POST" action="/books">
+  <section class="split-inputs">
+    <section class="label-n-input">
+      <label>Title</label>
+      <input class="text-box" name="title">
+    </section>
+    <section class="label-n-input">
+      <label>Author</label>
+      <input class="text-box" name="Author">
+    </section>
+  </section>
+  <section class="split-inputs">
+    <section class="label-n-input">
+      <label>Publish Date</label>
+      <input class="text-box" name="publishDate">
+    </section>
+    <section class="label-n-input">
+      <label>Page Count</label>
+      <input class="text-box" name="pageCount">
+    </section>
+  </section>
+  <section class="split-inputs">
+    <section class="label-n-input">
+      <label>Cover</label>
+      <input class="text-box" name="cover">
+    </section>
+    <section class="label-n-input">
+      <label>Description</label>
+      <textarea class="text-box" name="description"></textarea>
+    </section>
+  </section>
+  <section class="form-submit-btns">
+    <a href="/books/{{ book._id }}">
+      <button class="btn btn-danger" type="button">Cancel</button>
+    </a>
+    <button class="btn" type="submit">Update</button>
+  </section>
+</form>

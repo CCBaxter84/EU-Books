@@ -1,5 +1,8 @@
 // Import dependencies
 import { Router, Request, Response } from "express";
+import Author from "../models/author";
+import Book from "../models/book";
+import { renderFormPage, renderEditPage, renderNewPage } from "./bookControllers";
 
 // Define and export router
 export const router = Router();
@@ -7,13 +10,14 @@ export const router = Router();
 // @route GET /books
 // @desc  Render Search Books form and related books
 router.get("/", (req: Request, res: Response) => {
-  res.send("books");
+  // define search options
+  res.render("books/index");
 });
 
 // @route GET /books/new
 // @desc  Render form for adding a new book to screen
-router.get("/new", (req: Request, res: Response) => {
-  res.send("new book");
+router.get("/new", async (req: Request, res: Response) => {
+  renderNewPage(res, new Book());
 });
 
 // @route POST /books

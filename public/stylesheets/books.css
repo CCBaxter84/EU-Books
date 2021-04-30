@@ -1,0 +1,8 @@
+.split-inputs {
+  display: flex;
+  justify-content: space-between;
+}
+
+.split-inputs > * {
+  width: 48%;
+}

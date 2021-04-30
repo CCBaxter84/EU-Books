@@ -1,7 +1,8 @@
 @import "./variables.css";
 @import "./header.css";
-@import "./author.css";
+@import "./authors.css";
 @import "./buttons.css";
+@import "./books.css";
 
 :root {
   color: var(--color-text-light);
@@ -18,6 +19,10 @@ main {
 
 main > * {
   margin: 2rem 0;
+}
+
+label {
+  font-size: 1.25rem;
 }
 
 .star {
