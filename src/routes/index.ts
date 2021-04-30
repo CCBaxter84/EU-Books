@@ -6,6 +6,10 @@ export const router = Router();
 
 // @route GET /
 // @desc  Render main page to the screen
-router.get("/", (req: Request, res: Response) => {
-  res.send("main");
+router.get("/", async (req: Request, res: Response) => {
+  try {
+    res.render("main");
+  } catch {
+    res.send("Hold on to your butts");
+  }
 });

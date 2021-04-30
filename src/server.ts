@@ -5,6 +5,7 @@ if (process.env.NODE_ENV !== "production") {
 
 // Import dependencies
 import express, { Application } from "express";
+import handlebars from "express-handlebars";
 import { router as indexRouter } from "./routes/index";
 import { router as authorRouter } from "./routes/author";
 import { router as bookRouter } from "./routes/book";
@@ -24,6 +25,17 @@ app.use("/authors", authorRouter);
 app.use("/books", bookRouter);
 
 // Configure view
+app.engine("hbs", handlebars({
+  extname: "hbs",
+  defaultLayout: "layout",
+  layoutsDir: __dirname + "/../views/layouts",
+  partialsDir: __dirname + "/../views/partials"
+}));
+app.set("views", __dirname + "/../views")
+app.set("view engine", "hbs");
+
+// Serve up static assets
+app.use(express.static(__dirname + "/../public"));
 
 // Connect to database
 connectToDB();

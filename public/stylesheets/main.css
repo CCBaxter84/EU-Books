@@ -1,0 +1,11 @@
+@import "./variables.css";
+@import "./header.css";
+
+:root {
+  color: var(--color-text-light);
+  font-family: 'Sawarabi Gothic One', sans-serif;
+}
+
+body {
+  background: linear-gradient(to right, var(--color-background-dark), var(--color-background-light))
+}
