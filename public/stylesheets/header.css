@@ -8,6 +8,8 @@ header {
   justify-content: space-between;
 }
 
-.nav-links > * {
+.nav-links > *, .title {
+  color: var(--color-text-light);
   padding: 1rem;
+  text-decoration: none;
 }

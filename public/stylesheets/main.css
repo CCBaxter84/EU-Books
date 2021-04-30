@@ -7,5 +7,16 @@
 }
 
 body {
-  background: linear-gradient(to right, var(--color-background-dark), var(--color-background-light))
+  background: linear-gradient(to right, var(--color-background-dark), var(--color-background-light));
+}
+
+main {
+  margin: 2rem;
+}
+
+.star {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  background-color: white;
 }
