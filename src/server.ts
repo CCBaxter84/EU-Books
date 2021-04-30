@@ -3,16 +3,17 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 
-// Import dependencies
+// Import npm libraries
 import express, { Application } from "express";
-import Handlebars from "handlebars";
 import handlebars from "express-handlebars";
+import Handlebars from "handlebars";
 import methodOverride from "method-override";
+
+// Import functions and routers
+import { getID, putURL, postURL } from "./hbsHelpers";
 import { router as indexRouter } from "./routes/index";
 import { router as authorRouter } from "./routes/author";
 import { router as bookRouter } from "./routes/book";
-import { IAuthor } from "./models/author";
-import { IBook } from "./models/book";
 import { connectToDB } from "./database";
 
 // Set app and other variables
@@ -39,29 +40,13 @@ app.engine("hbs", handlebars({
 app.set("views", __dirname + "/../views")
 app.set("view engine", "hbs");
 
-// Set customer Handlebars helpers
-Handlebars.registerHelper("stars", function(blah) {
-  return blah;
-});
-const getID = function(model: IAuthor|IBook, isAuthor: boolean): string {
-  if (isAuthor) {
-    return `/authors/${model._id}`;
-  } else {
-    return `/books/${model._id}`;
-  }
-};
+// Set Handlebars helpers
 Handlebars.registerHelper("getURL", getID);
-Handlebars.registerHelper("putURL", function(model: IAuthor|IBook, isAuthor: boolean) {
-
-  return getID(model, isAuthor) + "?_method=PUT";
-});
-Handlebars.registerHelper("postURL", function(model: IAuthor|IBook, isAuthor: boolean) {
-  return isAuthor ? "/authors" : "/books";
-})
+Handlebars.registerHelper("putURL", putURL);
+Handlebars.registerHelper("postURL", postURL);
 
 // Serve up static assets
 app.use(express.static(__dirname + "/../public"));
-console.log(__dirname + "/../public");
 
 // Connect to database
 connectToDB();
