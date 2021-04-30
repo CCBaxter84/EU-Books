@@ -1,0 +1,31 @@
+<main>
+  <h2>Search Authors</h2>
+  <form action="/authors" method="GET" >
+    <section class="label-n-input">
+      <label>Name</label>
+      <input class="text-box" type="text" name="name" value="">
+    </section>
+    <section class="form-submit-btns">
+      <button class="btn" type="submit">Search</button>
+    </section>
+  </form>
+  <br>
+  <section class="authors-container">
+    {{#each authors }}
+      <section class="author-row">
+        <section class="author-name">{{ this.name }}</section>
+        <section class="author-btns">
+          <a href="/authors/{{ this._id }}">
+            <button class="btn">View</button>
+          </a>
+          <a href="/authors/{{ this._id }}/edit">
+            <button class="btn">Edit</button>
+          </a>
+          <form method="POST" action="/authors/{{ this._id }}?_method=DELETE">
+            <button class="btn btn-danger">Delete</button>
+          </form>
+        </section>
+      </section>
+    {{/each }}
+  </section>
+</main>

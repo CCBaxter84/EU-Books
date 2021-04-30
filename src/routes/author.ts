@@ -1,13 +1,23 @@
 // Import dependencies
 import { Router, Request, Response } from "express";
+import Author from "../models/author";
+import Book from "../models/book";
 
 // Define and export router
 export const router = Router();
 
 // @route GET /authors
 // @desc  Render Search Author form and books by author
-router.get("/", (req: Request, res: Response) => {
-  res.send("authors");
+router.get("/", async (req: Request, res: Response) => {
+  try {
+    console.log(req.query);
+    const authors = await Author.find().lean();
+    res.render("authors/index", {
+      authors
+    });
+  } catch {
+    res.redirect("/");
+  }
 });
 
 // @route GET /authors/new
@@ -43,6 +53,11 @@ router.put("/:id", (req: Request, res: Response) => {
 // @route DELETE /authors/:id
 // @desc  Remove an author from the database
 // *Include a check to prevent deleting an author ASW books
-router.delete("/:id/edit", (req: Request, res: Response) => {
-  res.send("delete author" + req.params.id);
+router.delete("/:id", async (req: Request, res: Response) => {
+  try {
+    console.log(req.params.id)
+    res.send("delete author" + req.params.id);
+  } catch(err) {
+    res.send(err);
+  }
 });

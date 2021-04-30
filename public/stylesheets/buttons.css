@@ -1,0 +1,26 @@
+.btn {
+  background-color: var(--color-btn-light);
+  border-radius: 5px;
+  border: 1px solid white;
+  font-size: 1rem;
+  margin: 0 .25rem;
+}
+
+.btn:hover {
+  background-color: var(--color-btn-dark);
+  cursor: pointer;
+}
+
+.btn-danger {
+  background-color: hsl(0, 100%, 80%);
+}
+
+.btn-danger:hover {
+  background-color: hsl(0, 100%, 65%);
+  cursor: pointer;
+}
+
+.form-submit-btns {
+  display: flex;
+  justify-content: flex-end;
+}

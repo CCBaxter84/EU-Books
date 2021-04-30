@@ -1,5 +1,7 @@
 @import "./variables.css";
 @import "./header.css";
+@import "./author.css";
+@import "./buttons.css";
 
 :root {
   color: var(--color-text-light);
@@ -11,7 +13,7 @@ body {
 }
 
 main {
-  margin: 2rem;
+  margin: 5rem;
 }
 
 .star {
@@ -19,4 +21,23 @@ main {
   width: 1px;
   height: 1px;
   background-color: white;
+  z-index: -1;
+}
+
+.label-n-input {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0;
+}
+
+input {
+  margin-top: .25rem;
+}
+
+.text-box {
+  background-color: var(--color-input-background);
+  border: 1px solid white;
+  border-radius: 5px;
+  color: white;
+  font-size: large;
 }

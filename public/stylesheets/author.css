@@ -1,0 +1,18 @@
+.authors-container {
+  margin: 1rem 0;
+}
+
+.author-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.author-name {
+  font-size: 1.5rem;
+}
+
+.author-btns {
+  display: flex;
+}

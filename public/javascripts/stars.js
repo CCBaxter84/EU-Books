@@ -3,7 +3,6 @@ const numStars = 100;
 
 // Loop over each star and randomly place it on the screen
 document.addEventListener("DOMContentLoaded", function() {
-  console.log('your mom');
   for (let i = 0; i < numStars; i++) {
     const star = document.createElement("div");
     star.className = "star";
