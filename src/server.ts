@@ -43,13 +43,21 @@ app.set("view engine", "hbs");
 Handlebars.registerHelper("stars", function(blah) {
   return blah;
 });
-Handlebars.registerHelper("getURL", function(model: IAuthor|IBook, isAuthor: boolean) {
+const getID = function(model: IAuthor|IBook, isAuthor: boolean): string {
   if (isAuthor) {
     return `/authors/${model._id}`;
   } else {
     return `/books/${model._id}`;
   }
+};
+Handlebars.registerHelper("getURL", getID);
+Handlebars.registerHelper("putURL", function(model: IAuthor|IBook, isAuthor: boolean) {
+
+  return getID(model, isAuthor) + "?_method=PUT";
 });
+Handlebars.registerHelper("postURL", function(model: IAuthor|IBook, isAuthor: boolean) {
+  return isAuthor ? "/authors" : "/books";
+})
 
 // Serve up static assets
 app.use(express.static(__dirname + "/../public"));

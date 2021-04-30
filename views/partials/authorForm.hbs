@@ -1,0 +1,12 @@
+<form method="POST" action="{{ url }}">
+    <section class="label-n-input">
+      <label>Name</label>
+      <input class="text-box" type="text" name="name" value={{ author.name }}>
+    </section>
+    <section class="form-submit-btns">
+      <a href="/authors/{{ author._id }}">
+        <button class="btn btn-danger" type="button">Cancel</button>
+      </a>
+      <button class="btn" type="submit">Update</button>
+    </section>
+  </form>

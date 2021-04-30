@@ -18,9 +18,7 @@
           <a href="/authors/{{ this._id }}">
             <button class="btn">View</button>
           </a>
-          <a href="/authors/{{ this._id }}/edit">
-            <button class="btn">Edit</button>
-          </a>
+          {{> editButton url=(getURL this true) }}
           {{> deleteForm url=(getURL this true) }}
         </section>
       </section>

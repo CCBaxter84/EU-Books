@@ -17,7 +17,7 @@ router.get("/", async (req: Request, res: Response) => {
   // Set search options to regex based on req.query
   let searchOptions: IParams = {};
   if (req.query.name !== "" && req.query.name != null) {
-    const name = "" + req.query.name;
+    const name: string = "" + req.query.name;
     searchOptions.name = new RegExp(name, "i");
   }
 
@@ -35,31 +35,68 @@ router.get("/", async (req: Request, res: Response) => {
 // @route GET /authors/new
 // @desc  Render form for adding a new author to screen
 router.get("/new", (req: Request, res: Response) => {
-  res.send("new author");
+  res.render("authors/new", { author: new Author() });
 });
 
 // @route POST /authors
 // @desc  Add a new author to the database
-router.post("/", (req: Request, res: Response) => {
-  res.send("posting");
+router.post("/", async (req: Request, res: Response) => {
+  let author = new Author({
+    name: req.body.name
+  });
+  try {
+    const newAuthor = await author.save();
+    res.redirect(`/authors/${newAuthor._id}`);
+  } catch {
+    res.redirect("/authors");
+  }
 });
 
 // @route GET /authors/:id
 // @desc  Render info for an existing author to screen
-router.get("/:id", (req: Request, res: Response) => {
-  res.send("show author " + req.params.id);
+router.get("/:id", async (req: Request, res: Response) => {
+  try {
+    const author = await Author.findById(req.params.id).lean();
+    const books = await Book.find({ author: author?._id }).lean();
+    res.render("authors/show", {
+      author,
+      books
+    });
+  } catch {
+    res.redirect("/");
+  }
 });
 
 // @route GET /authors/:id/edit
 // @desc  Render form for editing name of existing author
-router.get("/:id/edit", (req: Request, res: Response) => {
-  res.send("edit author " + req.params.id);
+router.get("/:id/edit", async (req: Request, res: Response) => {
+  try {
+    const author = await Author.findById(req.params.id).lean();
+    res.render("authors/edit", {
+      author
+    });
+  } catch {
+    res.redirect("/");
+  }
 });
 
 // @route PUT /authors/:id
 // @desc  Update an existing author entry in the database
-router.put("/:id", (req: Request, res: Response) => {
-  res.send("edit author" + req.params.id);
+router.put("/:id", async (req: Request, res: Response) => {
+  let author: IAuthor|null = null;
+  try {
+    author = await Author.findById(req.params.id);
+    if (author == null) throw "Author not found";
+    author.name = req.body.name;
+    await author.save();
+    res.redirect(`/authors/${req.params.id}`);
+  } catch {
+    if (author == null) {
+      res.redirect("/");
+    } else {
+      res.redirect(`/authors/${author._id}`);
+    }
+  }
 });
 
 // @route DELETE /authors/:id

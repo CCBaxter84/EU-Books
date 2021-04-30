@@ -1,0 +1,18 @@
+<main>
+  <section>
+    <h2>{{ author.name }}</h2>
+    <section class="author-btns">
+      {{>editButton url=(getURL author true) }}
+      {{>deleteForm url=(getURL author true) }}
+    </section>
+  </section>
+
+  <section class="authors-container">
+    <h2>Books By Author</h2>
+    <section>
+      {{#each books }}
+        <div>{{ this.name }}</div>
+      {{/each }}
+    </section>
+  </section>
+</main>
