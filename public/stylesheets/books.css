@@ -12,3 +12,14 @@
 .book-cover-large {
   --book-cover-width: var(--book-cover-width-large);
 }
+
+.book-grid {
+  display: grid;
+  justify-content: center;
+  grid-gap: 2rem;
+  grid-template-columns: repeat(auto-fill, var(--book-cover-width));
+}
+
+.book-grid-large {
+  grid-template-columns: repeat(auto-fill, var(--book-cover-width-large));
+}

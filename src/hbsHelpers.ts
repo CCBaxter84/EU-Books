@@ -6,6 +6,7 @@ import { IBook } from "./models/book";
 interface IHelper {
   (model: IAuthor|IBook, isAuthor: boolean): string
 }
+type GridOrCover = "grid" | "cover";
 
 // Define and export helper functions
 export const getID: IHelper = function(model, isAuthor) {
@@ -30,4 +31,10 @@ export const isAuthorMatch = function(author: IAuthor, book: IBook): boolean {
   } catch {
     return false;
   }
-}
+};
+
+export const getCoverPath = function(book: IBook): string|void {
+  if (book.coverImage != null && book.coverImageType != null) {
+    return `data:${book.coverImageType};charset=utf-8;base64,${book.coverImage.toString('base64')}`
+  }
+};

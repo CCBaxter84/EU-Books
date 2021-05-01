@@ -3,18 +3,20 @@
   <form action="/books" method="GET">
     <section class="label-n-input">
       <label>Title</label>
-      <input class="text-box" name="title" value={{ searchOptions.title }}>
+      <input type="text" class="text-box" name="title" value={{ searchOptions.title }}>
     </section>
     <section class="split-inputs">
       <section class="label-n-input">
         <label>Published After</label>
-        <input class="text-box" name="publishAfter">
+        <input type="date" class="text-box" name="publishedAfter">
       </section>
       <section class="label-n-input">
         <label>Published Before</label>
-        <input class="text-box" name="publishBefore">
+        <input type="date" class="text-box" name="publishedBefore">
       </section>
     </section>
     {{> submitSearch }}
   </form>
+  <br>
+  {{> bookGrid book=books large=large}}
 </main>

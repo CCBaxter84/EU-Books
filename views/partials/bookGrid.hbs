@@ -1,0 +1,14 @@
+{{#if large }}
+  <section class="book-grid book-grid-large">
+    {{#each books }}
+      <img class="book-cover book-cover-large" src={{ getCoverPath this }} >
+    {{/each }}
+  </section>
+
+{{else }}
+  <section class="book-grid">
+    {{#each books }}
+      <img class="book-cover" src={{ getCoverPath this }} >
+    {{/each }}
+  </section>
+{{/if }}

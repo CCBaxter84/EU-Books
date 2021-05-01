@@ -11,7 +11,7 @@ import methodOverride from "method-override";
 import helmet from "helmet";
 
 // Import functions and routers
-import { getID, putURL, postURL, isAuthorMatch } from "./hbsHelpers";
+import { getID, putURL, postURL, isAuthorMatch, getCoverPath } from "./hbsHelpers";
 import { router as indexRouter } from "./routes/index";
 import { router as authorRouter } from "./routes/author";
 import { router as bookRouter } from "./routes/book";
@@ -29,7 +29,7 @@ app.use(helmet());
 app.use((req, res, next) => {
   res.setHeader(
     'Content-Security-Policy',
-    "default-src 'self'; font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com; img-src * blob:; worker-src * blob:; script-src 'self' https://unpkg.com; style-src 'self' https://fonts.googleapis.com https://unpkg.com; frame-src 'self'"
+    "default-src 'self'; font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com; img-src * blob: data:; worker-src * blob:; script-src 'self' https://unpkg.com; style-src 'self' https://fonts.googleapis.com https://unpkg.com; frame-src 'self'"
   );
   next();
 });
@@ -54,6 +54,7 @@ Handlebars.registerHelper("getURL", getID);
 Handlebars.registerHelper("putURL", putURL);
 Handlebars.registerHelper("postURL", postURL);
 Handlebars.registerHelper("isAuthorMatch", isAuthorMatch);
+Handlebars.registerHelper("getCoverPath", getCoverPath);
 
 // Serve up static assets
 app.use(express.static(__dirname + "/../public"));
