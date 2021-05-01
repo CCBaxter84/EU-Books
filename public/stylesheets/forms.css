@@ -1,3 +1,11 @@
+.split-inputs {
+  display: flex;
+}
+
+.split-inputs > * {
+  width: 48%;
+}
+
 label {
   font-size: 1.25rem;
 }
@@ -6,18 +14,31 @@ label {
   display: flex;
   flex-direction: column;
   margin: 1rem 0;
+  margin-left: 2rem;
+  flex-grow: 1;
+  flex-basis: 0;
+}
+
+.label-n-input-no-grow {
+  flex-grow: 0;
 }
 
 input, .select-box {
   margin-top: .25rem;
 }
 
-.text-box, .select-box, textarea {
+.text-box, .select-box, textarea, input {
   background-color: var(--color-input-background);
   border: 1px solid white;
-  border-radius: 5px;
+  border-radius: .25rem;
   color: white;
   font-size: large;
+  height: 2rem;
+}
+
+textarea {
+  height: 100%;
+  resize: none;
 }
 
 .select-box:focus {
@@ -26,4 +47,19 @@ input, .select-box {
 
 .select-box > option {
   background-color: black;
+}
+
+.filepond--root {
+  font-family: 'Sawarabi Gothic', sans-serif;
+  margin-bottom: 0;
+}
+
+.filepond--panel-root {
+  border: 1px solid white;
+  background-color: var(--color-input-background);
+}
+
+.filepond--drop-label {
+  color: white;
+  font-size: inherit;
 }

@@ -21,14 +21,15 @@ import { connectToDB } from "./database";
 const app: Application = express();
 const PORT = process.env.PORT || 5000;
 
-// Configure app
+// Configure app for body parsing, CRUD, and security
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ limit: '10mb', extended: false }));
 app.use(methodOverride("_method"));
-app.use(function (req, res, next) {
+app.use(helmet());
+app.use((req, res, next) => {
   res.setHeader(
     'Content-Security-Policy',
-    "default-src 'self'; font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com; img-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' https://fonts.googleapis.com https://unpkg.com; frame-src 'self'"
+    "default-src 'self'; font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com; img-src * blob:; worker-src * blob:; script-src 'self' https://unpkg.com; style-src 'self' https://fonts.googleapis.com https://unpkg.com; frame-src 'self'"
   );
   next();
 });

@@ -5,20 +5,10 @@
 }
 
 .book-cover {
-  border: 1px solid pink;
   width: var(--book-cover-width);
   height: calc(var(--book-cover-width) / var(--book-cover-aspect-ratio));
 }
 
 .book-cover-large {
   --book-cover-width: var(--book-cover-width-large);
-}
-
-.split-inputs {
-  display: flex;
-  justify-content: space-between;
-}
-
-.split-inputs > * {
-  width: 48%;
 }
