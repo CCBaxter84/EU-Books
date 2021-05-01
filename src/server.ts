@@ -8,9 +8,10 @@ import express, { Application } from "express";
 import handlebars from "express-handlebars";
 import Handlebars from "handlebars";
 import methodOverride from "method-override";
+import helmet from "helmet";
 
 // Import functions and routers
-import { getID, putURL, postURL } from "./hbsHelpers";
+import { getID, putURL, postURL, isAuthorMatch } from "./hbsHelpers";
 import { router as indexRouter } from "./routes/index";
 import { router as authorRouter } from "./routes/author";
 import { router as bookRouter } from "./routes/book";
@@ -24,6 +25,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(methodOverride("_method"));
+app.use(helmet());
 
 // Configure routers
 app.use("/", indexRouter);
@@ -44,6 +46,7 @@ app.set("view engine", "hbs");
 Handlebars.registerHelper("getURL", getID);
 Handlebars.registerHelper("putURL", putURL);
 Handlebars.registerHelper("postURL", postURL);
+Handlebars.registerHelper("isAuthorMatch", isAuthorMatch);
 
 // Serve up static assets
 app.use(express.static(__dirname + "/../public"));

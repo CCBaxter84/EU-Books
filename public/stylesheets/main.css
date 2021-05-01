@@ -3,6 +3,7 @@
 @import "./authors.css";
 @import "./buttons.css";
 @import "./books.css";
+@import "./forms.css";
 
 :root {
   color: var(--color-text-light);
@@ -21,32 +22,10 @@ main > * {
   margin: 2rem 0;
 }
 
-label {
-  font-size: 1.25rem;
-}
-
 .star {
   position: absolute;
   width: 1px;
   height: 1px;
   background-color: white;
   z-index: -1;
-}
-
-.label-n-input {
-  display: flex;
-  flex-direction: column;
-  margin: 1rem 0;
-}
-
-input {
-  margin-top: .25rem;
-}
-
-.text-box {
-  background-color: var(--color-input-background);
-  border: 1px solid white;
-  border-radius: 5px;
-  color: white;
-  font-size: large;
 }

@@ -24,9 +24,13 @@
   "dependencies": {
     "express": "^4.17.1",
     "express-handlebars": "^5.3.0",
-    "filepond": "^4.27.0",
+    "filepond": "^4.27.1",
+    "filepond-plugin-file-encode": "^2.1.10",
+    "filepond-plugin-image-preview": "^4.6.6",
+    "filepond-plugin-image-resize": "^2.0.10",
     "handlebars": "^4.7.7",
     "handlebars-intl": "^1.1.2",
+    "helmet": "^4.5.0",
     "method-override": "^3.0.0",
     "mongoose": "^5.12.7"
   }

@@ -20,7 +20,6 @@ export const renderFormPage: IController = async function(res, book, hasError = 
   try {
     // Get all authors from database
     const authors = await Author.find().lean();
-
     // set params
     let params: IParams = {
       authors: authors,

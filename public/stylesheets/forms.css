@@ -1,0 +1,29 @@
+label {
+  font-size: 1.25rem;
+}
+
+.label-n-input {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0;
+}
+
+input, .select-box {
+  margin-top: .25rem;
+}
+
+.text-box, .select-box, textarea {
+  background-color: var(--color-input-background);
+  border: 1px solid white;
+  border-radius: 5px;
+  color: white;
+  font-size: large;
+}
+
+.select-box:focus {
+  border-color: white;
+}
+
+.select-box > option {
+  background-color: black;
+}
