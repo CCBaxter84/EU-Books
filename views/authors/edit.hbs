@@ -1,4 +1,12 @@
 <main>
   <h2>Edit Author</h2>
-  {{> authorForm author=author url=(putURL author true)}}
+  <form method="POST" action="/authors/{{ author._id }}?_method=PUT">
+    {{> authorForm author=author }}
+    <section class="form-submit-btns">
+      <a href="/authors/{{ author._id }}">
+        <button class="btn btn-danger" type="button">Cancel</button>
+      </a>
+      <button class="btn" type="submit">Update</button>
+    </section>
+  </form>
 </main>

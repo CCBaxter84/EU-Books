@@ -2,7 +2,7 @@
 import { Router, Request, Response } from "express";
 import Author from "../models/author";
 import Book from "../models/book";
-import { renderFormPage, renderEditPage, renderNewPage } from "./bookControllers";
+import { renderFormPage, renderEditPage, renderNewPage, saveCover } from "./bookControllers";
 
 // Define and export router
 export const router = Router();
@@ -37,15 +37,15 @@ router.get("/", async (req: Request, res: Response) => {
         publishDate: book.publishDate,
         coverImage: book.coverImage,
         coverImageType: book.coverImageType,
-        author: book.author
+        author: book.author,
+        _id: book._id
       }
     });
 
     // render book index view; pass books and searchOptions to it
     res.render("books/index", {
       books: booksJSON,
-      searchOptions: req.query,
-      large: false
+      searchOptions: req.query
     });
   } catch{
     res.redirect("/");
@@ -60,20 +60,50 @@ router.get("/new", async (req: Request, res: Response) => {
 
 // @route POST /books
 // @desc  Add a new book to the database
-router.post("/", (req: Request, res: Response) => {
-  res.send("posting");
+router.post("/", async (req: Request, res: Response) => {
+  const book = new Book({
+    title: req.body.title,
+    description: req.body.description,
+    pageCount: req.body.pageCount,
+    publishDate: req.body.publishDate,
+    author: req.body.author
+  });
+  saveCover(book, req.body.cover);
+
+  try {
+    const newBook = await book.save();
+    res.redirect(`/books/${newBook.id}`);
+  } catch {
+    renderNewPage(res, book, true);
+  }
 });
 
 // @route GET /books/:id
 // @desc  Render info for an existing book to screen
-router.get("/:id", (req: Request, res: Response) => {
-  res.send("show book " + req.params.id);
+router.get("/:id", async (req: Request, res: Response) => {
+  try {
+    const book = await Book.findById(req.params.id);
+    if (book == null) throw "Book not found";
+    const author = await Author.findById(book.author);
+    if (author == null) throw "Orphaned books";
+    console.log(author);
+    res.render("books/show", { book });
+  } catch(err) {
+    console.log(err)
+    res.redirect("/");
+  }
 });
 
 // @route GET /books/:id/edit
 // @desc  Render form for editing an existing book
-router.get("/:id/edit", (req: Request, res: Response) => {
-  res.send("edit book " + req.params.id);
+router.get("/:id/edit", async (req: Request, res: Response) => {
+  try {
+    const book = await Book.findById(req.params.id);
+    if (book === null) throw "No book found";
+    renderEditPage(res, book);
+  } catch {
+    res.redirect("/");
+  }
 });
 
 // @route PUT /books/:id
@@ -84,6 +114,18 @@ router.put("/:id", (req: Request, res: Response) => {
 
 // @route DELETE /books/:id
 // @desc  Remove a book from the database
-router.delete("/:id/edit", (req: Request, res: Response) => {
-  res.send("delete book " + req.params.id);
+router.delete("/:id/edit", async (req: Request, res: Response) => {
+  let book = null;
+  try {
+    book = await Book.findById(req.params.id);
+    await book?.remove();
+    res.redirect("/books");
+  } catch {
+    if (book != null) {
+      res.render("books/show", {
+        book
+      })
+    }
+    res.redirect("/");
+  }
 });

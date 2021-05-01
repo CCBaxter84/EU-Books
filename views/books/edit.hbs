@@ -1,0 +1,12 @@
+<main>
+  <h2>Update Book</h2>
+  <form method="POST" action="/books/{{ book._id }}?_">
+    {{> bookForm }}
+    <section class="form-submit-btns">
+      <a href="/books/{{ book._id }}">
+        <button class="btn btn-danger" type="button">Cancel</button>
+      </a>
+      <button class="btn" type="submit">Create</button>
+    </section>
+  </form>
+</main>

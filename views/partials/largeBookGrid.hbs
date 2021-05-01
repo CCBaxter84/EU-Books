@@ -1,0 +1,7 @@
+<section class="book-grid book-grid-large">
+  {{#each books }}
+    <a href="/books/{{ this._id }}">
+      <img class="book-cover book-cover-large" src={{ getCoverPath this }} >
+    </a>
+  {{/each }}
+</section>

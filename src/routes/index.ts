@@ -17,5 +17,5 @@ router.get("/", async (req: Request, res: Response) => {
   } catch {
     books = [];
   }
-  res.render("main", { books, large: true });
+  res.render("main", { books });
 });

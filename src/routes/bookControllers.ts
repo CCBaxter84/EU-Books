@@ -14,6 +14,7 @@ interface IParams {
   book: IBook,
   errorMessage?: string
 }
+const imageMimeTypes = ["image/jpeg", "image/jpg", "image/png", "images/gif"];
 
 // Define and export controller functions
 export const renderFormPage: IController = async function(res, book, hasError = false, form) {
@@ -49,3 +50,14 @@ export const renderNewPage: IController = async function(res, book, hasError = f
 export const renderEditPage: IController = async function(res, book, hasError = false) {
   renderFormPage(res, book, hasError, "edit");
 }
+
+export const saveCover = function(book: IBook, coverEncoded: string): void {
+  // Guard clause for empty cover
+  if (coverEncoded == null) return;
+
+  const cover = JSON.parse(coverEncoded);
+  if (cover != null && imageMimeTypes.includes(cover.type)) {
+    book.coverImage = Buffer.from(cover.data, "base64");
+    book.coverImageType = cover.type;
+  }
+};
