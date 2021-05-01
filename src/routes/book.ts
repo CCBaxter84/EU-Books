@@ -16,13 +16,13 @@ router.get("/", async (req: Request, res: Response) => {
     const title = "" + req.query.title;
     query.regex("title", new RegExp(title, "i"));
   }
-  if (req.query.publishedAfter != null && req.query.publishedAfter) {
-    const pubAfter = Number(req.query.publishedAfter);
-    query.gte("publishDate", pubAfter);
+  if (req.query.publishedAfter != null && req.query.publishedAfter != "") {
+    const pubAfter = parseInt("" + req.query.publishedAfter);
+    query.lte("publishDate", pubAfter);
   }
-  if (req.query.publishedBefore != null && req.query.publishedBefore) {
-    const pubBefore = Number(req.query.publishedBefore);
-    query.lte("publishDate", pubBefore);
+  if (req.query.publishedBefore != null && req.query.publishedBefore != "") {
+    const pubBefore = parseInt("" + req.query.publishedBefore);
+    query.gte("publishDate", pubBefore);
   }
 
   try {
@@ -47,7 +47,7 @@ router.get("/", async (req: Request, res: Response) => {
       searchOptions: req.query,
       large: false
     });
-  } catch {
+  } catch{
     res.redirect("/");
   }
 });
