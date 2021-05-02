@@ -1,6 +1,6 @@
 <main>
   <h2>Update Book</h2>
-  <form method="POST" action="/books/{{ book._id }}?_">
+  <form method="POST" action="/books/{{ book._id }}?_method=PUT">
     {{> bookForm }}
     <section class="form-submit-btns">
       <a href="/books/{{ book._id }}">

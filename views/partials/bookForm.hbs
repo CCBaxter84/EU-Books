@@ -1,40 +1,38 @@
-<form method="POST" action="/books">
-  <section class="split-inputs">
-    <section class="label-n-input">
-      <label>Title</label>
-      <input type="text" class="text-box" name="title">
-    </section>
-    <section class="label-n-input">
-      <label>Author</label>
-      <select name="author" class="select-box">
-        {{#each authors }}
-          {{#if (isAuthorMatch this book) }}
-            <option selected label={{ this.name }} value={{ this._id }}></option>
-          {{else }}
-            <option label={{ this.name }} value={{ this._id }}></option>
-          {{/if }}
-        {{/each }}
-      </select>
-    </section>
+<section class="split-inputs">
+  <section class="label-n-input">
+    <label>Title</label>
+    <input type="text" class="text-box" name="title">
   </section>
-  <section class="split-inputs">
-    <section class="label-n-input">
-      <label>Publish Date</label>
-      <input type="date" class="text-box" name="publishDate">
-    </section>
-    <section class="label-n-input">
-      <label>Page Count</label>
-      <input type="number" class="text-box" name="pageCount">
-    </section>
+  <section class="label-n-input">
+    <label>Author</label>
+    <select name="author" class="select-box">
+      {{#each authors }}
+        {{#if (isAuthorMatch this book) }}
+          <option selected label={{ this.name }} value={{ this._id }}></option>
+        {{else }}
+          <option label={{ this.name }} value={{ this._id }}></option>
+        {{/if }}
+      {{/each }}
+    </select>
   </section>
-  <section class="split-inputs">
-    <section class="label-n-input label-n-input-no-grow">
-      <label>Cover</label>
-      <input type="file" class="book-cover filepond" name="cover">
-    </section>
-    <section class="label-n-input">
-      <label>Description</label>
-      <textarea name="description"></textarea>
-    </section>
+</section>
+<section class="split-inputs">
+  <section class="label-n-input">
+    <label>Publish Date</label>
+    <input type="date" class="text-box" name="publishDate">
   </section>
-</form>
+  <section class="label-n-input">
+    <label>Page Count</label>
+    <input type="number" class="text-box" name="pageCount">
+  </section>
+</section>
+<section class="split-inputs">
+  <section class="label-n-input label-n-input-no-grow">
+    <label>Cover</label>
+    <input type="file" class="book-cover filepond" name="cover">
+  </section>
+  <section class="label-n-input">
+    <label>Description</label>
+    <textarea name="description"></textarea>
+  </section>
+</section>
