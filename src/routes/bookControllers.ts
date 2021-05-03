@@ -1,5 +1,5 @@
 // Import dependencies
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { LeanDocument, Query } from "mongoose";
 import Book, { IBook } from "../models/book";
 import Author, { IAuthor } from "../models/author";
@@ -69,11 +69,7 @@ export const renderFormPage: IController = async function(res, book, hasError = 
     }
     // Check for errors
     if (hasError) {
-      if (form === "edit") {
-        params.error = "Error Updating Book";
-      } else {
-        params.error = "Error Creating Book";
-      }
+      params.error = "Error -- please ensure all fields are completed";
     }
     // Render given form with params
     res.render(`books/${form}`, params);
@@ -89,7 +85,6 @@ export const renderNewPage: IController = async function(res, book, hasError = f
 }
 
 export const renderEditPage: IController = async function(res, book, hasError = false) {
-  console.log(book);
   renderFormPage(res, book, hasError, "edit");
 }
 
@@ -103,3 +98,14 @@ export const saveCover = function(book: IBook, coverEncoded: string): void {
     book.coverImageType = cover.type;
   }
 };
+
+// Middleware for checking post and put requests
+export const emptyFormChecker = function(req: Request, res: Response, next: NextFunction) {
+  for (let key in req.body) {
+    if (req.body[key] === "" || !req.body[key]) {
+      renderNewPage(res, new Book(), true);
+      return;
+    }
+  }
+  next();
+}

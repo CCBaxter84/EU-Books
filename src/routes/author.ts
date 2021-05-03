@@ -1,5 +1,5 @@
 // Import dependencies
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import Author, { IAuthor } from "../models/author";
 import Book from "../models/book";
 import { LeanDocument } from "mongoose";
@@ -7,6 +7,17 @@ import { LeanDocument } from "mongoose";
 // Define interfaces
 interface IParams {
   name?: RegExp
+}
+
+// Middleware for checking post and put requests
+const emptyFormChecker = function(req: Request, res: Response, next: NextFunction) {
+  if (req.body.name === "" || !req.body.name) {
+    res.render("authors/new", {
+      error: "Please complete all form fields"
+    });
+  } else {
+    next();
+  }
 }
 
 // Define and export router
@@ -50,7 +61,7 @@ router.get("/new", (req: Request, res: Response) => {
 
 // @route POST /authors
 // @desc  Add a new author to the database
-router.post("/", async (req: Request, res: Response) => {
+router.post("/", emptyFormChecker, async (req: Request, res: Response) => {
   let author = new Author({
     name: req.body.name
   });
@@ -94,7 +105,7 @@ router.get("/:id/edit", async (req: Request, res: Response) => {
 
 // @route PUT /authors/:id
 // @desc  Update an existing author entry in the database
-router.put("/:id", async (req: Request, res: Response) => {
+router.put("/:id", emptyFormChecker, async (req: Request, res: Response) => {
   let author: IAuthor|null = null;
   try {
     author = await Author.findById(req.params.id);

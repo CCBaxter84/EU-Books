@@ -3,7 +3,7 @@ import { Router, Request, Response } from "express";
 import { LeanDocument } from "mongoose";
 import Author, { IAuthor } from "../models/author";
 import Book, {IBook } from "../models/book";
-import { queryBuilder, renderFormPage, renderEditPage, renderNewPage, saveCover } from "./bookControllers";
+import { queryBuilder, renderEditPage, renderNewPage, saveCover, emptyFormChecker } from "./bookControllers";
 
 // Define and export router
 export const router = Router();
@@ -48,7 +48,7 @@ router.get("/new", async (req: Request, res: Response) => {
 
 // @route POST /books
 // @desc  Add a new book to the database
-router.post("/", async (req: Request, res: Response) => {
+router.post("/", emptyFormChecker, async (req: Request, res: Response) => {
   const book = new Book({
     title: req.body.title,
     description: req.body.description,
@@ -100,7 +100,7 @@ router.get("/:id/edit", async (req: Request, res: Response) => {
 
 // @route PUT /books/:id
 // @desc  Update an existing book entry in the database
-router.put("/:id", async (req: Request, res: Response) => {
+router.put("/:id", emptyFormChecker, async (req: Request, res: Response) => {
   let book;
   try {
     book = await Book.findById(req.params.id);
