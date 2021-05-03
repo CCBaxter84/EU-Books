@@ -16,10 +16,11 @@ export const getID: IHelper = function(model, isAuthor) {
   }
 };
 
-export const isAuthorMatch = function(author: IAuthor, book: IBook): boolean {
+export const isAuthorMatch = function(author: IAuthor, book: string): boolean {
   try {
-    return author._id === book.author;
+    return author._id.toString() === book.toString();
   } catch {
+
     return false;
   }
 };

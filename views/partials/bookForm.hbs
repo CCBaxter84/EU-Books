@@ -7,7 +7,7 @@
     <label>Author</label>
     <select name="author" class="select-box">
       {{#each authors }}
-        {{#if (isAuthorMatch this book) }}
+        {{#if  (isAuthorMatch this ../book.author) }}
           <option selected label="{{ this.name }}" value={{ this._id }}></option>
         {{else }}
           <option label="{{ this.name }}" value={{ this._id }}></option>
