@@ -23,6 +23,8 @@ const emptyFormChecker = function(req: Request, res: Response, next: NextFunctio
 // Define and export router
 export const router = Router();
 
+// Define routes
+
 // @route GET /authors
 // @desc  Render Search Author form and books by author
 router.get("/", async (req: Request, res: Response) => {
@@ -80,13 +82,15 @@ router.post("/", emptyFormChecker, async (req: Request, res: Response) => {
 router.get("/:id", async (req: Request, res: Response) => {
   try {
     const author = await Author.findById(req.params.id).lean();
-    const books = await Book.find({ author: author?._id }).lean();
+    if (author == null) throw "Error looking up author";
+    const books = await Book.find({ author: author._id }).lean();
+    if (books == null) throw "Error looking up books";
     res.render("authors/show", {
       author: author,
       books: books
     });
-  } catch {
-    res.redirect("/");
+  } catch(error) {
+    res.render("authors/index", { error });
   }
 });
 

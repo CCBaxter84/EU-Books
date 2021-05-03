@@ -8,6 +8,8 @@ import { queryBuilder, renderEditPage, renderNewPage, saveCover, emptyFormChecke
 // Define and export router
 export const router = Router();
 
+// Define routes
+
 // @route GET /books
 // @desc  Render Search Books form and related books
 router.get("/", async (req: Request, res: Response) => {
