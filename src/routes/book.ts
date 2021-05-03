@@ -59,8 +59,7 @@ router.get("/", async (req: Request, res: Response) => {
       books: booksJSON,
       searchOptions: req.query
     });
-  } catch(err) {
-    console.log(err);
+  } catch {
     res.redirect("/");
   }
 });
