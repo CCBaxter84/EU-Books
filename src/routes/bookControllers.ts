@@ -1,7 +1,7 @@
 // Import dependencies
-import { Response } from "express";
-import { LeanDocument } from "mongoose";
-import { IBook } from "../models/book";
+import { Request, Response } from "express";
+import { LeanDocument, Query } from "mongoose";
+import Book, { IBook } from "../models/book";
 import Author, { IAuthor } from "../models/author";
 
 // Define types & interfaces
@@ -12,11 +12,41 @@ interface IController {
 interface IParams {
   authors: LeanDocument<IAuthor>[]
   book: LeanDocument<IBook>,
-  errorMessage?: string
+  error?: string
+}
+
+interface IQuery {
+  $gte?: Date,
+  $lte?: Date
 }
 const imageMimeTypes = ["image/jpeg", "image/jpg", "image/png", "images/gif"];
 
-// Define and export controller functions
+// Book Controller Helper Functions
+export const queryBuilder = function(req: Request): Query<IBook[], IBook, {}> {
+  // Set blank query
+  let query = Book.find();
+  let queryOptions: IQuery = {};
+  // Add Greater Than or Equal Value if provided
+  if (req.query.publishedAfter != null && req.query.publishedAfter != "") {
+    const pubAfter = new Date("" + req.query.publishedAfter);
+    queryOptions.$gte = pubAfter;
+    query = Book.find({ publishDate: queryOptions });
+  }
+  // Add Lesser Than or Equal Value if provided
+  if (req.query.publishedBefore != null && req.query.publishedBefore != "") {
+    const pubBefore = new Date("" + req.query.publishedBefore);
+    queryOptions.$lte = pubBefore;
+    query = Book.find({ publishDate: queryOptions });
+  }
+  // Add Title Search Regex if provided title
+  if (req.query.title != null && req.query.title != "") {
+    const title = "" + req.query.title;
+    query.regex("title", new RegExp(title, "i"));
+  }
+  // Return populated query
+  return query;
+};
+
 export const renderFormPage: IController = async function(res, book, hasError = false, form) {
   try {
     // Get all authors from database
@@ -37,20 +67,20 @@ export const renderFormPage: IController = async function(res, book, hasError = 
       authors: authors,
       book: bookJSON
     }
-
     // Check for errors
     if (hasError) {
       if (form === "edit") {
-        params.errorMessage = "Error Updating Book";
+        params.error = "Error Updating Book";
       } else {
-        params.errorMessage = "Error Creating Book";
+        params.error = "Error Creating Book";
       }
     }
-
     // Render given form with params
     res.render(`books/${form}`, params);
   } catch {
-    res.redirect("/books");
+    res.render("books/index", {
+      error: "Error loading page"
+    });
   }
 }
 

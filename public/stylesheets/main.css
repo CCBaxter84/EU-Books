@@ -22,6 +22,11 @@ main > * {
   margin: 2rem 0;
 }
 
+#error-msg {
+  color: red;
+  margin: 2rem 5rem;
+}
+
 .star {
   position: absolute;
   width: 1px;

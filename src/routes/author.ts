@@ -2,6 +2,7 @@
 import { Router, Request, Response } from "express";
 import Author, { IAuthor } from "../models/author";
 import Book from "../models/book";
+import { LeanDocument } from "mongoose";
 
 // Define interfaces
 interface IParams {
@@ -20,15 +21,24 @@ router.get("/", async (req: Request, res: Response) => {
     const name: string = "" + req.query.name;
     searchOptions.name = new RegExp(name, "i");
   }
-
+  let authors: LeanDocument<IAuthor>[] | null = null;
   try {
-    const authors = await Author.find(searchOptions).lean();
+    authors = await Author.find(searchOptions).lean();
     res.render("authors/index", {
       authors,
       searchOptions: req.query
     });
   } catch {
-    res.redirect("/");
+    if (authors == null) {
+      res.render("authors/index", {
+        searchOptions: req.query,
+        error: "Could not get authors"
+      });
+    } else {
+      res.render("/", {
+        error: "Failed to load authors page"
+      });
+    }
   }
 });
 
@@ -48,7 +58,9 @@ router.post("/", async (req: Request, res: Response) => {
     const newAuthor = await author.save();
     res.redirect(`/authors/${newAuthor._id}`);
   } catch {
-    res.redirect("/authors");
+    res.render("authors/new", {
+      error: "Error saving new author"
+    });
   }
 });
 
@@ -76,7 +88,7 @@ router.get("/:id/edit", async (req: Request, res: Response) => {
       author
     });
   } catch {
-    res.redirect("/");
+    res.render("authors/index", { error: "Error loading edit author page"});
   }
 });
 
@@ -90,12 +102,11 @@ router.put("/:id", async (req: Request, res: Response) => {
     author.name = req.body.name;
     await author.save();
     res.redirect(`/authors/${req.params.id}`);
-  } catch {
-    if (author == null) {
-      res.redirect("/");
-    } else {
-      res.redirect(`/authors/${author._id}`);
+  } catch(error) {
+    if (author != null) {
+      error = "Failed to update author";
     }
+    res.render("authors/index", { error });
   }
 });
 
@@ -106,14 +117,13 @@ router.delete("/:id", async (req: Request, res: Response) => {
   let author: IAuthor|null = null;
   try {
     author = await Author.findById(req.params.id);
-    await author?.remove();
+    if (author == null) throw "Author not found";
+    await author.remove();
     res.redirect("/authors");
-  } catch(err) {
-    console.log(err);
-    if (author === null) {
-      res.redirect("/");
-    } else {
-      res.redirect(`/authors/${author.id}`);
+  } catch(error) {
+    if (author != null) {
+      error = "Failed to remove author";
     }
+    res.render("authors/index", { error });
   }
 });

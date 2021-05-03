@@ -11,7 +11,7 @@ import methodOverride from "method-override";
 import helmet from "helmet";
 
 // Import functions and routers
-import { getID, putURL, postURL, isAuthorMatch, getCoverPath, getDateString, getPubDate } from "./hbsHelpers";
+import { getID, isAuthorMatch, getCoverPath, getDateString, getPubDate } from "./hbsHelpers";
 import { router as indexRouter } from "./routes/index";
 import { router as authorRouter } from "./routes/author";
 import { router as bookRouter } from "./routes/book";
@@ -51,8 +51,6 @@ app.set("view engine", "hbs");
 
 // Set Handlebars helpers
 Handlebars.registerHelper("getURL", getID);
-Handlebars.registerHelper("putURL", putURL);
-Handlebars.registerHelper("postURL", postURL);
 Handlebars.registerHelper("isAuthorMatch", isAuthorMatch);
 Handlebars.registerHelper("getCoverPath", getCoverPath);
 Handlebars.registerHelper("getDateString", getDateString);

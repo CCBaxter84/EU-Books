@@ -9,13 +9,15 @@ export const router = Router();
 // @desc  Render main page to the screen
 router.get("/", async (req: Request, res: Response) => {
   let books: IBook[]|[];
+  let error;
   try {
     books = await Book.find()
                       .sort({ createdAt: "desc" })
                       .limit(10)
                       .lean();
-  } catch {
+    res.render("main", { books });
+  } catch(error) {
     books = [];
+    res.render("main", { error: "Error: Could not get books" });
   }
-  res.render("main", { books });
 });

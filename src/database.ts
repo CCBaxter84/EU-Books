@@ -15,7 +15,7 @@ export function connectToDB(): void {
   });
   const db = mongoose.connection;
   db.on("error", error => console.log(error));
-  db.once("open", () => console.log("Connected to database"));
+  db.on("connected", () => console.log("Connected to database"));
   db.on("disconnected", () => console.log("Disconnected from database"));
 }
 

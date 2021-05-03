@@ -6,7 +6,6 @@ import { IBook } from "./models/book";
 interface IHelper {
   (model: IAuthor|IBook, isAuthor: boolean): string
 }
-type GridOrCover = "grid" | "cover";
 
 // Define and export helper functions
 export const getID: IHelper = function(model, isAuthor) {
@@ -15,14 +14,6 @@ export const getID: IHelper = function(model, isAuthor) {
   } else {
     return `/books/${model._id}`;
   }
-};
-
-export const putURL: IHelper = function(model, isAuthor) {
-  return getID(model, isAuthor) + "?_method=PUT";
-};
-
-export const postURL: IHelper = function(model, isAuthor) {
-  return isAuthor ? "/authors" : "/books";
 };
 
 export const isAuthorMatch = function(author: IAuthor, book: IBook): boolean {

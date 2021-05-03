@@ -1,3 +1,7 @@
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
 .split-inputs {
   display: flex;
 }
