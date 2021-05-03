@@ -1,3 +1,26 @@
 <main>
   <h2>{{ book.title }}</h2>
+  <section class="book-details-container">
+    <section>
+      <img class="book-cover" src={{ getCoverPath book }}>
+      <section class="book-details-btn-grid">
+        {{> editButton url=(getURL book false) }}
+        {{> deleteForm url=(getURL book false) }}
+        <a href="/authors/{{ book.author }}" class="book-details-author-btn">
+          <button class="btn">View Author</button>
+        </a>
+      </section>
+    </section>
+    <article class="book-details-grid">
+      <p class="book-details-label">Author:</p>
+      <p>{{ author.name }} </p>
+      <p class="book-details-label">Publish Date:</p>
+      <p>{{ getDateString book.publishDate }}</p>
+      <p class="book-details-label">Page Count:</p>
+      <p>{{ book.pageCount }}</p>
+      <p class="book-details-label">Description:</p>
+      <p>{{ book.description }}</p>
+    </article>
+  </section>
+
 </main>

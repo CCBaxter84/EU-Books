@@ -59,8 +59,8 @@ router.get("/:id", async (req: Request, res: Response) => {
     const author = await Author.findById(req.params.id).lean();
     const books = await Book.find({ author: author?._id }).lean();
     res.render("authors/show", {
-      author,
-      books
+      author: author,
+      books: books
     });
   } catch {
     res.redirect("/");
@@ -108,7 +108,8 @@ router.delete("/:id", async (req: Request, res: Response) => {
     author = await Author.findById(req.params.id);
     await author?.remove();
     res.redirect("/authors");
-  } catch {
+  } catch(err) {
+    console.log(err);
     if (author === null) {
       res.redirect("/");
     } else {

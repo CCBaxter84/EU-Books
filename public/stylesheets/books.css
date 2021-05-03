@@ -23,3 +23,55 @@
 .book-grid-large {
   grid-template-columns: repeat(auto-fill, var(--book-cover-width-large));
 }
+
+.book-details-container {
+  display: flex;
+}
+
+.book-details-btn-grid {
+  display: grid;
+  justify-items: flex-start;
+  grid-template-areas:
+    "edit delete"
+    "author author";
+  grid-gap: .5rem;
+  margin-top: .5rem;
+}
+
+.book-details-btn-grid > * {
+  width: 100%;
+}
+
+.book-details-btn-grid > * > button {
+  margin-left: 0;
+  width: 100%;
+}
+
+.book-details-author-btn {
+  grid-area: author;
+  justify-self: stretch;
+}
+
+.book-details-author-btn > * {
+  margin-left: 0px;
+  width: 100%;
+}
+
+.book-details-grid {
+  display: grid;
+  align-content: flex-start;
+  align-items: center;
+  grid-gap: 1rem;
+  grid-template-columns: auto auto;
+  margin-left: 2rem;
+}
+
+.book-details-label {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}

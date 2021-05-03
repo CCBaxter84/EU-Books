@@ -32,6 +32,7 @@ input, .select-box {
   border: 1px solid white;
   border-radius: .25rem;
   color: white;
+  font-family: 'Sawarabi Gothic', sans-serif;
   font-size: large;
   height: 2rem;
 }

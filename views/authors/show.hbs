@@ -10,9 +10,7 @@
   <section class="authors-container">
     <h2>Books By Author</h2>
     <section>
-      {{#each books }}
-        <div>{{ this.name }}</div>
-      {{/each }}
+      {{> bookGrid books=books }}
     </section>
   </section>
 </main>

@@ -38,3 +38,11 @@ export const getCoverPath = function(book: IBook): string|void {
     return `data:${book.coverImageType};charset=utf-8;base64,${book.coverImage.toString('base64')}`
   }
 };
+
+export const getDateString = function(date: Date): string {
+  return date.toDateString();
+}
+
+export const getPubDate = function(date: Date): string {
+  return date == null ? "" : date.toISOString().split("T")[0];
+}

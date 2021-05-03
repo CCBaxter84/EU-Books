@@ -11,7 +11,7 @@ interface IController {
 }
 interface IParams {
   authors: LeanDocument<IAuthor>[]
-  book: IBook,
+  book: LeanDocument<IBook>,
   errorMessage?: string
 }
 const imageMimeTypes = ["image/jpeg", "image/jpg", "image/png", "images/gif"];
@@ -21,10 +21,21 @@ export const renderFormPage: IController = async function(res, book, hasError = 
   try {
     // Get all authors from database
     const authors = await Author.find().lean();
+    const bookJSON = {
+      _id: book._id,
+      title: book.title,
+      description: book.description,
+      pageCount: book.pageCount,
+      publishDate: book.publishDate,
+      coverImage: book.coverImage,
+      coverImageType: book.coverImageType,
+      createdAt: book.createdAt,
+      author: book.author
+    };
     // set params
     let params: IParams = {
       authors: authors,
-      book: book
+      book: bookJSON
     }
 
     // Check for errors
@@ -48,6 +59,7 @@ export const renderNewPage: IController = async function(res, book, hasError = f
 }
 
 export const renderEditPage: IController = async function(res, book, hasError = false) {
+  console.log(book);
   renderFormPage(res, book, hasError, "edit");
 }
 

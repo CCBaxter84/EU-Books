@@ -1,16 +1,16 @@
 <section class="split-inputs">
   <section class="label-n-input">
     <label>Title</label>
-    <input type="text" class="text-box" name="title">
+    <input type="text" class="text-box" name="title" value="{{ book.title }}">
   </section>
   <section class="label-n-input">
     <label>Author</label>
     <select name="author" class="select-box">
       {{#each authors }}
         {{#if (isAuthorMatch this book) }}
-          <option selected label={{ this.name }} value={{ this._id }}></option>
+          <option selected label="{{ this.name }}" value={{ this._id }}></option>
         {{else }}
-          <option label={{ this.name }} value={{ this._id }}></option>
+          <option label="{{ this.name }}" value={{ this._id }}></option>
         {{/if }}
       {{/each }}
     </select>
@@ -19,11 +19,11 @@
 <section class="split-inputs">
   <section class="label-n-input">
     <label>Publish Date</label>
-    <input type="date" class="text-box" name="publishDate">
+    <input type="date" class="text-box" name="publishDate" value="{{ getPubDate book.publishDate }}">
   </section>
   <section class="label-n-input">
     <label>Page Count</label>
-    <input type="number" class="text-box" name="pageCount">
+    <input type="number" class="text-box" min="1" name="pageCount" value={{ book.pageCount }}>
   </section>
 </section>
 <section class="split-inputs">
@@ -33,6 +33,6 @@
   </section>
   <section class="label-n-input">
     <label>Description</label>
-    <textarea name="description"></textarea>
+    <textarea name="description">{{ book.description }}</textarea>
   </section>
 </section>

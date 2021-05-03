@@ -4,6 +4,11 @@ import Author from "../models/author";
 import Book from "../models/book";
 import { renderFormPage, renderEditPage, renderNewPage, saveCover } from "./bookControllers";
 
+interface IQuery {
+  $gte?: Date,
+  $lte?: Date
+}
+
 // Define and export router
 export const router = Router();
 
@@ -12,17 +17,23 @@ export const router = Router();
 router.get("/", async (req: Request, res: Response) => {
   // build DB query based off request query
   let query = Book.find();
+  let queryOptions: IQuery = {};
+
+  if (req.query.publishedAfter != null && req.query.publishedAfter != "") {
+    const pubAfter = new Date("" + req.query.publishedAfter);
+    queryOptions.$gte = pubAfter;
+    query = Book.find({ publishDate: queryOptions });
+  }
+
+  if (req.query.publishedBefore != null && req.query.publishedBefore != "") {
+    const pubBefore = new Date("" + req.query.publishedBefore);
+    queryOptions.$lte = pubBefore;
+    query = Book.find({ publishDate: queryOptions });
+  }
+
   if (req.query.title != null && req.query.title != "") {
     const title = "" + req.query.title;
     query.regex("title", new RegExp(title, "i"));
-  }
-  if (req.query.publishedAfter != null && req.query.publishedAfter != "") {
-    const pubAfter = parseInt("" + req.query.publishedAfter);
-    query.lte("publishDate", pubAfter);
-  }
-  if (req.query.publishedBefore != null && req.query.publishedBefore != "") {
-    const pubBefore = parseInt("" + req.query.publishedBefore);
-    query.gte("publishDate", pubBefore);
   }
 
   try {
@@ -42,12 +53,14 @@ router.get("/", async (req: Request, res: Response) => {
       }
     });
 
+
     // render book index view; pass books and searchOptions to it
     res.render("books/index", {
       books: booksJSON,
       searchOptions: req.query
     });
-  } catch{
+  } catch(err) {
+    console.log(err);
     res.redirect("/");
   }
 });
@@ -82,12 +95,11 @@ router.post("/", async (req: Request, res: Response) => {
 // @desc  Render info for an existing book to screen
 router.get("/:id", async (req: Request, res: Response) => {
   try {
-    const book = await Book.findById(req.params.id);
+    const book = await Book.findById(req.params.id).lean();
     if (book == null) throw "Book not found";
-    const author = await Author.findById(book.author);
+    const author = await Author.findById(book.author).lean();
     if (author == null) throw "Orphaned books";
-    console.log(author);
-    res.render("books/show", { book });
+    res.render("books/show", { book, author });
   } catch(err) {
     console.log(err)
     res.redirect("/");
@@ -108,23 +120,44 @@ router.get("/:id/edit", async (req: Request, res: Response) => {
 
 // @route PUT /books/:id
 // @desc  Update an existing book entry in the database
-router.put("/:id", (req: Request, res: Response) => {
-  res.send("edit book " + req.params.id);
+router.put("/:id", async (req: Request, res: Response) => {
+  let book;
+  try {
+    book = await Book.findById(req.params.id);
+    if (book == null) throw "Book not found";
+    book.title = req.body.title;
+    book.author = req.body.author;
+    book.publishDate = new Date(req.body.publishDate);
+    book.pageCount = req.body.pageCount;
+    book.description = req.body.description;
+    if (req.body.cover != null && req.body.cover !== "") {
+      saveCover(book, req.body.cover);
+    }
+    await book.save();
+    res.redirect(`/books/${req.params.id}`);
+  } catch {
+    if (book != null) {
+      renderEditPage(res, book, true);
+    } else {
+      res.redirect(`/books/${req.params.id}`);
+    }
+  }
 });
 
 // @route DELETE /books/:id
 // @desc  Remove a book from the database
-router.delete("/:id/edit", async (req: Request, res: Response) => {
-  let book = null;
+router.delete("/:id", async (req: Request, res: Response) => {
+  let book;
   try {
     book = await Book.findById(req.params.id);
-    await book?.remove();
+    if (book == null) throw "Book not found";
+    await book.remove();
     res.redirect("/books");
   } catch {
     if (book != null) {
       res.render("books/show", {
         book
-      })
+      });
     }
     res.redirect("/");
   }

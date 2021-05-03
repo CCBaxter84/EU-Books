@@ -16,15 +16,16 @@ const authorSchema = new Schema({
 });
 
 // Add check to prevent deleting an author associated with books stored in the database
-authorSchema.pre("remove", async function(this: IAuthor, next) {
-  try {
-    const books = await Book.find({ author: this.id });
-    if (books.length > 1) {
-      next(new Error("This Author still has stored books"));
+authorSchema.pre("remove", function(this: IAuthor, next) {
+  Book.find({ author: this._id}, (error, books) => {
+    if (error) {
+      next(error);
+    } else if (books.length > 0) {
+      next(new Error("This author still has stored books"));
+    } else {
+      next();
     }
-  } catch(error) {
-    next(error);
-  }
+  });
 });
 
 // Define and export Author model

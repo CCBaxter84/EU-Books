@@ -7,11 +7,11 @@
 
 :root {
   color: var(--color-text-light);
-  font-family: 'Sawarabi Gothic', sans-serif;
 }
 
 body {
   background: linear-gradient(to right, var(--color-background-dark), var(--color-background-light));
+  font-family: 'Sawarabi Gothic', sans-serif;
 }
 
 main {
