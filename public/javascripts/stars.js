@@ -19,7 +19,7 @@ function callback() {
 
 function getRandomPosition() {
   const y = globalThis.outerWidth;
-  const x = document.body.scrollHeight;
+  const x = document.body.clientHeight;
   const randomX = Math.floor(Math.random() * x);
   const randomY = Math.floor(Math.random() * y);
   return [randomX, randomY];

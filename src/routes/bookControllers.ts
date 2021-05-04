@@ -1,6 +1,6 @@
 // Import dependencies
 import { Request, Response, NextFunction } from "express";
-import { LeanDocument, Query, FilterQuery } from "mongoose";
+import { LeanDocument, Query } from "mongoose";
 import Book, { IBook, eras, Era } from "../models/book";
 import Author, { IAuthor } from "../models/author";
 
@@ -34,7 +34,6 @@ export const queryBuilder = function(req: Request): Query<IBook[], IBook, {}> {
     const pubAfter = new Date("" + req.query.publishedAfter);
     queryOptions.$gte = pubAfter;
     query.find({ publishDate: queryOptions });
-    //query = Book.find({ publishDate: queryOptions });
   }
   // Add Lesser Than or Equal Value if provided
   if (req.query.publishedBefore != null && req.query.publishedBefore != "") {

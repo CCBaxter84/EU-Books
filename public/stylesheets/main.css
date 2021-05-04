@@ -12,11 +12,11 @@
 body {
   background: linear-gradient(to right, var(--color-background-dark), var(--color-background-light));
   font-family: 'Sawarabi Gothic', sans-serif;
+  margin-bottom: 0;
 }
 
 main {
   margin: 5rem;
-  margin-bottom: 10rem;
 }
 
 main > * {
