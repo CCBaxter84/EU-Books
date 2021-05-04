@@ -32,6 +32,7 @@ export const getCoverPath = function(book: IBook): string|void {
 };
 
 export const getDateString = function(date: Date): string {
+  console.log(date.toISOString().split("T")[0]);
   return date.toDateString();
 }
 

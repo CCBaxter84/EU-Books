@@ -60,7 +60,7 @@
 .book-details-grid {
   display: grid;
   align-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   grid-gap: 1rem;
   grid-template-columns: auto auto;
   margin-left: 2rem;

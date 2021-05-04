@@ -102,7 +102,7 @@ router.get("/:id/edit", async (req: Request, res: Response) => {
 
 // @route PUT /books/:id
 // @desc  Update an existing book entry in the database
-router.put("/:id", emptyFormChecker, async (req: Request, res: Response) => {
+router.put("/:id", async (req: Request, res: Response) => {
   let book;
   try {
     book = await Book.findById(req.params.id);
