@@ -3,7 +3,7 @@
     <label>Title</label>
     <input autofocus type="text" class="text-box" name="title" value="{{ book.title }}">
   </section>
-  <section class="label-n-input">
+  <section class="label-n-input label-n-input-no-grow">
     <label>Author</label>
     <select name="author" class="select-box">
       <option selected disabled value>Select an option</option>
@@ -12,6 +12,19 @@
           <option selected label="{{ this.name }}" value={{ this._id }}></option>
         {{else }}
           <option label="{{ this.name }}" value={{ this._id }}></option>
+        {{/if }}
+      {{/each }}
+    </select>
+  </section>
+    <section class="label-n-input label-n-input-no-grow">
+    <label>Era</label>
+    <select name="era" class="select-box">
+      <option selected disabled value>Select an option</option>
+      {{#each eras }}
+        {{#if  (isEraMatch this ../book.era) }}
+          <option selected label="{{ this }}" value="{{ this }}"></option>
+        {{else }}
+          <option label="{{ this }}" value="{{ this }}"></option>
         {{/if }}
       {{/each }}
     </select>
@@ -41,23 +54,12 @@
   </section>
 </section>
 <section class="split-inputs">
-  <section class="label-n-input">
-    <label>Tags</label>
-    <input type="text" class="text-box" name="tags" value="{{ book.tags }}">
+  <section class="label-n-input ">
+    <label>Search Tags</label>
+    <textarea type="text" class="tags-era"name="tags">{{ book.tags }}
+    </textarea>
   </section>
-  <section class="label-n-input">
-    <label>Era</label>
-    <select name="era" class="select-box">
-      <option selected disabled value>Select an option</option>
-      {{#each eras }}
-        {{#if  (isEraMatch this ../book.era) }}
-          <option selected label="{{ this }}" value="{{ this }}"></option>
-        {{else }}
-          <option label="{{ this }}" value="{{ this }}"></option>
-        {{/if }}
-      {{/each }}
-    </select>
-  </section>
+
 </section>
 <section class="split-inputs">
   <section class="label-n-input label-n-input-no-grow">
