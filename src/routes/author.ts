@@ -83,7 +83,7 @@ router.get("/:id", async (req: Request, res: Response) => {
   try {
     const author = await Author.findById(req.params.id).lean();
     if (author == null) throw "Error looking up author";
-    const books = await Book.find({ author: author._id }).lean();
+    const books = await Book.find({ $or: [{ author: author._id }, { coAuthor: author._id }] }).lean();
     if (books == null) throw "Error looking up books";
     res.render("authors/show", {
       author: author,
