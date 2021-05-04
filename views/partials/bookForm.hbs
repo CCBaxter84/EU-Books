@@ -16,19 +16,7 @@
       {{/each }}
     </select>
   </section>
-    <section class="label-n-input label-n-input-no-grow">
-    <label>Era</label>
-    <select name="era" class="select-box">
-      <option selected disabled value>Select an option</option>
-      {{#each eras }}
-        {{#if  (isEraMatch this ../book.era) }}
-          <option selected label="{{ this }}" value="{{ this }}"></option>
-        {{else }}
-          <option label="{{ this }}" value="{{ this }}"></option>
-        {{/if }}
-      {{/each }}
-    </select>
-  </section>
+  {{> selectBookEra eras=eras book=book }}
 </section>
 <section class="split-inputs">
   <section class="label-n-input">

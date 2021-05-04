@@ -2,7 +2,7 @@
 import { Router, Request, Response } from "express";
 import { LeanDocument } from "mongoose";
 import Author, { IAuthor } from "../models/author";
-import Book, { IBook } from "../models/book";
+import Book, { IBook, eras } from "../models/book";
 import { queryBuilder, renderEditPage, renderNewPage, saveCover, emptyFormChecker, saveCoAuthor, saveTags } from "./bookControllers";
 
 // Define and export router
@@ -35,7 +35,8 @@ router.get("/", async (req: Request, res: Response) => {
     // render book index view; pass books and searchOptions to it
     res.render("books/index", {
       books: booksJSON,
-      searchOptions: req.query
+      searchOptions: req.query,
+      eras: eras
     });
   } catch {
     res.render("main", { error: "Failed to load books page" });

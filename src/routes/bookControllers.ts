@@ -1,7 +1,7 @@
 // Import dependencies
 import { Request, Response, NextFunction } from "express";
-import { LeanDocument, Query } from "mongoose";
-import Book, { IBook, eras } from "../models/book";
+import { LeanDocument, Query, FilterQuery } from "mongoose";
+import Book, { IBook, eras, Era } from "../models/book";
 import Author, { IAuthor } from "../models/author";
 
 // Define types & interfaces
@@ -20,6 +20,7 @@ interface IQuery {
   $gte?: Date,
   $lte?: Date
 }
+
 const imageMimeTypes = ["image/jpeg", "image/jpg", "image/png", "images/gif"];
 
 // Book Controller Helper Functions
@@ -27,23 +28,31 @@ export const queryBuilder = function(req: Request): Query<IBook[], IBook, {}> {
   // Set blank query
   let query = Book.find();
   let queryOptions: IQuery = {};
+
   // Add Greater Than or Equal Value if provided
   if (req.query.publishedAfter != null && req.query.publishedAfter != "") {
     const pubAfter = new Date("" + req.query.publishedAfter);
     queryOptions.$gte = pubAfter;
-    query = Book.find({ publishDate: queryOptions });
+    query.find({ publishDate: queryOptions });
+    //query = Book.find({ publishDate: queryOptions });
   }
   // Add Lesser Than or Equal Value if provided
   if (req.query.publishedBefore != null && req.query.publishedBefore != "") {
     const pubBefore = new Date("" + req.query.publishedBefore);
     queryOptions.$lte = pubBefore;
-    query = Book.find({ publishDate: queryOptions });
+    query.find({ publishDate: queryOptions });
+  }
+  // Add era if provided
+  if (req.query.era != null && req.query.era != "") {
+      const era = req.query.era as Era;
+      query.find({ era: { $eq: era }});
   }
   // Add Title Search Regex if provided title
   if (req.query.title != null && req.query.title != "") {
     const title = "" + req.query.title;
     query.regex("title", new RegExp(title, "i"));
   }
+  // Add Tags Search Regex if provided keywords
   if (req.query.keywords != null && req.query.keywords != "") {
     const keyword = "" + req.query.keywords;
     query.regex("tags", new RegExp(keyword, "i"));

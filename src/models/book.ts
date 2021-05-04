@@ -2,7 +2,7 @@
 import { Schema, Document, model, Model } from "mongoose";
 
 // Define and export interface derived from mongoose Document
-export type Era = "Legacy" | "Rebellion" | "Rise of the Empire" | "Old Republic" | "New Republic" | "New Jedi Order" | "Before the Republic"
+export type Era = "Legacy" | "Rebellion" | "Rise of the Empire" | "Old Republic" | "New Republic" | "New Jedi Order" | "Before the Republic" | null
 
 export const eras: string[] = ["Legacy", "Rebellion", "Rise of the Empire", "Old Republic", "New Republic", "New Jedi Order", "Before the Republic"];
 
