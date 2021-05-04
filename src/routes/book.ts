@@ -2,7 +2,7 @@
 import { Router, Request, Response } from "express";
 import { LeanDocument } from "mongoose";
 import Author, { IAuthor } from "../models/author";
-import Book, {IBook } from "../models/book";
+import Book, { IBook } from "../models/book";
 import { queryBuilder, renderEditPage, renderNewPage, saveCover, emptyFormChecker, saveCoAuthor } from "./bookControllers";
 
 // Define and export router
@@ -119,6 +119,7 @@ router.put("/:id", async (req: Request, res: Response) => {
     book.publishDate = new Date(req.body.publishDate);
     book.pageCount = req.body.pageCount;
     book.description = req.body.description;
+    book.era = req.body.era;
     if (req.body.cover != null && req.body.cover !== "") {
       saveCover(book, req.body.cover);
     }

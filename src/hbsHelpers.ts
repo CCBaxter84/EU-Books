@@ -16,14 +16,21 @@ export const getID: IHelper = function(model, isAuthor) {
   }
 };
 
-export const isAuthorMatch = function(author: IAuthor, book: string): boolean {
+export const isAuthorMatch = function(author: IAuthor, bookAuthor: string): boolean {
   try {
-    return author._id.toString() === book.toString();
+    return author._id.toString() === bookAuthor.toString();
   } catch {
-
     return false;
   }
 };
+
+export const isEraMatch = function(era: string, bookEra: string) {
+  try {
+    return era === bookEra;
+  } catch {
+    return false;
+  }
+}
 
 export const getCoverPath = function(book: IBook): string|void {
   if (book.coverImage != null && book.coverImageType != null) {

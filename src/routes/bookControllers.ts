@@ -1,7 +1,7 @@
 // Import dependencies
 import { Request, Response, NextFunction } from "express";
 import { LeanDocument, Query } from "mongoose";
-import Book, { IBook } from "../models/book";
+import Book, { IBook, eras } from "../models/book";
 import Author, { IAuthor } from "../models/author";
 
 // Define types & interfaces
@@ -12,6 +12,7 @@ interface IController {
 interface IParams {
   authors: LeanDocument<IAuthor>[]
   book: LeanDocument<IBook>,
+  eras: string[];
   error?: string
 }
 
@@ -65,10 +66,14 @@ export const renderFormPage: IController = async function(res, book, hasError = 
     if (book.coAuthor) {
       bookJSON.coAuthor = book.coAuthor
     }
+    if (book.era) {
+      bookJSON.era = book.era;
+    }
     // set params
     let params: IParams = {
       authors: authors,
-      book: bookJSON
+      book: bookJSON,
+      eras: eras
     }
     // Check for errors
     if (hasError) {

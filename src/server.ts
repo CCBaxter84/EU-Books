@@ -11,7 +11,7 @@ import methodOverride from "method-override";
 import helmet from "helmet";
 
 // Import functions and routers
-import { getID, isAuthorMatch, getCoverPath, getDateString, getPubDate, formatDescription } from "./hbsHelpers";
+import { getID, isAuthorMatch, getCoverPath, getDateString, getPubDate, formatDescription, isEraMatch } from "./hbsHelpers";
 import { router as indexRouter } from "./routes/index";
 import { router as authorRouter } from "./routes/author";
 import { router as bookRouter } from "./routes/book";
@@ -56,6 +56,7 @@ Handlebars.registerHelper("getCoverPath", getCoverPath);
 Handlebars.registerHelper("getDateString", getDateString);
 Handlebars.registerHelper("getPubDate", getPubDate);
 Handlebars.registerHelper("formatDescription", formatDescription);
+Handlebars.registerHelper("isEraMatch", isEraMatch);
 
 // Serve up static assets
 app.use(express.static(__dirname + "/../public"));

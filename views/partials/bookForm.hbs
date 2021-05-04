@@ -41,6 +41,25 @@
   </section>
 </section>
 <section class="split-inputs">
+  <section class="label-n-input">
+    <label>Tags</label>
+    <input type="text" class="text-box" name="tags" value="{{ book.tags }}">
+  </section>
+  <section class="label-n-input">
+    <label>Era</label>
+    <select name="era" class="select-box">
+      <option selected disabled value>Select an option</option>
+      {{#each eras }}
+        {{#if  (isEraMatch this ../book.era) }}
+          <option selected label="{{ this }}" value="{{ this }}"></option>
+        {{else }}
+          <option label="{{ this }}" value="{{ this }}"></option>
+        {{/if }}
+      {{/each }}
+    </select>
+  </section>
+</section>
+<section class="split-inputs">
   <section class="label-n-input label-n-input-no-grow">
     <label>Cover</label>
     <input type="file" class="book-cover filepond" name="cover">

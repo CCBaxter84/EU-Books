@@ -2,6 +2,10 @@
 import { Schema, Document, model, Model } from "mongoose";
 
 // Define and export interface derived from mongoose Document
+export type Era = "Legacy" | "Rebellion" | "Rise of the Empire" | "Old Republic" | "New Republic" | "New Jedi Order" | "Before the Republic"
+
+export const eras: string[] = ["Legacy", "Rebellion", "Rise of the Empire", "Old Republic", "New Republic", "New Jedi Order", "Before the Republic"];
+
 export interface IBook extends Document {
   title: string,
   description: string,
@@ -11,7 +15,8 @@ export interface IBook extends Document {
   coverImage: Buffer,
   coverImageType: string,
   author: Schema.Types.ObjectId,
-  coAuthor?: Schema.Types.ObjectId
+  coAuthor?: Schema.Types.ObjectId,
+  era?: Era
 }
 
 // Define schema
@@ -54,7 +59,8 @@ const bookSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Author",
     default: null
-  }
+  },
+  era: String
 });
 
 // Set virtual for coverImagePath to store base64 encoded value of the cover image
