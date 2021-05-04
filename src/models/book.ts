@@ -10,7 +10,8 @@ export interface IBook extends Document {
   publishDate: Date,
   coverImage: Buffer,
   coverImageType: string,
-  author: Schema.Types.ObjectId
+  author: Schema.Types.ObjectId,
+  coAuthor?: Schema.Types.ObjectId
 }
 
 // Define schema
@@ -48,6 +49,11 @@ const bookSchema = new Schema({
     type: Schema.Types.ObjectId,
     required: true,
     ref: "Author"
+  },
+  coAuthor: {
+    type: Schema.Types.ObjectId,
+    ref: "Author",
+    default: null
   }
 });
 

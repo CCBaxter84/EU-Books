@@ -3,7 +3,7 @@ import { Router, Request, Response } from "express";
 import { LeanDocument } from "mongoose";
 import Author, { IAuthor } from "../models/author";
 import Book, {IBook } from "../models/book";
-import { queryBuilder, renderEditPage, renderNewPage, saveCover, emptyFormChecker } from "./bookControllers";
+import { queryBuilder, renderEditPage, renderNewPage, saveCover, emptyFormChecker, saveCoAuthor } from "./bookControllers";
 
 // Define and export router
 export const router = Router();
@@ -58,6 +58,7 @@ router.post("/", emptyFormChecker, async (req: Request, res: Response) => {
     publishDate: req.body.publishDate,
     author: req.body.author
   });
+  saveCoAuthor(book, req);
   saveCover(book, req.body.cover);
 
   try {
@@ -73,13 +74,19 @@ router.post("/", emptyFormChecker, async (req: Request, res: Response) => {
 router.get("/:id", async (req: Request, res: Response) => {
   let book: LeanDocument<IBook> | null = null;
   let author: LeanDocument<IAuthor> | null = null;
+  let coAuthor: LeanDocument<IAuthor> | null = null;
 
   try {
     book = await Book.findById(req.params.id).lean();
     if (book == null) throw "Error looking up book";
     author = await Author.findById(book.author).lean();
     if (author == null) throw "Error looking up author";
-    res.render("books/show", { book, author });
+
+    if (book.coAuthor != null && String(book.coAuthor) != "") {
+      coAuthor = await Author.findById(book.coAuthor).lean();
+    }
+
+    res.render("books/show", { book, author, coAuthor });
   } catch(error) {
     if (book != null || author != null) {
       error = "Could not load page"
@@ -115,9 +122,11 @@ router.put("/:id", async (req: Request, res: Response) => {
     if (req.body.cover != null && req.body.cover !== "") {
       saveCover(book, req.body.cover);
     }
+    saveCoAuthor(book, req);
     await book.save();
     res.redirect(`/books/${req.params.id}`);
   } catch(error) {
+    console.log(error);
     if (book != null) {
       renderEditPage(res, book, true);
     } else {

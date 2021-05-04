@@ -51,7 +51,7 @@ export const renderFormPage: IController = async function(res, book, hasError = 
   try {
     // Get all authors from database
     const authors = await Author.find().lean();
-    const bookJSON = {
+    const bookJSON: LeanDocument<IBook> = {
       _id: book._id,
       title: book.title,
       description: book.description,
@@ -62,6 +62,9 @@ export const renderFormPage: IController = async function(res, book, hasError = 
       createdAt: book.createdAt,
       author: book.author
     };
+    if (book.coAuthor) {
+      bookJSON.coAuthor = book.coAuthor
+    }
     // set params
     let params: IParams = {
       authors: authors,
@@ -99,12 +102,20 @@ export const saveCover = function(book: IBook, coverEncoded: string): void {
   }
 };
 
+export const saveCoAuthor = function(book: IBook, req: Request): void {
+  if (req.body.coAuthor != null && req.body.coAuthor != "") {
+    book.coAuthor = req.body.coAuthor;
+  }
+};
+
 // Middleware for checking post and put requests
 export const emptyFormChecker = function(req: Request, res: Response, next: NextFunction) {
   for (let key in req.body) {
-    if (req.body[key] === "" || !req.body[key]) {
-      renderNewPage(res, new Book(), true);
-      return;
+    if (key !== "coAuthor") {
+      if (req.body[key] === "" || !req.body[key]) {
+        renderNewPage(res, new Book(), true);
+        return;
+      }
     }
   }
   next();

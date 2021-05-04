@@ -6,6 +6,7 @@
   <section class="label-n-input">
     <label>Author</label>
     <select name="author" class="select-box">
+      <option selected disabled value>Select an option</option>
       {{#each authors }}
         {{#if  (isAuthorMatch this ../book.author) }}
           <option selected label="{{ this.name }}" value={{ this._id }}></option>
@@ -24,6 +25,19 @@
   <section class="label-n-input">
     <label>Page Count</label>
     <input type="number" class="text-box" min="1" name="pageCount" value={{ book.pageCount }}>
+  </section>
+  <section class="label-n-input">
+    <label>Co-Author</label>
+    <select name="coAuthor" class="select-box">
+      <option label="None"value=""></option>
+      {{#each authors }}
+        {{#if  (isAuthorMatch this ../book.coAuthor) }}
+          <option selected label="{{ this.name }}" value={{ this._id }}></option>
+        {{else }}
+          <option label="{{ this.name }}" value={{ this._id }}></option>
+        {{/if }}
+      {{/each }}
+    </select>
   </section>
 </section>
 <section class="split-inputs">
