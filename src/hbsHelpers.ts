@@ -50,3 +50,11 @@ export const getPubDate = function(date: Date): string {
 export const formatDescription = function(description: string): string[] {
   return description.split("\r\n");
 }
+
+export const formatTags = function(tags: string[]): string {
+  if (tags) {
+    return tags.join(", ");
+  }
+  return "";
+
+}

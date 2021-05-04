@@ -69,6 +69,9 @@ export const renderFormPage: IController = async function(res, book, hasError = 
     if (book.era) {
       bookJSON.era = book.era;
     }
+    if (book.tags) {
+      bookJSON.tags = book.tags;
+    }
     // set params
     let params: IParams = {
       authors: authors,
@@ -113,10 +116,16 @@ export const saveCoAuthor = function(book: IBook, req: Request): void {
   }
 };
 
+export const saveTags = function(book: IBook, req: Request) {
+  if (req.body.tags != null && req.body.tags != "") {
+    book.tags = req.body.tags.split(",");
+  }
+}
+
 // Middleware for checking post and put requests
 export const emptyFormChecker = function(req: Request, res: Response, next: NextFunction) {
   for (let key in req.body) {
-    if (key !== "coAuthor") {
+    if (key !== "coAuthor" && key !== "tags") {
       if (req.body[key] === "" || !req.body[key]) {
         renderNewPage(res, new Book(), true);
         return;

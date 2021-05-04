@@ -16,7 +16,8 @@ export interface IBook extends Document {
   coverImageType: string,
   author: Schema.Types.ObjectId,
   coAuthor?: Schema.Types.ObjectId,
-  era?: Era
+  era?: Era,
+  tags?: string[]
 }
 
 // Define schema
@@ -60,7 +61,8 @@ const bookSchema = new Schema({
     ref: "Author",
     default: null
   },
-  era: String
+  era: String,
+  tags: [String]
 });
 
 // Set virtual for coverImagePath to store base64 encoded value of the cover image

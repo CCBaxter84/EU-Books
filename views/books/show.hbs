@@ -24,6 +24,8 @@
       <p>{{ getPubDate book.publishDate }}</p>
       <p class="book-details-label">Page Count:</p>
       <p>{{ book.pageCount }}</p>
+      <p class="book-details-label">Tags:</p>
+      <p>{{ formatTags book.tags }}</p>
       <p class="book-details-label">Description:</p>
       <article class="book-description">
         {{#each (formatDescription book.description) }}

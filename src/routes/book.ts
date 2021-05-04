@@ -3,7 +3,7 @@ import { Router, Request, Response } from "express";
 import { LeanDocument } from "mongoose";
 import Author, { IAuthor } from "../models/author";
 import Book, { IBook } from "../models/book";
-import { queryBuilder, renderEditPage, renderNewPage, saveCover, emptyFormChecker, saveCoAuthor } from "./bookControllers";
+import { queryBuilder, renderEditPage, renderNewPage, saveCover, emptyFormChecker, saveCoAuthor, saveTags } from "./bookControllers";
 
 // Define and export router
 export const router = Router();
@@ -56,11 +56,12 @@ router.post("/", emptyFormChecker, async (req: Request, res: Response) => {
     description: req.body.description,
     pageCount: req.body.pageCount,
     publishDate: req.body.publishDate,
-    author: req.body.author
+    author: req.body.author,
+    era: req.body.era
   });
   saveCoAuthor(book, req);
   saveCover(book, req.body.cover);
-
+  saveTags(book, req);
   try {
     const newBook = await book.save();
     res.redirect(`/books/${newBook.id}`);
@@ -124,6 +125,7 @@ router.put("/:id", async (req: Request, res: Response) => {
       saveCover(book, req.body.cover);
     }
     saveCoAuthor(book, req);
+    saveTags(book, req);
     await book.save();
     res.redirect(`/books/${req.params.id}`);
   } catch(error) {
