@@ -1,5 +1,5 @@
 // Set number of stars to display
-const numStars = 100;
+const numStars = 300;
 
 // Loop over each star and randomly place it on the screen
 document.addEventListener("DOMContentLoaded", callback);
@@ -18,13 +18,13 @@ function callback() {
 // Helper function for getting a random position
 
 function getRandomPosition() {
-  const y = window.innerWidth;
-  const x = window.innerHeight;
+  const y = globalThis.outerWidth;
+  const x = document.body.scrollHeight;
   const randomX = Math.floor(Math.random() * x);
   const randomY = Math.floor(Math.random() * y);
   return [randomX, randomY];
 }
-
+/*
 function memoizeRenderStars() {
   for (let i = 0; i < numStars; i++) {
     const star = document.createElement("div");
@@ -40,3 +40,4 @@ function memoizeRenderStars() {
     document.body.append(star);
   }
 }
+*/
