@@ -39,3 +39,7 @@ export const getDateString = function(date: Date): string {
 export const getPubDate = function(date: Date): string {
   return date == null ? "" : date.toISOString().split("T")[0];
 }
+
+export const formatDescription = function(description: string): string[] {
+  return description.split("\r\n");
+}

@@ -71,7 +71,13 @@
   font-weight: 500;
 }
 
+.book-description {
+  display: flex;
+  flex-direction: column;
+}
+
 p {
-  margin: 0;
+  margin-top: 0;
+  margin-bottom: .5rem;
   padding: 0;
 }

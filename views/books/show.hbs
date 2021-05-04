@@ -12,14 +12,18 @@
       </section>
     </section>
     <article class="book-details-grid">
-      <p class="book-details-label">Author:</p>
-      <p>{{ author.name }} </p>
-      <p class="book-details-label">Publish Date:</p>
-      <p>{{ getPubDate book.publishDate }}</p>
-      <p class="book-details-label">Page Count:</p>
-      <p>{{ book.pageCount }}</p>
-      <p class="book-details-label">Description:</p>
-      <p>{{ book.description }}</p>
+      <p class="p book-details-label">Author:</p>
+      <p class="p">{{ author.name }} </p>
+      <p class="p book-details-label">Publish Date:</p>
+      <p class="p">{{ getPubDate book.publishDate }}</p>
+      <p class="p book-details-label">Page Count:</p>
+      <p class="p">{{ book.pageCount }}</p>
+      <p class="p book-details-label">Description:</p>
+      <article class="book-description">
+        {{#each (formatDescription book.description) }}
+          <p>{{ this }}</p>
+        {{/each }}
+      </article>
     </article>
   </section>
 
