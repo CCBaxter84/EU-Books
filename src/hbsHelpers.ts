@@ -51,10 +51,6 @@ export const formatDescription = function(description: string): string[] {
   return description.split("\r\n");
 }
 
-export const formatTags = function(tags: string[]): string {
-  if (tags) {
-    return tags.join(", ");
-  }
-  return "";
-
+export const formatTags = function(tags: string): string {
+  return tags ? tags : "";
 }

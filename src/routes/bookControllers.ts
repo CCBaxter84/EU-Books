@@ -44,6 +44,10 @@ export const queryBuilder = function(req: Request): Query<IBook[], IBook, {}> {
     const title = "" + req.query.title;
     query.regex("title", new RegExp(title, "i"));
   }
+  if (req.query.keywords != null && req.query.keywords != "") {
+    const keyword = "" + req.query.keywords;
+    query.regex("tags", new RegExp(keyword, "i"));
+  }
   // Return populated query
   return query;
 };
@@ -118,7 +122,7 @@ export const saveCoAuthor = function(book: IBook, req: Request): void {
 
 export const saveTags = function(book: IBook, req: Request) {
   if (req.body.tags != null && req.body.tags != "") {
-    book.tags = req.body.tags.split(",");
+    book.tags = req.body.tags;
   }
 }
 

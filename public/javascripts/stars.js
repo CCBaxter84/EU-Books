@@ -2,7 +2,7 @@
 const numStars = 100;
 
 // Loop over each star and randomly place it on the screen
-document.addEventListener("DOMContentLoaded", memoizeRenderStars);
+document.addEventListener("DOMContentLoaded", callback);
 
 function callback() {
   for (let i = 0; i < numStars; i++) {
