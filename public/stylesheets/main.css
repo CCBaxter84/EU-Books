@@ -4,6 +4,7 @@
 @import "./buttons.css";
 @import "./books.css";
 @import "./forms.css";
+@import "./footer.css";
 
 :root {
   color: var(--color-text-light);
@@ -12,11 +13,12 @@
 body {
   background: linear-gradient(to right, var(--color-background-dark), var(--color-background-light));
   font-family: 'Sawarabi Gothic', sans-serif;
-  margin-bottom: 0;
+
 }
 
 main {
   margin: 5rem;
+  min-height: 80vh;
 }
 
 main > * {
