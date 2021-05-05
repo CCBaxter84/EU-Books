@@ -10,10 +10,13 @@
   color: var(--color-text-light);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: linear-gradient(to right, var(--color-background-dark), var(--color-background-light));
   font-family: 'Sawarabi Gothic', sans-serif;
-
 }
 
 main {
@@ -39,6 +42,7 @@ main > * {
 }
 
 p {
+  font-size: 1.2rem;
   margin-top: 0;
   margin-bottom: .5rem;
   padding: 0;
