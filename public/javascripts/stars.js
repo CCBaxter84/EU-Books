@@ -2,17 +2,46 @@
 const numStars = 300;
 
 // Loop over each star and randomly place it on the screen
-document.addEventListener("DOMContentLoaded", callback);
+document.addEventListener("DOMContentLoaded", setStars);
+window.addEventListener("resize", resetStars);
 
-function callback() {
+function setStars() {
+  console.log("set stars")
+  localStorage.setItem("pgHeight", window.innerHeight);
+  localStorage.setItem("pgWidth", window.innerWidth);
   for (let i = 0; i < numStars; i++) {
     const star = document.createElement("div");
     star.className = "star";
-    const xy = getRandomPosition();
-    star.style.top = xy[0] + "px";
-    star.style.left = xy[1] + "px";
-    document.body.append(star);
+    if (localStorage.getItem(i)) {
+      const style = localStorage.getItem(i).split(",");
+      star.style.top = style[0] + "px";
+      star.style.left = style[1] + "px";
+      document.body.append(star);
+    } else {
+      const xy = getRandomPosition();
+      localStorage.setItem(i, xy);
+      star.style.top = xy[0] + "px";
+      star.style.left = xy[1] + "px";
+      document.body.append(star);
+    }
   }
+}
+let resizing = true;
+let resizeFinished;
+function resetStars() {
+  clearTimeout(resizeFinished);
+  resizeFinished = setTimeout(function() {
+    const oldPgHeight = Number(localStorage.getItem("pgHeight"));
+    const pgHeight = Number(window.innerHeight);
+    const oldPgWidth = Number(localStorage.getItem("pgWidth"));
+    const pgWidth = Number(window.innerWidth);
+    if (pgHeight > oldPgHeight || pgWidth > oldPgWidth) {
+      console.log("in the block");
+      localStorage.clear();
+      window.location.reload();
+    }
+  }, 250);
+
 }
 
 // Helper function for getting a random position
