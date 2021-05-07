@@ -9,19 +9,25 @@ import handlebars from "express-handlebars";
 import Handlebars from "handlebars";
 import methodOverride from "method-override";
 import helmet from "helmet";
+import session from "express-session";
+import passport from "passport";
+
 
 // Import functions and routers
-import { getID, isAuthorMatch, getCoverPath, getDateString, getPubDate, formatDescription, isEraMatch, formatTags } from "./hbsHelpers";
+import { getID, isAuthorMatch, getCoverPath, getDateString, getPubDate, formatDescription, isEraMatch, formatTags } from "./utils/hbsHelpers";
 import { router as indexRouter } from "./routes/index";
 import { router as authorRouter } from "./routes/author";
 import { router as bookRouter } from "./routes/book";
-import { connectToDB } from "./database";
+import { connectToDB, sessionStore } from "./config/database";
 
 // Set app and other variables
 const app: Application = express();
 const PORT = process.env.PORT || 5000;
 
-// Configure app for body parsing, CRUD, and security
+// Connect to database
+connectToDB();
+
+// Configure app for body parsing, CRUD, session storage, and security
 app.use(express.json());
 app.use(express.urlencoded({ limit: '10mb', extended: false }));
 app.use(methodOverride("_method"));
@@ -33,9 +39,21 @@ app.use((req, res, next) => {
   );
   next();
 });
+app.use(session({
+  secret: "your mom",
+  resave: false,
+  saveUninitialized: true,
+  store: sessionStore,
+  cookie: {
+    maxAge: 1000 * 30
+  }
+}));
 
 // Configure routers
-app.use("/", indexRouter);
+app.get("/", (req, res) => {
+  res.send("Session: " + JSON.stringify(req.session));
+})
+//app.use("/", indexRouter);
 app.use("/authors", authorRouter);
 app.use("/books", bookRouter);
 
@@ -61,9 +79,6 @@ Handlebars.registerHelper("formatTags", formatTags);
 
 // Serve up static assets
 app.use(express.static(__dirname + "/../public"));
-
-// Connect to database
-connectToDB();
 
 // Set the server to listen
 app.listen(PORT, () => {

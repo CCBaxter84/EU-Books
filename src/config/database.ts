@@ -5,9 +5,15 @@ if (process.env.NODE_ENV !== "production") {
 
 // Import dependencies
 import mongoose from "mongoose";
+import session from "express-session";
+const MongoDBStore = require("connect-mongodb-session")(session);
 const mongoURI: string = process.env.MONGO_URI || "";
 
-// Defined, setup, and export DB connection
+// Set up session store
+export const sessionStore = new MongoDBStore({
+  uri: process.env.MONGO_URI, collection: "sessions"
+});
+
 export function connectToDB(): void {
   mongoose.connect(mongoURI, {
     useNewUrlParser: true,

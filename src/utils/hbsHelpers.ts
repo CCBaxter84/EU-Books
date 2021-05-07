@@ -1,6 +1,6 @@
 // Import dependencies
-import { IAuthor } from "./models/author";
-import { IBook } from "./models/book";
+import { IAuthor } from "../models/author";
+import { IBook } from "../models/book";
 
 // Interfaces
 interface IHelper {
