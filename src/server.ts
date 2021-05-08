@@ -45,11 +45,17 @@ app.use(session({
   saveUninitialized: true,
   store: sessionStore,
   cookie: {
-    maxAge: 1000 * 30
+    maxAge: 1000 * 60 * 60 * 24
   }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use((req, res, next) => {
+  console.log("Session: ", req.session);
+  console.log(req.user);
+  next();
+});
 
 // Configure routers
 app.use("/", indexRouter);

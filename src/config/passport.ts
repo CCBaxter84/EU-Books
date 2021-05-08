@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Types } from "mongoose";
-import User, { IUser } from "../models/user";
+import User from "../models/user";
 import { validatePassword } from "../lib/passwordUtils";
 
 const customFields = {

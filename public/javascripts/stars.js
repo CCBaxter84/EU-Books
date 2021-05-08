@@ -3,10 +3,10 @@ const numStars = 300;
 
 // Loop over each star and randomly place it on the screen
 document.addEventListener("DOMContentLoaded", setStars);
-window.addEventListener("resize", resetStars);
+//window.addEventListener("resize", resetStars);
 
 function setStars() {
-  console.log("set stars")
+  localStorage.clear();
   localStorage.setItem("pgHeight", window.innerHeight);
   localStorage.setItem("pgWidth", window.innerWidth);
   for (let i = 0; i < numStars; i++) {
@@ -45,10 +45,30 @@ function resetStars() {
 }
 
 // Helper function for getting a random position
+function isDouble (x, y) {
+  return (x / 2) > y;
+}
+function isTriple (x, y) {
+  return (x / 3) > y;
+}
 
 function getRandomPosition() {
+  const header = document.querySelector("header");
+  const main = document.querySelector("main");
+  const footer = document.querySelector("footer");
+  console.log("height", main.clientHeight);
   const y = globalThis.outerWidth;
-  const x = document.body.clientHeight;
+  const windowHeight = globalThis.outerHeight;
+  const clientHeight = document.body.clientHeight;
+  let x = windowHeight
+
+  if ( isTriple(clientHeight, windowHeight) ) {
+    x += 1000;
+  } else if ( isDouble(clientHeight, windowHeight) ) {
+    x += 500;
+  } else if (clientHeight > windowHeight) {
+    x += 200;
+  }
   const randomX = Math.floor(Math.random() * x);
   const randomY = Math.floor(Math.random() * y);
   return [randomX, randomY];
