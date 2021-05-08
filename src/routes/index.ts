@@ -8,8 +8,9 @@ import User from "../models/user";
 // Define and export router
 export const router = Router();
 
-// @route GET /
-// @desc  Render main page to the screen
+// @route    GET /
+// @desc     Render main page to the screen
+// @access   public
 router.get("/", async (req: Request, res: Response) => {
   let books: IBook[]|[];
   try {
@@ -25,7 +26,7 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 router.get("/login",  (req, res) => {
-  res.render("auth/login");
+  res.render("auth/login", { csrfToken: req.csrfToken() });
 });
 
 router.post("/login", passport.authenticate("local", { failureRedirect: "/", successRedirect: "/books" }));

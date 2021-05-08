@@ -8,9 +8,11 @@ import express, { Application } from "express";
 import handlebars from "express-handlebars";
 import Handlebars from "handlebars";
 import methodOverride from "method-override";
-import helmet from "helmet";
 import session from "express-session";
 import passport from "./config/passport";
+import helmet from "helmet";
+import csrf from "csurf";
+import mongoSanitize from "express-mongo-sanitize";
 
 
 // Import functions and routers
@@ -27,11 +29,28 @@ const PORT = process.env.PORT || 5000;
 // Connect to database
 connectToDB();
 
-// Configure app for body parsing, CRUD, session storage, passport, and security
+// Configure app for body parsing & CRUD support
 app.use(express.json());
 app.use(express.urlencoded({ limit: '10mb', extended: false }));
 app.use(methodOverride("_method"));
+// Configure app for session storage and authentication state management
+app.use(session({
+  secret: "your mom",
+  name: "my-session",
+  resave: false,
+  saveUninitialized: true,
+  store: sessionStore,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24,
+    sameSite: "strict"
+  }
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+// Configure app for security against XSS, CSRF, NoSQL Injection, and other threats
 app.use(helmet());
+app.use(csrf());
+app.use(mongoSanitize());
 app.use((req, res, next) => {
   res.setHeader(
     'Content-Security-Policy',
@@ -39,17 +58,6 @@ app.use((req, res, next) => {
   );
   next();
 });
-app.use(session({
-  secret: "your mom",
-  resave: false,
-  saveUninitialized: true,
-  store: sessionStore,
-  cookie: {
-    maxAge: 1000 * 60 * 60 * 24
-  }
-}));
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use((req, res, next) => {
   console.log("Session: ", req.session);
