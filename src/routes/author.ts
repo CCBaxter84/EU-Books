@@ -25,8 +25,9 @@ export const router = Router();
 
 // Define routes
 
-// @route GET /authors
-// @desc  Render Search Author form and books by author
+// @route   GET /authors
+// @desc    Render Search Author form and books by author
+// @access  Public
 router.get("/", async (req: Request, res: Response) => {
   // Set search options to regex based on req.query
   let searchOptions: IParams = {};
@@ -55,14 +56,16 @@ router.get("/", async (req: Request, res: Response) => {
   }
 });
 
-// @route GET /authors/new
-// @desc  Render form for adding a new author to screen
+// @route   GET /authors/new
+// @desc    Render form for adding a new author to screen
+// @access  Private
 router.get("/new", (req: Request, res: Response) => {
   res.render("authors/new", { author: new Author() });
 });
 
-// @route POST /authors
-// @desc  Add a new author to the database
+// @route   POST /authors
+// @desc    Add a new author to the database
+// @access  Private
 router.post("/", emptyFormChecker, async (req: Request, res: Response) => {
   let author = new Author({
     name: req.body.name
@@ -77,8 +80,9 @@ router.post("/", emptyFormChecker, async (req: Request, res: Response) => {
   }
 });
 
-// @route GET /authors/:id
-// @desc  Render info for an existing author to screen
+// @route   GET /authors/:id
+// @desc    Render info for an existing author to screen
+// @access  Public
 router.get("/:id", async (req: Request, res: Response) => {
   try {
     const author = await Author.findById(req.params.id).lean();
@@ -94,8 +98,9 @@ router.get("/:id", async (req: Request, res: Response) => {
   }
 });
 
-// @route GET /authors/:id/edit
-// @desc  Render form for editing name of existing author
+// @route   GET /authors/:id/edit
+// @desc    Render form for editing author name
+// @access  Private
 router.get("/:id/edit", async (req: Request, res: Response) => {
   try {
     const author = await Author.findById(req.params.id).lean();
@@ -107,8 +112,9 @@ router.get("/:id/edit", async (req: Request, res: Response) => {
   }
 });
 
-// @route PUT /authors/:id
-// @desc  Update an existing author entry in the database
+// @route   PUT /authors/:id
+// @desc    Update an existing author entry
+// @access  Private
 router.put("/:id", emptyFormChecker, async (req: Request, res: Response) => {
   let author: IAuthor|null = null;
   try {
@@ -125,8 +131,9 @@ router.put("/:id", emptyFormChecker, async (req: Request, res: Response) => {
   }
 });
 
-// @route DELETE /authors/:id
-// @desc  Remove an author from the database
+// @route   DELETE /authors/:id
+// @desc    Remove an author from the database
+// @access  Private
 // *Include a check to prevent deleting an author ASW books
 router.delete("/:id", async (req: Request, res: Response) => {
   let author: IAuthor|null = null;

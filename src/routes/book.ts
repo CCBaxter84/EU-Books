@@ -10,8 +10,9 @@ export const router = Router();
 
 // Define routes
 
-// @route GET /books
-// @desc  Render Search Books form and related books
+// @route   GET /books
+// @desc    Render Search Books form and related books
+// @access  Public
 router.get("/", async (req: Request, res: Response) => {
   // build DB query based off request query
   let query = queryBuilder(req);
@@ -43,14 +44,16 @@ router.get("/", async (req: Request, res: Response) => {
   }
 });
 
-// @route GET /books/new
-// @desc  Render form for adding a new book to screen
+// @route   GET /books/new
+// @desc    Render form for adding a new book to screen
+// @access  Private
 router.get("/new", async (req: Request, res: Response) => {
   renderNewPage(res, new Book());
 });
 
-// @route POST /books
-// @desc  Add a new book to the database
+// @route   POST /books
+// @desc    Add a new book to the database
+// @access  Private
 router.post("/", emptyFormChecker, async (req: Request, res: Response) => {
   const book = new Book({
     title: req.body.title,
@@ -71,8 +74,9 @@ router.post("/", emptyFormChecker, async (req: Request, res: Response) => {
   }
 });
 
-// @route GET /books/:id
-// @desc  Render info for an existing book to screen
+// @route   GET /books/:id
+// @desc    Render info for an existing book to screen
+// @access  Public
 router.get("/:id", async (req: Request, res: Response) => {
   let book: LeanDocument<IBook> | null = null;
   let author: LeanDocument<IAuthor> | null = null;
@@ -97,8 +101,9 @@ router.get("/:id", async (req: Request, res: Response) => {
   }
 });
 
-// @route GET /books/:id/edit
-// @desc  Render form for editing an existing book
+// @route   GET /books/:id/edit
+// @desc    Render form for editing an existing book
+// @access  Private
 router.get("/:id/edit", async (req: Request, res: Response) => {
   try {
     const book = await Book.findById(req.params.id);
@@ -109,8 +114,9 @@ router.get("/:id/edit", async (req: Request, res: Response) => {
   }
 });
 
-// @route PUT /books/:id
-// @desc  Update an existing book entry in the database
+// @route   PUT /books/:id
+// @desc    Update an existing book entry
+// @access  Public
 router.put("/:id", async (req: Request, res: Response) => {
   let book;
   try {
@@ -139,8 +145,9 @@ router.put("/:id", async (req: Request, res: Response) => {
   }
 });
 
-// @route DELETE /books/:id
-// @desc  Remove a book from the database
+// @route   DELETE /books/:id
+// @desc    Remove a book from the database
+// @access  Private
 router.delete("/:id", async (req: Request, res: Response) => {
   let book;
   try {

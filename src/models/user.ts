@@ -6,26 +6,35 @@ export interface IUser extends Document {
   email: string,
   username: string,
   passwordHash: string,
-  passwordSalt: string
+  admin: boolean,
+  locked: boolean
 }
 
 // Define schema
 const userSchema = new Schema({
   email: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   username: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   passwordHash: {
-    type: Number,
-    required: true
-  },
-  passwordSalt: {
     type: String,
     required: true
+  },
+  admin: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
+  locked: {
+    type: Boolean,
+    required: true,
+    default: false
   }
 });
 

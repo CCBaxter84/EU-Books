@@ -10,11 +10,11 @@ import Handlebars from "handlebars";
 import methodOverride from "method-override";
 import helmet from "helmet";
 import session from "express-session";
-import passport from "passport";
+import passport from "./config/passport";
 
 
 // Import functions and routers
-import { getID, isAuthorMatch, getCoverPath, getDateString, getPubDate, formatDescription, isEraMatch, formatTags } from "./utils/hbsHelpers";
+import { getID, isAuthorMatch, getCoverPath, getDateString, getPubDate, formatDescription, isEraMatch, formatTags } from "./lib/handlebars";
 import { router as indexRouter } from "./routes/index";
 import { router as authorRouter } from "./routes/author";
 import { router as bookRouter } from "./routes/book";
@@ -27,7 +27,7 @@ const PORT = process.env.PORT || 5000;
 // Connect to database
 connectToDB();
 
-// Configure app for body parsing, CRUD, session storage, and security
+// Configure app for body parsing, CRUD, session storage, passport, and security
 app.use(express.json());
 app.use(express.urlencoded({ limit: '10mb', extended: false }));
 app.use(methodOverride("_method"));
@@ -48,12 +48,11 @@ app.use(session({
     maxAge: 1000 * 30
   }
 }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Configure routers
-app.get("/", (req, res) => {
-  res.send("Session: " + JSON.stringify(req.session));
-})
-//app.use("/", indexRouter);
+app.use("/", indexRouter);
 app.use("/authors", authorRouter);
 app.use("/books", bookRouter);
 

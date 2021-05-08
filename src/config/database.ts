@@ -17,7 +17,8 @@ export const sessionStore = new MongoDBStore({
 export function connectToDB(): void {
   mongoose.connect(mongoURI, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true
   });
   const db = mongoose.connection;
   db.on("error", error => console.log(error));
