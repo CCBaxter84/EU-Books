@@ -141,7 +141,7 @@ router.delete("/:id", isAuthenticated, async (req: Request, res: Response) => {
     await author.remove();
     res.redirect("/authors");
   } catch(error) {
-    if (author != null) {
+    if (error.message != "This author still has stored books") {
       error = "Failed to remove author";
     }
     res.render("authors/index", { error, isAuth: true });
