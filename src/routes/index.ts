@@ -1,9 +1,9 @@
 // Import dependencies
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import Book, { IBook } from "../models/book";
 import passport from "../config/passport";
 import { generatePassword } from "../lib/passwordUtils";
-import { isAuthenticated, isNotAlreadyLoggedIn } from "./middleware";
+import { isAuthenticated, isNotAlreadyLoggedIn, loginFormChecker } from "./middleware";
 import User from "../models/user";
 
 // Define and export router
@@ -34,7 +34,7 @@ router.get("/", async (req: Request, res: Response) => {
 // @route   GET /login
 // @desc    Render Log In form
 // @access  Public
-router.get("/login", isNotAlreadyLoggedIn, (req, res) => {
+router.get("/login", isNotAlreadyLoggedIn, (req: Request, res: Response) => {
   res.render("auth/login",
     { csrfToken: req.csrfToken(), isAuth: false }
   );
@@ -43,12 +43,33 @@ router.get("/login", isNotAlreadyLoggedIn, (req, res) => {
 // @route   POST /login
 // @desc    Submit and authenticate username and password
 // @access  Public
-router.post("/login", passport.authenticate("local", { failureRedirect: "/", successRedirect: "/" }));
+router.post("/login", loginFormChecker, (req: Request, res: Response, next: NextFunction) => {
+  passport.authenticate("local", (error, user, info) => {
+    if (error) {
+      res.render("auth/login", {
+        error: error,
+        csrfToken: req.csrfToken()
+      });
+    } else if (!user) {
+      res.render("auth/login", {
+        error: "Error: Invalid username or password",
+        csrfToken: req.csrfToken()
+      });
+    } else {
+      req.logIn(user, error => {
+        if (error) {
+          res.send(error);
+        }
+        return res.redirect("/");
+      });
+    }
+  })(req, res, next);
+});
 
 // @route   GET /logout
 // @desc    Logout the current user
 // @access  Private
-router.get("/logout", isAuthenticated, (req, res) => {
+router.get("/logout", isAuthenticated, (req: Request, res: Response) => {
   req.logout();
   res.redirect("/");
 });
@@ -56,7 +77,7 @@ router.get("/logout", isAuthenticated, (req, res) => {
 // @route   GET /registration
 // @desc    Submit and authenticate username and password
 // @access  Public
-router.get("/registration", isNotAlreadyLoggedIn, (req, res) => {
+router.get("/registration", isNotAlreadyLoggedIn, (req: Request, res: Response) => {
   res.render("auth/register",
     { csrfToken: req.csrfToken() });
 });
@@ -64,7 +85,7 @@ router.get("/registration", isNotAlreadyLoggedIn, (req, res) => {
 // @route   POST /login
 // @desc    Submit new user to database
 // @access  Public
-router.post("/registration", async (req, res) => {
+router.post("/registration", async (req: Request, res: Response) => {
   try {
     const passwordHash = generatePassword(req.body.password);
     const newUser = new User({

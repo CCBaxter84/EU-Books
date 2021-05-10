@@ -15,7 +15,7 @@ const strategy = new LocalStrategy(customFields, function(username, password, do
       .then(user => {
         // Guard clause for empty user
         if (!user) {
-          return done(null, false);
+          return done("Error: Invalid username", false);
         }
         // Check whether password is a match
         const isValid = validatePassword(password, user.passwordHash);
@@ -23,7 +23,7 @@ const strategy = new LocalStrategy(customFields, function(username, password, do
         if (isValid) {
           done(null, user);
         } else {
-          return done(null, false);
+          return done("Error: Password is incorrect", false);
         }
       })
       // Handle errors
