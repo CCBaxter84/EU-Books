@@ -57,7 +57,8 @@ router.get("/logout", isAuthenticated, (req, res) => {
 // @desc    Submit and authenticate username and password
 // @access  Public
 router.get("/registration", isNotAlreadyLoggedIn, (req, res) => {
-  res.render("auth/register");
+  res.render("auth/register",
+    { csrfToken: req.csrfToken() });
 });
 
 // @route   POST /login
@@ -74,7 +75,10 @@ router.post("/registration", async (req, res) => {
     await newUser.save();
     res.redirect("/login");
   } catch(error) {
-    res.send(error);
+    res.render("auth/register", {
+      csrfToken: req.csrfToken(),
+      error: error
+    });
   }
 
 });
