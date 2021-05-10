@@ -51,11 +51,17 @@ router.get("/logout", isAuthenticated, (req, res) => {
   res.redirect("/");
 });
 
+// @route   GET /registration
+// @desc    Submit and authenticate username and password
+// @access  Public
 router.get("/registration", (req, res) => {
 
   res.render("auth/register");
 });
 
+// @route   POST /login
+// @desc    Submit new user to database
+// @access  Public
 router.post("/registration", async (req, res) => {
   try {
     const passwordHash = generatePassword(req.body.password);
