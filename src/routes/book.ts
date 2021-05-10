@@ -96,7 +96,7 @@ router.get("/:id", async (req: Request, res: Response) => {
       coAuthor = await Author.findById(book.coAuthor).lean();
     }
 
-    res.render("books/show", { book, author, coAuthor, isAuth });
+    res.render("books/show", { book, author, coAuthor, isAuth, csrfToken: req.csrfToken() });
   } catch(error) {
     if (book != null || author != null) {
       error = "Could not load page"

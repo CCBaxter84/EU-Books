@@ -34,6 +34,7 @@ router.get("/", async (req: Request, res: Response) => {
     res.render("authors/index", {
       authors,
       isAuth,
+      csrfToken: req.csrfToken(),
       searchOptions: req.query
     });
   } catch {
@@ -56,7 +57,7 @@ router.get("/", async (req: Request, res: Response) => {
 // @desc    Render form for adding a new author to screen
 // @access  Private
 router.get("/new", isAuthenticated, (req: Request, res: Response) => {
-  res.render("authors/new", { author: new Author(), isAuth: true });
+  res.render("authors/new", { author: new Author(), isAuth: true, csrfToken: req.csrfToken() });
 });
 
 // @route   POST /authors
@@ -88,7 +89,7 @@ router.get("/:id", async (req: Request, res: Response) => {
     if (author == null) throw "Error looking up author";
     const books = await Book.find({ $or: [{ author: author._id }, { coAuthor: author._id }] }).lean();
     if (books == null) throw "Error looking up books";
-    res.render("authors/show", { author, books, isAuth });
+    res.render("authors/show", { author, books, isAuth, csrfToken: req.csrfToken() });
   } catch(error) {
     res.render("authors/index", { error, isAuth });
   }
@@ -102,7 +103,8 @@ router.get("/:id/edit", isAuthenticated, async (req: Request, res: Response) => 
     const author = await Author.findById(req.params.id).lean();
     res.render("authors/edit", {
       author,
-      isAuth: true
+      isAuth: true,
+      csrfToken: req.csrfToken()
     });
   } catch {
     res.render("authors/index", { error: "Error loading edit author page", isAuth: true });

@@ -1,7 +1,7 @@
 <main>
   <h2>New Book</h2>
   <form method="POST" action="/books">
-    {{> bookForm book=book}}
+    {{> bookForm book=book csrfToken=csrfToken }}
     <section class="form-submit-btns">
       <a href="/books">
         <button class="btn btn-danger" type="button">Cancel</button>

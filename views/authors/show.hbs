@@ -4,7 +4,7 @@
     {{#if isAuth }}
       <section class="author-btns">
         {{>editButton url=(getURL author true) }}
-        {{>deleteForm url=(getURL author true) }}
+        {{>deleteForm url=(getURL author true) csrfToken=csrfToken }}
       </section>
     {{/if }}
   </section>

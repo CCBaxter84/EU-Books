@@ -1,7 +1,7 @@
 <main>
   <h2>Edit Author</h2>
   <form method="POST" action="/authors/{{ author._id }}?_method=PUT">
-    {{> authorForm author=author }}
+    {{> authorForm author=author csrfToken=csrfToken }}
     <section class="form-submit-btns">
       <a href="/authors/{{ author._id }}">
         <button class="btn btn-danger" type="button">Cancel</button>

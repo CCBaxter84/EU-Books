@@ -14,6 +14,7 @@ interface IParams {
   book: LeanDocument<IBook>,
   eras: string[];
   isAuth: boolean,
+  csrfToken: string,
   error?: string
 }
 
@@ -92,7 +93,8 @@ export const renderFormPage: IController = async function(req, res, book, hasErr
       authors: authors,
       book: bookJSON,
       isAuth,
-      eras: eras
+      eras: eras,
+      csrfToken: req.csrfToken()
     }
     // Check for errors
     if (hasError) {

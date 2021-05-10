@@ -1,5 +1,6 @@
 <section class="split-inputs">
   <section class="label-n-input">
+    <input type="hidden" name="_csrf" value={{ csrfToken }}>
     <label>Title</label>
     <input autofocus type="text" class="text-box" name="title" value="{{ book.title }}">
   </section>
