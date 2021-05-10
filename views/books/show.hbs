@@ -4,8 +4,10 @@
     <section>
       <img class="book-cover" src={{ getCoverPath book }}>
       <section class="book-details-btn-grid">
-        {{> editButton url=(getURL book false) }}
-        {{> deleteForm url=(getURL book false) }}
+        {{#if isAuth }}
+          {{> editButton url=(getURL book false) }}
+          {{> deleteForm url=(getURL book false) }}
+        {{/if }}
         <a href="/authors/{{ book.author }}" class="book-details-author-btn">
           <button class="btn">View Author</button>
         </a>

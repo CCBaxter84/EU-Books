@@ -7,12 +7,13 @@ import Author, { IAuthor } from "../models/author";
 // Define types & interfaces
 type Form = "new" | "edit";
 interface IController {
-  (res: Response, book: IBook, hasError?: boolean, form?: Form) : Promise<void>
+  (req: Request, res: Response, book: IBook, hasError?: boolean, form?: Form) : Promise<void>
 }
 interface IParams {
   authors: LeanDocument<IAuthor>[]
   book: LeanDocument<IBook>,
   eras: string[];
+  isAuth: boolean,
   error?: string
 }
 
@@ -60,7 +61,9 @@ export const queryBuilder = function(req: Request): Query<IBook[], IBook, {}> {
   return query;
 };
 
-export const renderFormPage: IController = async function(res, book, hasError = false, form) {
+export const renderFormPage: IController = async function(req, res, book, hasError = false, form) {
+  // Set var to conditionally render based on auth status
+  const isAuth = req.user ? true : false;
   try {
     // Get all authors from database
     const authors = await Author.find().lean();
@@ -88,6 +91,7 @@ export const renderFormPage: IController = async function(res, book, hasError = 
     let params: IParams = {
       authors: authors,
       book: bookJSON,
+      isAuth,
       eras: eras
     }
     // Check for errors
@@ -98,17 +102,18 @@ export const renderFormPage: IController = async function(res, book, hasError = 
     res.render(`books/${form}`, params);
   } catch {
     res.render("books/index", {
-      error: "Error loading page"
+      error: "Error loading page",
+      isAuth
     });
   }
 }
 
-export const renderNewPage: IController = async function(res, book, hasError = false) {
-  renderFormPage(res, book, hasError, "new");
+export const renderNewPage: IController = async function(req, res, book, hasError = false) {
+  renderFormPage(req, res, book, hasError, "new");
 }
 
-export const renderEditPage: IController = async function(res, book, hasError = false) {
-  renderFormPage(res, book, hasError, "edit");
+export const renderEditPage: IController = async function(req, res, book, hasError = false) {
+  renderFormPage(req, res, book, hasError, "edit");
 }
 
 export const saveCover = function(book: IBook, coverEncoded: string): void {
@@ -139,7 +144,7 @@ export const emptyFormChecker = function(req: Request, res: Response, next: Next
   for (let key in req.body) {
     if (key !== "coAuthor" && key !== "tags") {
       if (req.body[key] === "" || !req.body[key]) {
-        renderNewPage(res, new Book(), true);
+        renderNewPage(req, res, new Book(), true);
         return;
       }
     }

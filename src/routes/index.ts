@@ -14,7 +14,7 @@ export const router = Router();
 // @access   Public
 router.get("/", async (req: Request, res: Response) => {
   let books: IBook[]|[];
-  let isAuth = req.user ? true : false;
+  const isAuth = req.user ? true : false;
   try {
     books = await Book.find()
                       .sort({ createdAt: "desc" })

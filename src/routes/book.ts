@@ -4,6 +4,7 @@ import { LeanDocument } from "mongoose";
 import Author, { IAuthor } from "../models/author";
 import Book, { IBook, eras } from "../models/book";
 import { queryBuilder, renderEditPage, renderNewPage, saveCover, emptyFormChecker, saveCoAuthor, saveTags } from "./bookControllers";
+import { isAuthenticated } from "./middleware";
 
 // Define and export router
 export const router = Router();
@@ -14,6 +15,8 @@ export const router = Router();
 // @desc    Render Search Books form and related books
 // @access  Public
 router.get("/", async (req: Request, res: Response) => {
+  // Set var to conditionally render based on auth status
+  const isAuth = req.user ? true : false;
   // build DB query based off request query
   let query = queryBuilder(req);
   try {
@@ -36,24 +39,25 @@ router.get("/", async (req: Request, res: Response) => {
     res.render("books/index", {
       books: booksJSON,
       searchOptions: req.query,
-      eras: eras
+      eras,
+      isAuth
     });
   } catch {
-    res.render("main", { error: "Failed to load books page" });
+    res.render("main", { error: "Failed to load books page", isAuth });
   }
 });
 
 // @route   GET /books/new
 // @desc    Render form for adding a new book to screen
 // @access  Private
-router.get("/new", async (req: Request, res: Response) => {
-  renderNewPage(res, new Book());
+router.get("/new", isAuthenticated, async (req: Request, res: Response) => {
+  renderNewPage(req, res, new Book());
 });
 
 // @route   POST /books
 // @desc    Add a new book to the database
 // @access  Private
-router.post("/", emptyFormChecker, async (req: Request, res: Response) => {
+router.post("/", isAuthenticated, emptyFormChecker, async (req: Request, res: Response) => {
   const book = new Book({
     title: req.body.title,
     description: req.body.description,
@@ -69,7 +73,7 @@ router.post("/", emptyFormChecker, async (req: Request, res: Response) => {
     const newBook = await book.save();
     res.redirect(`/books/${newBook.id}`);
   } catch {
-    renderNewPage(res, book, true);
+    renderNewPage(req, res, book, true);
   }
 });
 
@@ -77,10 +81,11 @@ router.post("/", emptyFormChecker, async (req: Request, res: Response) => {
 // @desc    Render info for an existing book to screen
 // @access  Public
 router.get("/:id", async (req: Request, res: Response) => {
+  // Set vars to pass to views
   let book: LeanDocument<IBook> | null = null;
   let author: LeanDocument<IAuthor> | null = null;
   let coAuthor: LeanDocument<IAuthor> | null = null;
-
+  const isAuth = req.user ? true : false;
   try {
     book = await Book.findById(req.params.id).lean();
     if (book == null) throw "Error looking up book";
@@ -91,23 +96,23 @@ router.get("/:id", async (req: Request, res: Response) => {
       coAuthor = await Author.findById(book.coAuthor).lean();
     }
 
-    res.render("books/show", { book, author, coAuthor });
+    res.render("books/show", { book, author, coAuthor, isAuth });
   } catch(error) {
     if (book != null || author != null) {
       error = "Could not load page"
     }
-    res.render("books/index", { error });
+    res.render("books/index", { error, isAuth });
   }
 });
 
 // @route   GET /books/:id/edit
 // @desc    Render form for editing an existing book
 // @access  Private
-router.get("/:id/edit", async (req: Request, res: Response) => {
+router.get("/:id/edit", isAuthenticated, async (req: Request, res: Response) => {
   try {
     const book = await Book.findById(req.params.id);
     if (book === null) throw "No book found";
-    renderEditPage(res, book);
+    renderEditPage(req, res, book);
   } catch(error) {
     res.render("main", { error });
   }
@@ -116,7 +121,7 @@ router.get("/:id/edit", async (req: Request, res: Response) => {
 // @route   PUT /books/:id
 // @desc    Update an existing book entry
 // @access  Public
-router.put("/:id", async (req: Request, res: Response) => {
+router.put("/:id", isAuthenticated, async (req: Request, res: Response) => {
   let book;
   try {
     book = await Book.findById(req.params.id);
@@ -137,7 +142,7 @@ router.put("/:id", async (req: Request, res: Response) => {
   } catch(error) {
     console.log(error);
     if (book != null) {
-      renderEditPage(res, book, true);
+      renderEditPage(req, res, book, true);
     } else {
       res.render("books/index", { error });
     }
@@ -147,7 +152,7 @@ router.put("/:id", async (req: Request, res: Response) => {
 // @route   DELETE /books/:id
 // @desc    Remove a book from the database
 // @access  Private
-router.delete("/:id", async (req: Request, res: Response) => {
+router.delete("/:id", isAuthenticated, async (req: Request, res: Response) => {
   let book;
   try {
     book = await Book.findById(req.params.id);
@@ -161,6 +166,6 @@ router.delete("/:id", async (req: Request, res: Response) => {
         error: "Failed to remove book"
       });
     }
-    res.render("main", { error });
+    res.render("main", { error, isAuth: true });
   }
 });
