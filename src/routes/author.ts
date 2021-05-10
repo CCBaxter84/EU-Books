@@ -70,9 +70,12 @@ router.post("/", isAuthenticated, authorFormChecker, async (req: Request, res: R
   try {
     const newAuthor = await author.save();
     res.redirect(`/authors/${newAuthor._id}`);
-  } catch {
+  } catch(error) {
+    if (error.message != "Author already exists") {
+      error = "Error saving new author";
+    }
     res.render("authors/new", {
-      error: "Error saving new author",
+      error,
       isAuth: true
     });
   }

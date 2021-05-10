@@ -28,6 +28,19 @@ authorSchema.pre("remove", function(this: IAuthor, next) {
   });
 });
 
+// Add check to prevent saving duplicate author entries
+authorSchema.pre("save", function(this: IAuthor, next) {
+  Author.find({ name: this.name }, (error, author) => {
+    if (error) {
+      next(error);
+    } else if (author) {
+      next(new Error("Author already exists"));
+    } else {
+      next();
+    }
+  })
+});
+
 // Define and export Author model
 const Author: Model<IAuthor> = model("Author", authorSchema);
 export default Author;
