@@ -15,6 +15,14 @@ export const isAuthenticated: IMiddleware = (req, res, next) => {
   }
 };
 
+export const isNotAlreadyLoggedIn: IMiddleware = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    res.redirect("/");
+  } else {
+    next();
+  }
+};
+
 // Middleware for checking whether user is an admin
 export const isAdmin: IMiddleware = (req, res, next) => {
   if (req.isAuthenticated() && req.user.admin) {

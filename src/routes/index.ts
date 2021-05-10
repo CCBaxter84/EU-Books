@@ -3,7 +3,7 @@ import { Router, Request, Response } from "express";
 import Book, { IBook } from "../models/book";
 import passport from "../config/passport";
 import { generatePassword } from "../lib/passwordUtils";
-import { isAuthenticated } from "./middleware";
+import { isAuthenticated, isNotAlreadyLoggedIn } from "./middleware";
 import User from "../models/user";
 
 // Define and export router
@@ -34,14 +34,12 @@ router.get("/", async (req: Request, res: Response) => {
 // @route   GET /login
 // @desc    Render Log In form
 // @access  Public
-router.get("/login",  (req, res) => {
+router.get("/login", isNotAlreadyLoggedIn, (req, res) => {
   // Make sure user is not already logged in
   const isAuth = req.user ? true : false;
-  if (isAuth) {
-    res.redirect("/");
-  } else {
-    res.render("auth/login", { csrfToken: req.csrfToken(), isAuth: false });
-  }
+  res.render("auth/login",
+    { csrfToken: req.csrfToken(), isAuth: false }
+  );
 });
 
 // @route   POST /login
@@ -60,7 +58,8 @@ router.get("/logout", isAuthenticated, (req, res) => {
 // @route   GET /registration
 // @desc    Submit and authenticate username and password
 // @access  Public
-router.get("/registration", (req, res) => {
+router.get("/registration", isNotAlreadyLoggedIn, (req, res) => {
+
 
   res.render("auth/register");
 });
