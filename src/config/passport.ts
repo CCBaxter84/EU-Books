@@ -20,10 +20,22 @@ const strategy = new LocalStrategy(customFields, function(username, password, do
         // Check whether password is a match
         const isValid = validatePassword(password, user.passwordHash);
         // Return user if password matches
-        if (isValid) {
+        if (isValid && !user.locked) {
           done(null, user);
         } else {
-          return done("Error: Password is incorrect", false);
+          console.log("password not valid");
+          user.failedAttempts++;
+          if (user.failedAttempts >= 5) {
+            user.locked = true;
+          }
+          user.save((err, user) => {
+            if (err) {
+              return done("your mom", false);
+            } else if (user.locked) {
+              return done("Account locked", false);
+            }
+            return done("Error: Password is incorrect", false);
+          });
         }
       })
       // Handle errors

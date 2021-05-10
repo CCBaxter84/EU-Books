@@ -1,5 +1,6 @@
 // Import libraries and dependencies
 import { Request, Response, NextFunction } from "express";
+import User from "../models/user";
 
 // Interfaces
 interface IMiddleware {
@@ -58,4 +59,55 @@ export const loginFormChecker: IMiddleware = function(req, res, next) {
   } else {
     next();
   }
+};
+
+export const regFormChecker: IMiddleware = function(req, res, next) {
+  if (req.body.email === "" || !req.body.email) {
+    res.render("auth/register", {
+      csrfToken: req.csrfToken(),
+      error: "Error: Email not provided"
+    });
+  } else if (req.body.username === "" || !req.body.username) {
+    res.render("auth/register", {
+      csrfToken: req.csrfToken(),
+      error: "Error: Username not provided"
+    });
+  } else if (req.body.password === "" || !req.body.password) {
+    res.render("auth/register", {
+      csrfToken: req.csrfToken(),
+      error: "Error: Password not provided"
+    });
+  } else {
+    next();
+  }
+}
+
+export const checkForEmail: IMiddleware = function(req, res, next) {
+  User.find({ email: req.body.email }, (error, user) => {
+    if (error) {
+      next(error);
+    } else if (user.length >= 1) {
+      res.render("auth/register", {
+        csrfToken: req.csrfToken(),
+        error: "Error: Email already registered"
+      });
+    } else {
+      next();
+    }
+  });
+}
+
+export const checkForUserName: IMiddleware = function(req, res, next) {
+  User.find({ username: req.body.username }, (error, user) => {
+    if (error) {
+      next(error);
+    } else if (user.length >= 1) {
+      res.render("auth/register", {
+        csrfToken: req.csrfToken(),
+        error: "Error: Username already registered"
+      });
+    } else {
+      next();
+    }
+  });
 };

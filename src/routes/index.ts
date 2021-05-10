@@ -3,7 +3,7 @@ import { Router, Request, Response, NextFunction } from "express";
 import Book, { IBook } from "../models/book";
 import passport from "../config/passport";
 import { generatePassword } from "../lib/passwordUtils";
-import { isAuthenticated, isNotAlreadyLoggedIn, loginFormChecker } from "./middleware";
+import { isAuthenticated, isNotAlreadyLoggedIn, loginFormChecker, checkForUserName, checkForEmail, regFormChecker } from "./middleware";
 import User from "../models/user";
 
 // Define and export router
@@ -85,7 +85,7 @@ router.get("/registration", isNotAlreadyLoggedIn, (req: Request, res: Response) 
 // @route   POST /login
 // @desc    Submit new user to database
 // @access  Public
-router.post("/registration", async (req: Request, res: Response) => {
+router.post("/registration", regFormChecker, checkForEmail, checkForUserName, async (req: Request, res: Response) => {
   try {
     const passwordHash = generatePassword(req.body.password);
     const newUser = new User({
