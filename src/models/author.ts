@@ -33,12 +33,12 @@ authorSchema.pre("save", function(this: IAuthor, next) {
   Author.find({ name: this.name }, (error, author) => {
     if (error) {
       next(error);
-    } else if (author) {
+    } else if (author.length >= 1) {
       next(new Error("Author already exists"));
     } else {
       next();
     }
-  })
+  });
 });
 
 // Define and export Author model
