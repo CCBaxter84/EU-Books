@@ -35,7 +35,13 @@ router.get("/", async (req: Request, res: Response) => {
 // @desc    Render Log In form
 // @access  Public
 router.get("/login",  (req, res) => {
-  res.render("auth/login", { csrfToken: req.csrfToken() });
+  // Make sure user is not already logged in
+  const isAuth = req.user ? true : false;
+  if (isAuth) {
+    res.redirect("/");
+  } else {
+    res.render("auth/login", { csrfToken: req.csrfToken(), isAuth: false });
+  }
 });
 
 // @route   POST /login
