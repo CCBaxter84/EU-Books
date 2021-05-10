@@ -31,7 +31,7 @@
 
   <!-- Render header and body views to UI -->
   <body id="body">
-    {{> header }}
+    {{> header isAuth=isAuth }}
     {{> errorMessage }}
     {{{ body }}}
     {{> footer }}

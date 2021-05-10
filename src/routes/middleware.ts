@@ -4,7 +4,7 @@ interface IMiddleware {
   (req: Request, res: Response, next: NextFunction): void
 }
 
-export const isAuth: IMiddleware = (req, res, next) => {
+export const isAuthenticated: IMiddleware = (req, res, next) => {
   if (req.isAuthenticated()) {
     next();
   } else {

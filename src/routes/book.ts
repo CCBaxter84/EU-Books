@@ -16,7 +16,6 @@ export const router = Router();
 router.get("/", async (req: Request, res: Response) => {
   // build DB query based off request query
   let query = queryBuilder(req);
-
   try {
     // get books from database based off built query
     const books = await query.exec();
