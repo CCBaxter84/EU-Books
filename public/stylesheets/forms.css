@@ -68,3 +68,37 @@ textarea {
   color: white;
   font-size: inherit;
 }
+
+.log-in {
+  display: flex;
+  flex-direction: column;
+  max-width: 45%;
+}
+
+.submit-btn {
+  align-self:flex-end;
+  justify-self: flex-end;
+  margin-top: 1rem;
+  margin-right: 0;
+}
+
+.log-in-inputs > label {
+  margin-top: 3px;
+}
+
+.registered {
+  display: flex;
+  justify-content: flex-end;
+  max-width: 45%;
+}
+
+.register-btn {
+  margin-right: 0;
+  margin-left: 1rem;
+}
+
+.reg-submit {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}

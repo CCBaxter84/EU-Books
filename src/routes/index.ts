@@ -35,8 +35,6 @@ router.get("/", async (req: Request, res: Response) => {
 // @desc    Render Log In form
 // @access  Public
 router.get("/login", isNotAlreadyLoggedIn, (req, res) => {
-  // Make sure user is not already logged in
-  const isAuth = req.user ? true : false;
   res.render("auth/login",
     { csrfToken: req.csrfToken(), isAuth: false }
   );
@@ -59,8 +57,6 @@ router.get("/logout", isAuthenticated, (req, res) => {
 // @desc    Submit and authenticate username and password
 // @access  Public
 router.get("/registration", isNotAlreadyLoggedIn, (req, res) => {
-
-
   res.render("auth/register");
 });
 

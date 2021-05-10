@@ -1,14 +1,16 @@
 <main>
-  <form method="POST" action="/registration">
-    <label>Email: </label>
-    <input name="email">
-    <br>
-    <label >Username: </label>
-    <input name="username" >
-    <br>
-    <label>Password</label>
-    <input name="password">
-    <br>
-    <button type="submit">Submit</button>
+  <form class="log-in" method="POST" action="/registration">
+    <input type="hidden" name="_csrf" value={{ csrfToken }}>
+    <section class="book-details-grid log-in-inputs">
+      <label>Email: </label>
+      <input name="email">
+      <label >Username: </label>
+      <input name="username" >
+      <label>Password: </label>
+      <input name="password">
+    </section>
+    <section class="reg-submit">
+      <button class="btn register-btn" type="submit">Submit</button>
+    </section>
   </form>
 </main>
