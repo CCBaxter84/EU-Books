@@ -4,6 +4,7 @@ import { v4 } from "uuid";
 import PasswordReset from "../models/passwordReset";
 import User from "../models/user";
 import { checkResetForm, isValidEmail } from "./middleware";
+import { sendEmail } from "../lib/nodemailer";
 
 // Declare and export router
 export const router = Router();
@@ -26,17 +27,24 @@ router.post("/", checkResetForm, isValidEmail, async (req: Request, res: Respons
   const token = v4().toString().replace(/-/g, "");
   try {
     const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      throw new Error();
+    }
     const updateResponse = await PasswordReset.updateOne({
-      user: user?._id
+      user: user._id
     }, {
-      user: user?._id,
+      user: user._id,
       token: token
     }, {
       upsert: true
     }
     );
     const resetLink = `${process.env.DOMAIN}/reset-confirm/${token}`;
-    console.log(resetLink);
+    sendEmail({
+      to: user.email,
+      subject: "Password Reset",
+      text: `Hi ${user.username}. To reset your password, please click the following link: ${resetLink}.`
+    });
     res.render("auth/login", {
       error: "Check your email address for the password reset link"
     });
