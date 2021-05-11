@@ -1,3 +1,10 @@
 <main>
-  Reset Form
+  <form class="log-in" method="POST" action="/reset">
+    <input type="hidden" name="_csrf" value={{ csrfToken }}>
+    <section class="book-details-grid log-in-inputs">
+      <label>Email: </label>
+      <input autofocus type="text" name="email" >
+    </section>
+    <button class="btn btn-danger submit-btn" type="submit">Send Reset Link</button>
+  </form>
 </main>

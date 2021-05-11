@@ -13,7 +13,9 @@ export const router = Router();
 // @desc    Render form for requesting a password reset
 // @access  Public
 router.get("/", (req: Request, res: Response) => {
-  res.render("reset/reset");
+  res.render("reset/reset", {
+    csrfToken: req.csrfToken(), isAuth: false
+  });
 });
 
 // @route   POST /reset
