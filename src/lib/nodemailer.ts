@@ -4,10 +4,9 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 // Import dependencies
-import nodemailer, { createTransport } from "nodemailer";
+import nodemailer from "nodemailer";
 import * as SMTPTransport from "nodemailer/lib/smtp-transport";
 import { google } from "googleapis";
-import { access } from "node:fs";
 const OAuth2 = google.auth.OAuth2;
 
 // Declare interfaces
