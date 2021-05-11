@@ -1,0 +1,13 @@
+<main>
+  <h2>Update Your Password</h2>
+  <form class="log-in" method="POST" action="/reset-confirm/{{ token }}">
+    <input type="hidden" name="_csrf" value={{ csrfToken }}>
+    <section class="book-details-grid log-in-inputs">
+      <label>Password: </label>
+      <input autofocus type="password" name="password" >
+      <label>Confirm: </label>
+      <input type="password" name="confirm" >
+    </section>
+    <button class="btn submit-btn" type="submit">Update</button>
+  </form>
+</main>

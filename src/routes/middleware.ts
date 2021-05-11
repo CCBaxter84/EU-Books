@@ -1,6 +1,7 @@
 // Import libraries and dependencies
 import { Request, Response, NextFunction } from "express";
 import User from "../models/user";
+import PasswordReset from "../models/passwordReset";
 
 // Interfaces
 interface IMiddleware {
@@ -46,12 +47,12 @@ export const authorFormChecker: IMiddleware = function(req, res, next) {
 
 // Check login form for completeness
 export const loginFormChecker: IMiddleware = function(req, res, next) {
-  if (!req.body.username) {
+  if (!req.body.username || req.body.username === "") {
     res.render("auth/login", {
       csrfToken: req.csrfToken(),
       error: "Error: Username not provided"
     });
-  } else if (!req.body.password) {
+  } else if (!req.body.password || req.body.password === "") {
     res.render("auth/login", {
       csrfToken: req.csrfToken(),
       error: "Error: Password not provided"
@@ -62,17 +63,17 @@ export const loginFormChecker: IMiddleware = function(req, res, next) {
 };
 
 export const regFormChecker: IMiddleware = function(req, res, next) {
-  if (!req.body.email) {
+  if (!req.body.email || req.body.email === "") {
     res.render("auth/register", {
       csrfToken: req.csrfToken(),
       error: "Error: Email not provided"
     });
-  } else if (!req.body.username) {
+  } else if (!req.body.username || req.body.username === "") {
     res.render("auth/register", {
       csrfToken: req.csrfToken(),
       error: "Error: Username not provided"
     });
-  } else if (!req.body.password) {
+  } else if (!req.body.password  || req.body.password === "") {
     res.render("auth/register", {
       csrfToken: req.csrfToken(),
       error: "Error: Password not provided"
@@ -113,7 +114,7 @@ export const checkForUserName: IMiddleware = function(req, res, next) {
 };
 
 export const checkResetForm: IMiddleware = function(req, res, next) {
-  if (!req.body.email) {
+  if (!req.body.email || req.body.email === "") {
     res.render("reset/reset", {
       csrfToken: req.csrfToken(),
       error: "Error: Email not provided"
@@ -134,6 +135,52 @@ export const isValidEmail: IMiddleware = async function(req, res, next) {
     res.render("reset/reset", {
       csrfToken: req.csrfToken(),
       error: error
+    });
+  }
+};
+
+export const isValidToken: IMiddleware = async function(req, res, next) {
+  try {
+    const { token } = req.params;
+    const passwordReset = await PasswordReset.findOne({ token });
+    if (!passwordReset) {
+      throw new Error();
+    } else {
+      next();
+    }
+  } catch {
+    res.render("auth/login", {
+      csrfToken: req.csrfToken(), isAuth: false,
+      error: "Error: Invalid reset request"
+    });
+  }
+};
+
+export const passwordsNotEmpty: IMiddleware = function(req, res, next) {
+  // Guard clause for empty passwords
+  const { token } = req.params;
+  if (!req.body.password || req.body.password === "" || !req.body.confirm || req.body.confirm === "") {
+    res.render("reset/reset-confirm", {
+      csrfToken: req.csrfToken(),
+      error: "Error: Please ensure passwords fields are not empty.",
+      token
+    });
+  } else {
+    next();
+  }
+};
+
+export const passwordsMatch: IMiddleware = function(req, res, next) {
+  // Check if passwords match -- if yes, proceed
+  const { token } = req.params;
+  const { password, confirm } = req.body;
+  if (password === confirm) {
+    next();
+  } else {
+    res.render("reset/reset-confirm", {
+      csrfToken: req.csrfToken(),
+      error: "Error: Passwords do not match.",
+      token
     });
   }
 }

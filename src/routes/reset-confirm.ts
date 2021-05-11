@@ -3,6 +3,7 @@ import { Router, Request, Response } from "express";
 import { v4 } from "uuid";
 import PasswordReset from "../models/passwordReset";
 import User from "../models/user";
+import { isValidToken, passwordsNotEmpty, passwordsMatch } from "./middleware";
 
 // Declare and export router
 export const router = Router();
@@ -12,10 +13,13 @@ export const router = Router();
 // @route   GET /reset-confirm/:token
 // @desc    Render form for updating password
 // @access  Public
-router.get("/:token", async (req: Request, res: Response) => {
+router.get("/:token", isValidToken, async (req: Request, res: Response) => {
   const { token } = req.params;
   try {
-
+    res.render("reset/reset-confirm", {
+      token,
+      csrfToken: req.csrfToken(),
+    });
   } catch {
 
   }
@@ -24,10 +28,10 @@ router.get("/:token", async (req: Request, res: Response) => {
 // @route   POST /reset-confirm/:token
 // @desc    Submit form for updating password
 // @access  Public
-router.post("/:token", async (req: Request, res: Response) => {
+router.post("/:token", passwordsNotEmpty, passwordsMatch,isValidToken, async (req: Request, res: Response) => {
   try {
-
-  } catch {
-
+    res.send("your mom");
+  } catch(error) {
+    res.send(error);
   }
 });
