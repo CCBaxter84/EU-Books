@@ -20,6 +20,8 @@ import { getID, isAuthorMatch, getCoverPath, getDateString, getPubDate, formatDe
 import { router as indexRouter } from "./routes/index";
 import { router as authorRouter } from "./routes/author";
 import { router as bookRouter } from "./routes/book";
+import { router as resetRouter } from "./routes/reset";
+import { router as resetConfirmRouter } from "./routes/reset-confirm";
 import { connectToDB, sessionStore } from "./config/database";
 
 // Set app and other variables
@@ -69,6 +71,8 @@ app.use((req, res, next) => {
 app.use("/", indexRouter);
 app.use("/authors", authorRouter);
 app.use("/books", bookRouter);
+app.use("/reset", resetRouter);
+app.use("/reset-confirm", resetConfirmRouter);
 
 // Configure view
 app.engine("hbs", handlebars({
