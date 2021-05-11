@@ -25,6 +25,6 @@ const passwordResetSchema = new Schema({
 passwordResetSchema.index({ "updatedAt": 1 }, { expireAfterSeconds: 300 });
 
 // Define and export Book model based on schema
-const PasswordReset: Model<IPasswordReset> = model("User", passwordResetSchema);
+const PasswordReset: Model<IPasswordReset> = model("PasswordReset", passwordResetSchema);
 
 export default PasswordReset;

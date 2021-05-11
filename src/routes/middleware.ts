@@ -35,7 +35,7 @@ export const isAdmin: IMiddleware = (req, res, next) => {
 
 // Middleware for checking author post and put requests
 export const authorFormChecker: IMiddleware = function(req, res, next) {
-  if (req.body.name === "" || !req.body.name) {
+  if (!req.body.name) {
     res.render("authors/new", {
       error: "Please complete all form fields"
     });
@@ -46,12 +46,12 @@ export const authorFormChecker: IMiddleware = function(req, res, next) {
 
 // Check login form for completeness
 export const loginFormChecker: IMiddleware = function(req, res, next) {
-  if (req.body.username === "" || !req.body.username) {
+  if (!req.body.username) {
     res.render("auth/login", {
       csrfToken: req.csrfToken(),
       error: "Error: Username not provided"
     });
-  } else if (req.body.password === "" || !req.body.password) {
+  } else if (!req.body.password) {
     res.render("auth/login", {
       csrfToken: req.csrfToken(),
       error: "Error: Password not provided"
@@ -62,17 +62,17 @@ export const loginFormChecker: IMiddleware = function(req, res, next) {
 };
 
 export const regFormChecker: IMiddleware = function(req, res, next) {
-  if (req.body.email === "" || !req.body.email) {
+  if (!req.body.email) {
     res.render("auth/register", {
       csrfToken: req.csrfToken(),
       error: "Error: Email not provided"
     });
-  } else if (req.body.username === "" || !req.body.username) {
+  } else if (!req.body.username) {
     res.render("auth/register", {
       csrfToken: req.csrfToken(),
       error: "Error: Username not provided"
     });
-  } else if (req.body.password === "" || !req.body.password) {
+  } else if (!req.body.password) {
     res.render("auth/register", {
       csrfToken: req.csrfToken(),
       error: "Error: Password not provided"
@@ -111,3 +111,29 @@ export const checkForUserName: IMiddleware = function(req, res, next) {
     }
   });
 };
+
+export const checkResetForm: IMiddleware = function(req, res, next) {
+  if (!req.body.email) {
+    res.render("reset/reset", {
+      csrfToken: req.csrfToken(),
+      error: "Error: Email not provided"
+    });
+  } else {
+    next();
+  }
+};
+
+export const isValidEmail: IMiddleware = async function(req, res, next) {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      throw "Error: Invalid email"
+    }
+    next();
+  } catch(error) {
+    res.render("reset/reset", {
+      csrfToken: req.csrfToken(),
+      error: error
+    });
+  }
+}
