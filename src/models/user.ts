@@ -44,6 +44,17 @@ const userSchema = new Schema({
   }
 });
 
+userSchema.post("save", function(this: IUser) {
+  const user = this;
+  if (user.locked) {
+    setTimeout(function() {
+      user.locked = false;
+      user.failedAttempts = 0;
+      user.save();
+    }, 5 * 60 * 1000);
+  }
+});
+
 // Define and export Book model based on schema
 const User: Model<IUser> = model("User", userSchema);
 export default User;

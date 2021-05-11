@@ -60,7 +60,11 @@ router.post("/login", loginFormChecker, (req: Request, res: Response, next: Next
         if (error) {
           res.send(error);
         }
-        return res.redirect("/");
+        if (req.user) {
+          return res.redirect("/");
+        } else {
+          setTimeout(() => res.redirect("/"), 1000);
+        }
       });
     }
   })(req, res, next);
@@ -71,7 +75,11 @@ router.post("/login", loginFormChecker, (req: Request, res: Response, next: Next
 // @access  Private
 router.get("/logout", isAuthenticated, (req: Request, res: Response) => {
   req.logout();
-  res.redirect("/");
+  if (!req.user) {
+    res.redirect("/");
+  } else {
+    setTimeout(() => res.redirect("/", 1000));
+  }
 });
 
 // @route   GET /registration

@@ -17,20 +17,28 @@ const strategy = new LocalStrategy(customFields, function(username, password, do
         if (!user) {
           return done("Error: Invalid username", false);
         }
+        if (user.locked) {
+          return done("Account locked", false);
+        }
         // Check whether password is a match
         const isValid = validatePassword(password, user.passwordHash);
         // Return user if password matches
         if (isValid && !user.locked) {
-          done(null, user);
+          user.failedAttempts = 0;
+          user.save((err, user) => {
+            if (err) {
+              return done(err, false);
+            }
+            done(null, user);
+          });
         } else {
-          console.log("password not valid");
           user.failedAttempts++;
           if (user.failedAttempts >= 5) {
             user.locked = true;
           }
           user.save((err, user) => {
             if (err) {
-              return done("your mom", false);
+              return done(err, false);
             } else if (user.locked) {
               return done("Account locked", false);
             }
