@@ -4,6 +4,7 @@ import { v4 } from "uuid";
 import PasswordReset from "../models/passwordReset";
 import User from "../models/user";
 import { isValidToken, passwordsNotEmpty, passwordsMatch } from "./middleware";
+import { generatePassword } from "../lib/passwordUtils";
 
 // Declare and export router
 export const router = Router();
@@ -29,9 +30,29 @@ router.get("/:token", isValidToken, async (req: Request, res: Response) => {
 // @desc    Submit form for updating password
 // @access  Public
 router.post("/:token", passwordsNotEmpty, passwordsMatch,isValidToken, async (req: Request, res: Response) => {
+  // Get token from Request
+  const { token } = req.params;
   try {
-    res.send("your mom");
+    // Get passwordReset and user from Database
+    const passwordReset = await PasswordReset.findOne({ token });
+    const user = await User.findOne({ _id: passwordReset?.user });
+    // Guard clause in case user is not found
+    if (!user) {
+      throw "Error looking up user"
+    }
+    user.passwordHash = generatePassword(req.body.password);
+    await user.save();
+    await PasswordReset.deleteOne({ _id: passwordReset?._id });
+
+    res.render("auth/login", {
+      error: "Password updated",
+      csrfToken: req.csrfToken()
+    });
   } catch(error) {
-    res.send(error);
+    res.render("reset/reset-confirm", {
+      error,
+      csrfToken: req.csrfToken(),
+      token
+    });
   }
 });
