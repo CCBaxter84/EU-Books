@@ -75,6 +75,10 @@ textarea {
   max-width: 45%;
 }
 
+.verify {
+  max-width: 40%;
+}
+
 .submit-btn {
   align-self:flex-end;
   justify-self: flex-end;

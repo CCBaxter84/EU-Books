@@ -24,3 +24,12 @@
   display: flex;
   justify-content: flex-end;
 }
+
+.approve-deny-btns {
+  display: flex;
+  justify-content: center;
+}
+
+.approve-deny-btns > * {
+  margin: 0.5rem;
+}

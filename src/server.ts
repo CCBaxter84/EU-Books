@@ -24,6 +24,7 @@ import { router as loginRouter } from "./routes/login";
 import { router as registrationRouter } from "./routes/registration";
 import { router as resetRouter } from "./routes/reset";
 import { router as resetConfirmRouter } from "./routes/reset-confirm";
+import { router as verifyRouter } from "./routes/verify";
 import { connectToDB, sessionStore } from "./config/database";
 
 // Set app and other variables
@@ -62,12 +63,6 @@ app.use((req, res, next) => {
   );
   next();
 });
-/*
-app.use((req, res, next) => {
-  console.log("Session: ", req.session);
-  console.log(req.user);
-  next();
-});*/
 
 // Configure routers
 app.use("/", indexRouter);
@@ -77,6 +72,7 @@ app.use("/login", loginRouter);
 app.use("/registration", registrationRouter);
 app.use("/reset", resetRouter);
 app.use("/reset-confirm", resetConfirmRouter);
+app.use("/verify", verifyRouter);
 
 // Configure view
 app.engine("hbs", handlebars({

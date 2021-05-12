@@ -37,7 +37,3 @@ router.get("/logout", isAuthenticated, (req: Request, res: Response) => {
     res.redirect("/");
   }, 1000);
 });
-
-// @route   GET /profile
-// @desc    Render the current user's profile page
-// @access  Private
