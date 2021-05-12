@@ -1,9 +1,8 @@
 // Import dependencies
-import { Router, Request, Response, NextFunction } from "express";
+import { Router, Request, Response } from "express";
 import Book, { IBook } from "../models/book";
-import passport from "../config/passport";
 import { generatePassword } from "../lib/passwordUtils";
-import { isAuthenticated, isNotAlreadyLoggedIn, loginFormChecker, checkForUserName, checkForEmail, regFormChecker } from "./middleware";
+import { isAuthenticated, isNotAlreadyLoggedIn, checkForUserName, checkForEmail, regFormChecker } from "./middleware";
 import User from "../models/user";
 
 // Define and export router
@@ -29,42 +28,6 @@ router.get("/", async (req: Request, res: Response) => {
       isAuth: isAuth
     });
   }
-});
-
-// @route   GET /login
-// @desc    Render Log In form
-// @access  Public
-router.get("/login", isNotAlreadyLoggedIn, (req: Request, res: Response) => {
-  res.render("auth/login",
-    { csrfToken: req.csrfToken(), isAuth: false }
-  );
-});
-
-// @route   POST /login
-// @desc    Submit and authenticate username and password
-// @access  Public
-router.post("/login", loginFormChecker, (req: Request, res: Response, next: NextFunction) => {
-  passport.authenticate("local", (error, user, info) => {
-    if (error) {
-      res.render("auth/login", {
-        error: error,
-        csrfToken: req.csrfToken()
-      });
-    } else if (!user) {
-      res.render("auth/login", {
-        error: "Error: Invalid username or password",
-        csrfToken: req.csrfToken()
-      });
-    } else {
-      req.logIn(user, error => {
-        if (error) {
-          res.send(error);
-        }
-        setTimeout(() => res.redirect("/"), 1000);
-
-      });
-    }
-  })(req, res, next);
 });
 
 // @route   GET /logout
