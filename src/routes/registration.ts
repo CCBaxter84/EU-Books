@@ -1,7 +1,8 @@
 // Import dependencies
 import { Router, Request, Response } from "express";
 import { generatePassword } from "../lib/passwordUtils";
-import { isNotAlreadyLoggedIn, checkForUserName, checkForEmail, regFormChecker } from "../lib/middleware";
+import { isNotAlreadyLoggedIn } from "../lib/middleware/auth";
+import { checkForUserName, checkForEmail, regFormChecker } from "../lib/middleware/forms";
 import User from "../models/user";
 
 // Define and export router

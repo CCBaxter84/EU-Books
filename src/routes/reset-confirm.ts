@@ -2,7 +2,8 @@
 import { Router, Request, Response } from "express";
 import PasswordReset from "../models/passwordReset";
 import User from "../models/user";
-import { isValidToken, passwordsNotEmpty, passwordsMatch } from "../lib/middleware";
+import { isValidResetToken, passwordsMatch } from "../lib/middleware/auth";
+import { passwordsNotEmpty } from "../lib/middleware/forms";
 import { generatePassword } from "../lib/passwordUtils";
 
 // Declare and export router
@@ -13,7 +14,7 @@ export const router = Router();
 // @route   GET /reset-confirm/:token
 // @desc    Render form for updating password
 // @access  Public
-router.get("/:token", isValidToken, async (req: Request, res: Response) => {
+router.get("/:token", isValidResetToken, async (req: Request, res: Response) => {
   const { token } = req.params;
   try {
     res.render("reset/reset-confirm", {
@@ -32,7 +33,7 @@ router.get("/:token", isValidToken, async (req: Request, res: Response) => {
 // @route   POST /reset-confirm/:token
 // @desc    Submit form for updating password
 // @access  Public
-router.post("/:token", passwordsNotEmpty, passwordsMatch,isValidToken, async (req: Request, res: Response) => {
+router.post("/:token", passwordsNotEmpty, passwordsMatch,isValidResetToken, async (req: Request, res: Response) => {
   // Get token from Request
   const { token } = req.params;
   try {

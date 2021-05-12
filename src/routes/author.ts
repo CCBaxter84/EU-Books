@@ -3,7 +3,8 @@ import { Router, Request, Response } from "express";
 import Author, { IAuthor } from "../models/author";
 import Book from "../models/book";
 import { LeanDocument } from "mongoose";
-import { isAuthenticated, authorFormChecker } from "../lib/middleware";
+import { isAuthenticated } from "../lib/middleware/auth";
+import { authorFormChecker } from "../lib/middleware/forms";
 
 // Define interfaces
 interface IParams {

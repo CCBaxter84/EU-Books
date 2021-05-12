@@ -3,7 +3,7 @@ import { Router, Request, Response } from "express";
 import { v4 } from "uuid";
 import PasswordReset from "../models/passwordReset";
 import User from "../models/user";
-import { checkResetForm, isValidEmail } from "../lib/middleware";
+import { checkResetForm, isValidEmail } from "../lib/middleware/forms";
 import { sendEmail } from "../lib/nodemailer";
 
 // Declare and export router

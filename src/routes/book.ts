@@ -4,7 +4,8 @@ import { LeanDocument } from "mongoose";
 import Author, { IAuthor } from "../models/author";
 import Book, { IBook, eras } from "../models/book";
 import { queryBuilder, renderEditPage, renderNewPage, saveCover, saveCoAuthor, saveTags } from "../lib/bookControllers";
-import { isAuthenticated, bookFormChecker, bookCoverChecker } from "../lib/middleware";
+import { bookFormChecker, bookCoverChecker } from "../lib/middleware/book";
+import { isAuthenticated } from "../lib/middleware/auth";
 
 // Define and export router
 export const router = Router();

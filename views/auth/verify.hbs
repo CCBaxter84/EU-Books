@@ -2,9 +2,9 @@
   <h2>Verify New User</h2>
   <article class="book-details-grid verify">
     <p>Email Address: </p>
-    <p>email {{ user.email }}</p>
+    <p>{{ user.email }}</p>
     <p>Username:</p>
-    <p>user {{ user.username }}</p>
+    <p>{{ user.username }}</p>
   </article>
   <form class="log-in" method="POST" action="/reset-confirm/{{ token }}">
     <input type="hidden" name="_csrf" value={{ csrfToken }}>

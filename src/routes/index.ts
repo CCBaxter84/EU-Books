@@ -1,7 +1,7 @@
 // Import dependencies
 import { Router, Request, Response } from "express";
 import Book, { IBook } from "../models/book";
-import { isAuthenticated } from "../lib/middleware";
+import { isAuthenticated } from "../lib/middleware/auth";
 
 // Define and export router
 export const router = Router();
