@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== "production") {
 // Import dependencies
 import nodemailer from "nodemailer";
 import * as SMTPTransport from "nodemailer/lib/smtp-transport";
+import { v4 } from "uuid";
 import { google } from "googleapis";
 const OAuth2 = google.auth.OAuth2;
 
@@ -75,3 +76,7 @@ export const sendEmail = async function(props: IProps) {
     console.log(error);
   }
 };
+
+export const createToken = function(): string {
+  return v4().toString().replace(/-/g, '');
+}

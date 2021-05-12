@@ -1,9 +1,16 @@
+// Import .env file if not in production
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 // Import dependencies
 import { Router, Request, Response } from "express";
 import { generatePassword } from "../lib/passwordUtils";
 import { isNotAlreadyLoggedIn } from "../lib/middleware/auth";
 import { checkForUserName, checkForEmail, regFormChecker } from "../lib/middleware/forms";
+import { createToken, sendEmail } from "../lib/nodemailer";
 import User from "../models/user";
+import UserVerification from "../models/userVerification";
 
 // Define and export router
 export const router = Router();
@@ -27,7 +34,25 @@ router.post("/", regFormChecker, checkForEmail, checkForUserName, async (req: Re
       username: req.body.username,
       passwordHash: passwordHash,
     });
-    await newUser.save();
+    const savedUser = await newUser.save();
+
+    // Create token & verify link
+    const token = createToken();
+    const verifyLink = `${process.env.DOMAIN}/verify/${token}`;
+
+    // Save the token to user verification
+    await UserVerification.updateOne(
+      { user: savedUser._id },
+      { user: savedUser._id, token: token },
+      { upsert: true }
+    );
+
+    // Email the link to approve/deny the request
+    sendEmail({
+      to: "" + process.env.EMAIL_ADDRESS,
+      subject: "New User Request",
+      text: `A new user has requested site access. Here's a link to approve or deny the request: ${verifyLink}`
+    });
     res.redirect("/login");
   } catch(error) {
     res.render("auth/register", {

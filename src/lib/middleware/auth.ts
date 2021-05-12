@@ -56,9 +56,9 @@ export const isValidVerifyToken: IMiddleware = async function(req, res, next) {
       next();
     }
   } catch {
-    res.render("auth/login", {
+    res.render("main", {
       csrfToken: req.csrfToken(), isAuth: false,
-      error: "Error: Invalid reset request"
+      error: "Error: Invalid verify request"
     });
   }
 };
