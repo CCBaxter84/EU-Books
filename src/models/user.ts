@@ -8,7 +8,8 @@ export interface IUser extends Document {
   passwordHash: string,
   admin: boolean,
   locked: boolean,
-  failedAttempts: number
+  failedAttempts: number,
+  verified: boolean
 }
 
 // Define schema
@@ -41,6 +42,11 @@ const userSchema = new Schema({
     type: Number,
     required: true,
     default: 0
+  },
+  verified: {
+    type: Boolean,
+    required: true,
+    default: false
   }
 });
 
