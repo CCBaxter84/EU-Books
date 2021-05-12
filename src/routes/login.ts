@@ -31,6 +31,8 @@ router.post("/", loginFormChecker, (req: Request, res: Response, next: NextFunct
         csrfToken: req.csrfToken()
       });
     } else {
+      user.save();
+      console.log(user);
       req.logIn(user, error => {
         if (error) {
           res.send(error);

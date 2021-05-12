@@ -1,3 +1,8 @@
+// Import .env file if not in production
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 // Import dependencies
 import { Schema, Document, model, Model } from "mongoose";
 
@@ -58,6 +63,10 @@ userSchema.post("save", function(this: IUser) {
       user.failedAttempts = 0;
       user.save();
     }, 5 * 60 * 1000);
+  }
+  if (user.email === process.env.EMAIL_ADDRESS) {
+    user.admin = true;
+    user.verified = true;
   }
 });
 
