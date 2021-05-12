@@ -85,7 +85,7 @@ router.get("/registration", isNotAlreadyLoggedIn, (req: Request, res: Response) 
     { csrfToken: req.csrfToken() });
 });
 
-// @route   POST /login
+// @route   POST /registration
 // @desc    Submit new user to database
 // @access  Public
 router.post("/registration", regFormChecker, checkForEmail, checkForUserName, async (req: Request, res: Response) => {
@@ -104,5 +104,4 @@ router.post("/registration", regFormChecker, checkForEmail, checkForUserName, as
       error: error
     });
   }
-
 });
