@@ -68,7 +68,6 @@ export const bookFormChecker: IMiddleware = function(req, res, next) {
   if (!hasEmptyField) {
     next();
   } else {
-    console.log(book);
     renderNewPage(req, res, book, true);
     return;
   }

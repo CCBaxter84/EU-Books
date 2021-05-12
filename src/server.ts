@@ -21,6 +21,7 @@ import { router as indexRouter } from "./routes/index";
 import { router as authorRouter } from "./routes/author";
 import { router as bookRouter } from "./routes/book";
 import { router as loginRouter } from "./routes/login";
+import { router as registrationRouter } from "./routes/registration";
 import { router as resetRouter } from "./routes/reset";
 import { router as resetConfirmRouter } from "./routes/reset-confirm";
 import { connectToDB, sessionStore } from "./config/database";
@@ -73,6 +74,7 @@ app.use("/", indexRouter);
 app.use("/authors", authorRouter);
 app.use("/books", bookRouter);
 app.use("/login", loginRouter);
+app.use("/registration", registrationRouter);
 app.use("/reset", resetRouter);
 app.use("/reset-confirm", resetConfirmRouter);
 
