@@ -2,6 +2,8 @@
 import { Request, Response, NextFunction } from "express";
 import User from "../models/user";
 import PasswordReset from "../models/passwordReset";
+import Book from "../models/book";
+import { renderNewPage } from "./bookControllers";
 
 // Interfaces
 interface IMiddleware {
@@ -44,6 +46,19 @@ export const authorFormChecker: IMiddleware = function(req, res, next) {
     next();
   }
 };
+
+// Middleware for checking book post and put requests
+export const bookFormChecker: IMiddleware = function(req, res, next) {
+  for (let key in req.body) {
+    if (key !== "coAuthor" && key !== "tags") {
+      if (req.body[key] === "" || !req.body[key]) {
+        renderNewPage(req, res, new Book(), true);
+        return;
+      }
+    }
+  }
+  next();
+}
 
 // Check login form for completeness
 export const loginFormChecker: IMiddleware = function(req, res, next) {

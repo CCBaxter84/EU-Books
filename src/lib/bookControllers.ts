@@ -1,5 +1,5 @@
 // Import dependencies
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { LeanDocument, Query } from "mongoose";
 import Book, { IBook, eras, Era } from "../models/book";
 import Author, { IAuthor } from "../models/author";
@@ -139,17 +139,4 @@ export const saveTags = function(book: IBook, req: Request) {
   if (req.body.tags != null && req.body.tags != "") {
     book.tags = req.body.tags;
   }
-}
-
-// Middleware for checking post and put requests
-export const emptyFormChecker = function(req: Request, res: Response, next: NextFunction) {
-  for (let key in req.body) {
-    if (key !== "coAuthor" && key !== "tags") {
-      if (req.body[key] === "" || !req.body[key]) {
-        renderNewPage(req, res, new Book(), true);
-        return;
-      }
-    }
-  }
-  next();
 }
