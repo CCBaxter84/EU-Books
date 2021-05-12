@@ -4,7 +4,7 @@ import { LeanDocument } from "mongoose";
 import Author, { IAuthor } from "../models/author";
 import Book, { IBook, eras } from "../models/book";
 import { queryBuilder, renderEditPage, renderNewPage, saveCover, saveCoAuthor, saveTags } from "../lib/bookControllers";
-import { isAuthenticated, bookFormChecker } from "../lib/middleware";
+import { isAuthenticated, bookFormChecker, bookCoverChecker } from "../lib/middleware";
 
 // Define and export router
 export const router = Router();
@@ -57,7 +57,7 @@ router.get("/new", isAuthenticated, async (req: Request, res: Response) => {
 // @route   POST /books
 // @desc    Add a new book to the database
 // @access  Private
-router.post("/", isAuthenticated, bookFormChecker, async (req: Request, res: Response) => {
+router.post("/", isAuthenticated, bookFormChecker, bookCoverChecker, async (req: Request, res: Response) => {
   const book = new Book({
     title: req.body.title,
     description: req.body.description,
@@ -121,7 +121,7 @@ router.get("/:id/edit", isAuthenticated, async (req: Request, res: Response) => 
 // @route   PUT /books/:id
 // @desc    Update an existing book entry
 // @access  Public
-router.put("/:id", isAuthenticated, async (req: Request, res: Response) => {
+router.put("/:id", isAuthenticated, bookFormChecker, async (req: Request, res: Response) => {
   let book;
   try {
     book = await Book.findById(req.params.id);

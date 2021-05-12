@@ -17,7 +17,8 @@ export interface IBook extends Document {
   author: Schema.Types.ObjectId,
   coAuthor?: Schema.Types.ObjectId,
   era?: Era,
-  tags?: string
+  tags?: string,
+  [key: string]: any
 }
 
 // Define schema
