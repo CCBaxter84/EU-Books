@@ -1,7 +1,7 @@
 // Import dependencies
 import { Router, Request, Response, NextFunction } from "express";
 import passport from "../config/passport";
-import { isNotAlreadyLoggedIn, loginFormChecker } from "./middleware";
+import { isNotAlreadyLoggedIn, loginFormChecker } from "../lib/middleware";
 
 // Define and export router
 export const router = Router();

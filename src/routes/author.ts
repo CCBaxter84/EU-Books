@@ -1,9 +1,9 @@
 // Import dependencies
-import { Router, Request, Response, NextFunction } from "express";
+import { Router, Request, Response } from "express";
 import Author, { IAuthor } from "../models/author";
 import Book from "../models/book";
 import { LeanDocument } from "mongoose";
-import { isAuthenticated, authorFormChecker } from "./middleware";
+import { isAuthenticated, authorFormChecker } from "../lib/middleware";
 
 // Define interfaces
 interface IParams {

@@ -2,7 +2,7 @@
 import { Router, Request, Response } from "express";
 import Book, { IBook } from "../models/book";
 import { generatePassword } from "../lib/passwordUtils";
-import { isAuthenticated, isNotAlreadyLoggedIn, checkForUserName, checkForEmail, regFormChecker } from "./middleware";
+import { isAuthenticated, isNotAlreadyLoggedIn, checkForUserName, checkForEmail, regFormChecker } from "../lib/middleware";
 import User from "../models/user";
 
 // Define and export router

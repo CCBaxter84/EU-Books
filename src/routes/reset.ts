@@ -3,7 +3,7 @@ import { Router, Request, Response } from "express";
 import { v4 } from "uuid";
 import PasswordReset from "../models/passwordReset";
 import User from "../models/user";
-import { checkResetForm, isValidEmail } from "./middleware";
+import { checkResetForm, isValidEmail } from "../lib/middleware";
 import { sendEmail } from "../lib/nodemailer";
 
 // Declare and export router
@@ -30,14 +30,10 @@ router.post("/", checkResetForm, isValidEmail, async (req: Request, res: Respons
     if (!user) {
       throw new Error();
     }
-    const updateResponse = await PasswordReset.updateOne({
-      user: user._id
-    }, {
-      user: user._id,
-      token: token
-    }, {
-      upsert: true
-    }
+    const updateResponse = await PasswordReset.updateOne(
+      { user: user._id },
+      { user: user._id, token: token },
+      { upsert: true }
     );
     const resetLink = `${process.env.DOMAIN}/reset-confirm/${token}`;
     sendEmail({

@@ -3,8 +3,8 @@ import { Router, Request, Response } from "express";
 import { LeanDocument } from "mongoose";
 import Author, { IAuthor } from "../models/author";
 import Book, { IBook, eras } from "../models/book";
-import { queryBuilder, renderEditPage, renderNewPage, saveCover, emptyFormChecker, saveCoAuthor, saveTags } from "./bookControllers";
-import { isAuthenticated } from "./middleware";
+import { queryBuilder, renderEditPage, renderNewPage, saveCover, emptyFormChecker, saveCoAuthor, saveTags } from "../lib/bookControllers";
+import { isAuthenticated } from "../lib/middleware";
 
 // Define and export router
 export const router = Router();

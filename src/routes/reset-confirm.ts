@@ -1,9 +1,8 @@
 // Import dependencies
 import { Router, Request, Response } from "express";
-import { v4 } from "uuid";
 import PasswordReset from "../models/passwordReset";
 import User from "../models/user";
-import { isValidToken, passwordsNotEmpty, passwordsMatch } from "./middleware";
+import { isValidToken, passwordsNotEmpty, passwordsMatch } from "../lib/middleware";
 import { generatePassword } from "../lib/passwordUtils";
 
 // Declare and export router
@@ -21,8 +20,12 @@ router.get("/:token", isValidToken, async (req: Request, res: Response) => {
       token,
       csrfToken: req.csrfToken(),
     });
-  } catch {
-
+  } catch(error) {
+    res.render("reset/reset-confirm", {
+      error,
+      csrfToken: req.csrfToken(),
+      token
+    });
   }
 });
 
