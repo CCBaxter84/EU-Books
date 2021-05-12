@@ -50,7 +50,8 @@ router.post("/:token", passwordsNotEmpty, passwordsMatch,isValidResetToken, asyn
 
     res.render("auth/login", {
       error: "Password updated",
-      csrfToken: req.csrfToken()
+      csrfToken: req.csrfToken(),
+      isAuth: false
     });
   } catch(error) {
     res.render("reset/reset-confirm", {

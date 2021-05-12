@@ -53,7 +53,11 @@ router.post("/", regFormChecker, checkForEmail, checkForUserName, async (req: Re
       subject: "New User Request",
       text: `A new user has requested site access. Here's a link to approve or deny the request: ${verifyLink}`
     });
-    res.redirect("/login");
+    res.render("auth/login", {
+      csrfToken: req.csrfToken(),
+      error: "Site access request sent. Please check for your email for approval notification.",
+      isAuth: false
+    });
   } catch(error) {
     res.render("auth/register", {
       csrfToken: req.csrfToken(),

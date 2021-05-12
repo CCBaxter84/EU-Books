@@ -1,5 +1,6 @@
 // Import dependencies
 import { Schema, Document, model, Model } from "mongoose";
+import User from "./user";
 
 // Define and export interface derived from mongoose Document
 export interface IUserVerification extends Document {
@@ -17,12 +18,11 @@ const userVerificationSchema = new Schema({
   token: {
     type: String,
     required: true
-  }
-}, {
-  timestamps: true
+  },
 });
 
-userVerificationSchema.index({ "updatedAt": 1 }, { expireAfterSeconds: 300 });
+userVerificationSchema.post("updateOne", function(this: IUserVerification) {
+});
 
 // Define and export Book model based on schema
 const UserVerification: Model<IUserVerification> = model("UserVerification", userVerificationSchema);

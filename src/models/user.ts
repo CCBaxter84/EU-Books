@@ -41,7 +41,7 @@ const userSchema = new Schema({
   locked: {
     type: Boolean,
     required: true,
-    default: false
+    default: true
   },
   failedAttempts: {
     type: Number,
@@ -57,7 +57,7 @@ const userSchema = new Schema({
 
 userSchema.post("save", function(this: IUser) {
   const user = this;
-  if (user.locked) {
+  if (user.verified && user.locked) {
     setTimeout(function() {
       user.locked = false;
       user.failedAttempts = 0;

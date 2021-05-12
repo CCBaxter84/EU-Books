@@ -41,12 +41,14 @@ router.post("/", checkResetForm, isValidEmail, async (req: Request, res: Respons
       text: `Hi ${user.username}. To reset your password, please click the following link: ${resetLink}.`
     });
     res.render("auth/login", {
-      error: "Check your email address for the password reset link"
+      error: "Check your email address for the password reset link",
+      isAuth: false
     });
   } catch {
     res.render("reset/reset", {
       csrfToken: req.csrfToken(),
-      error: "Failed to generate reset link. Please try again."
+      error: "Failed to generate reset link. Please try again.",
+      isAuth: false
     });
   }
 });
