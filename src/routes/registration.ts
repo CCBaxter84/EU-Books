@@ -5,9 +5,10 @@ if (process.env.NODE_ENV !== "production") {
 
 // Import dependencies
 import { Router, Request, Response } from "express";
+
 import { generatePassword } from "../lib/passwordUtils";
 import { isNotAlreadyLoggedIn } from "../lib/middleware/auth";
-import { checkForUserName, checkForEmail, regFormChecker } from "../lib/middleware/forms";
+import { checkForUserName, checkForEmail, regFormChecker, isStrongPassword } from "../lib/middleware/forms";
 import { createToken, sendEmail } from "../lib/nodemailer";
 import User from "../models/user";
 import UserVerification from "../models/userVerification";
@@ -26,7 +27,7 @@ router.get("/", isNotAlreadyLoggedIn, (req: Request, res: Response) => {
 // @route   POST /registration
 // @desc    Submit new user to database
 // @access  Public
-router.post("/", regFormChecker, checkForEmail, checkForUserName, async (req: Request, res: Response) => {
+router.post("/", regFormChecker, checkForEmail, checkForUserName, isStrongPassword, async (req: Request, res: Response) => {
   try {
     const passwordHash = generatePassword(req.body.password);
     const newUser = new User({

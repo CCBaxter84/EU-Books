@@ -118,3 +118,25 @@ export const passwordsNotEmpty: IMiddleware = function(req, res, next) {
     next();
   }
 };
+
+export const isStrongPassword: IMiddleware = async function(req, res, next) {
+  try {
+    if (!req.body.password || req.body.password.length < 12) {
+      throw "Password must be at least 12 characters";
+    }
+    const regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-])/
+    if (!regex.test(req.body.password)) {
+      throw "Password must contain at least one lowercase, uppercase, numerical, and special character"
+    }
+    next();
+  } catch(error) {
+    res.render("auth/register", {
+      csrfToken: req.csrfToken(),
+      error: error
+    });
+  }
+};
+
+export const isEmail: IMiddleware = function(req, res, next) {
+
+};
