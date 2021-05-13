@@ -55,18 +55,21 @@ const userSchema = new Schema({
   }
 });
 
-userSchema.post("save", function(this: IUser) {
-  const user = this;
-  if (user.verified && user.locked) {
+userSchema.post("save", function(doc: IUser, next) {
+  if (doc.verified && doc.locked) {
     setTimeout(function() {
-      user.locked = false;
-      user.failedAttempts = 0;
-      user.save();
+      doc.locked = false;
+      doc.failedAttempts = 0;
+      doc.save();
     }, 5 * 60 * 1000);
   }
-  if (user.email === process.env.EMAIL_ADDRESS) {
-    user.admin = true;
-    user.verified = true;
+  next();
+});
+
+userSchema.post("save", function(doc: IUser) {
+  if (process.env.EMAIL_ADDRESS === doc.email && !doc.admin) {
+    doc.admin = true;
+    doc.save();
   }
 });
 
