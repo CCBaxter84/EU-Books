@@ -21,7 +21,17 @@ const userVerificationSchema = new Schema({
   },
 });
 
-userVerificationSchema.post("updateOne", function(this: IUserVerification) {
+userVerificationSchema.post("save", function(doc, next) {
+  const userId = doc.user;
+  setTimeout(function() {
+    doc.remove();
+  }, 1000 * 15);
+  next();
+});
+
+userVerificationSchema.post("remove", function(doc, next) {
+  User.findByIdAndDelete(doc.user)
+      .then(() => next());
 });
 
 // Define and export Book model based on schema

@@ -56,7 +56,6 @@ function getRandomPosition() {
   const header = document.querySelector("header");
   const main = document.querySelector("main");
   const footer = document.querySelector("footer");
-  console.log("height", main.clientHeight);
   const y = globalThis.outerWidth;
   const windowHeight = globalThis.outerHeight;
   const clientHeight = document.body.clientHeight;

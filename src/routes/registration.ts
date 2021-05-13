@@ -41,11 +41,11 @@ router.post("/", regFormChecker, checkForEmail, checkForUserName, async (req: Re
     const verifyLink = `${process.env.DOMAIN}/verify/${token}`;
 
     // Save the token to user verification
-    await UserVerification.updateOne(
-      { user: savedUser._id },
-      { user: savedUser._id, token: token },
-      { upsert: true }
-    );
+    const userToken = new UserVerification({
+      user: savedUser._id,
+      token
+    });
+    await userToken.save();
 
     // Email the link to approve/deny the request
     sendEmail({
