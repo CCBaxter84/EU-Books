@@ -1,4 +1,10 @@
 <form method="POST" action="{{ url }}?_method=DELETE">
   <input type="hidden" name="_csrf" value={{ csrfToken }}>
-  <button class="btn btn-danger">Delete</button>
+  <button class="btn btn-danger {{ class }}" id={{ id }}>
+    {{#if text }}
+      {{ text }}
+    {{else }}
+      Delete
+    {{/if }}
+  </button>
 </form>

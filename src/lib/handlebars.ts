@@ -8,12 +8,16 @@ interface IHelper {
 }
 
 // Define and export helper functions
-export const getID: IHelper = function(model, isAuthor) {
+export const getURL: IHelper = function(model, isAuthor) {
   if (isAuthor) {
     return `/authors/${model._id}`;
   } else {
     return `/books/${model._id}`;
   }
+};
+
+export const getTokenURL = function(token: string) {
+  return "/verify/" + token;
 };
 
 export const isAuthorMatch = function(author: IAuthor, bookAuthor: string): boolean {

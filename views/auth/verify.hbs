@@ -6,13 +6,11 @@
     <p>Username:</p>
     <p>{{ user.username }}</p>
   </article>
-  <form class="log-in" method="POST" action="/reset-confirm/{{ token }}">
-    <input type="hidden" name="_csrf" value={{ csrfToken }}>
-    <section class="approve-deny-btns">
-      <button class="btn " type="submit">Approve</button>
-      <a href="/">
-        <button class="btn btn-danger" type="button">Deny</button>
-      </a>
-    </section>
-  </form>
+  <section class="approve-deny-btns verify">
+    <form class="log-in" method="POST" action="/reset-confirm/{{ token }}">
+      <input type="hidden" name="_csrf" value={{ csrfToken }}>
+      <button class="btn approve-deny" type="submit">Approve</button>
+    </form>
+    {{> deleteForm url=(getTokenURL token) text="Deny" class="approve-deny" }}
+  </section>
 </main>

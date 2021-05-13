@@ -16,7 +16,7 @@ import mongoSanitize from "express-mongo-sanitize";
 
 
 // Import functions and routers
-import { getID, isAuthorMatch, getCoverPath, getDateString, getPubDate, formatDescription, isEraMatch, formatTags } from "./lib/handlebars";
+import { getURL, getTokenURL, isAuthorMatch, getCoverPath, getDateString, getPubDate, formatDescription, isEraMatch, formatTags } from "./lib/handlebars";
 import { router as indexRouter } from "./routes/index";
 import { router as authorRouter } from "./routes/author";
 import { router as bookRouter } from "./routes/book";
@@ -85,7 +85,8 @@ app.set("views", __dirname + "/../views")
 app.set("view engine", "hbs");
 
 // Set Handlebars helpers
-Handlebars.registerHelper("getURL", getID);
+Handlebars.registerHelper("getURL", getURL);
+Handlebars.registerHelper("getTokenURL", getTokenURL);
 Handlebars.registerHelper("isAuthorMatch", isAuthorMatch);
 Handlebars.registerHelper("getCoverPath", getCoverPath);
 Handlebars.registerHelper("getDateString", getDateString);

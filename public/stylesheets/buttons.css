@@ -4,6 +4,8 @@
   border: 1px solid white;
   font-size: 1rem;
   margin: 0 .25rem;
+  min-height: 1.5rem;
+  min-width: 4rem;
 }
 
 .btn:hover {
@@ -32,4 +34,8 @@
 
 .approve-deny-btns > * {
   margin: 0.5rem;
+}
+
+.approve-deny {
+  width: 4.5rem;
 }
