@@ -35,33 +35,61 @@ router.get("/:token", isValidVerifyToken, async (req: Request, res: Response) =>
   } catch(error) {
     res.send(error);
   }
-
 });
 
 // @route   POST /verify/:token
 // @desc    Submit form for verifying the new user
 // @access  Public
 router.post("/:token", isValidVerifyToken, async (req: Request, res: Response) => {
-
+  // Grad token from request object
+  const { token } = req.params;
+  const errorMsg = "Error approving user account request";
+  try {
+    // Get the user from Database
+    const tokenDoc = await UserVerification.findOne({ token });
+    if (!tokenDoc) {
+      throw errorMsg;
+    }
+    const user = await User.findById(tokenDoc.user);
+    if (!user) {
+      throw errorMsg;
+    }
+    // Update user's locked and verified fields
+    user.locked = false;
+    user.verified = true;
+    await user.save();
+    // Delete the token w/o using .remove() to avoid also deleting the user
+    await UserVerification.findByIdAndDelete(tokenDoc._id);
+    // Send notification email to approved user
+    sendEmail({
+      to: user.email,
+      subject: "New User Request",
+      text: `The site admin has approved your request for an account. You can now log in at the following link: ${process.env.DOMAIN}/login`
+    });
+    // Redirect to main page
+    res.redirect("/");
+  } catch(error) {
+    res.send(error);
+  }
 });
 
 // @route   DELETE /verify/:token
 // @desc    Submit form for verifying the new user
 // @access  Public
-router.delete("/:token", async (req: Request, res: Response) => {
+router.delete("/:token", isValidVerifyToken, async (req: Request, res: Response) => {
   // Grab token from request object
   const { token } = req.params;
-  const errorMsg = "Error Deleting user";
+  const errorMsg = "Error Denying user account request";
   try {
     // Fetch token document from database
     const tokenDoc = await UserVerification.findOne({ token });
     if (!tokenDoc) {
-      throw "Error looking up token";
+      throw errorMsg;
     }
     // Fetch user ASW token from database
     const user = await User.findById(tokenDoc.user);
     if (!user) {
-      throw "Error looking up user";
+      throw errorMsg;
     }
     // Delete token DB document
     await tokenDoc.remove();

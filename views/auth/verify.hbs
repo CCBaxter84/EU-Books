@@ -7,7 +7,7 @@
     <p>{{ user.username }}</p>
   </article>
   <section class="approve-deny-btns verify">
-    <form class="log-in" method="POST" action="/reset-confirm/{{ token }}">
+    <form class="log-in" method="POST" action={{ getTokenURL token }}>
       <input type="hidden" name="_csrf" value={{ csrfToken }}>
       <button class="btn approve-deny" type="submit">Approve</button>
     </form>
