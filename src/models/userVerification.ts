@@ -1,6 +1,6 @@
 // Import dependencies
 import { Schema, Document, model, Model } from "mongoose";
-import User from "./user";
+import User, { IUser } from "./user";
 
 // Define and export interface derived from mongoose Document
 export interface IUserVerification extends Document {
@@ -21,15 +21,14 @@ const userVerificationSchema = new Schema({
   },
 });
 
-userVerificationSchema.post("save", function(doc, next) {
-  const userId = doc.user;
+userVerificationSchema.post("save", function(doc: IUserVerification, next) {
   setTimeout(function() {
     doc.remove();
-  }, 1000 * 15);
+  }, 1000 * 60 * 60 * 12);
   next();
 });
 
-userVerificationSchema.post("remove", function(doc, next) {
+userVerificationSchema.post("remove", function(doc: IUserVerification, next) {
   User.findByIdAndDelete(doc.user)
       .then(() => next());
 });
