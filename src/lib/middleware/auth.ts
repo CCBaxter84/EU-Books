@@ -8,6 +8,7 @@ export const isAuthenticated: IMiddleware = (req, res, next) => {
   if (req.isAuthenticated()) {
     next();
   } else {
+    // Update this to render a funny 401 Error View
     res.status(401).json({ msg: "Not authorized to view this resource" });
   }
 };

@@ -5,6 +5,7 @@ import Book from "../models/book";
 import { LeanDocument } from "mongoose";
 import { isAuthenticated } from "../lib/middleware/auth";
 import { authorFormChecker } from "../lib/middleware/forms";
+import { DB_LOOKUP_ERR, BAD_REQ_ERR, PAGE_ERR, AUTHOR_EXISTS_ERR, AUTHOR_HAS_BOOKS_ERR, INVALID_AUTHOR_ERR } from "../lib/global-constants";
 
 // Define interfaces
 interface IParams {
@@ -43,12 +44,12 @@ router.get("/", async (req: Request, res: Response) => {
       res.render("authors/index", {
         searchOptions: req.query,
         isAuth,
-        error: "Could not get authors"
+        error: DB_LOOKUP_ERR
       });
     } else {
       res.render("/", {
         isAuth,
-        error: "Failed to load authors page"
+        error: PAGE_ERR
       });
     }
   }
@@ -71,9 +72,10 @@ router.post("/", isAuthenticated, authorFormChecker, async (req: Request, res: R
   try {
     const newAuthor = await author.save();
     res.redirect(`/authors/${newAuthor._id}`);
-  } catch(error) {
-    if (error.message != "Author already exists") {
-      error = "Error saving new author";
+  } catch(err) {
+    let error = AUTHOR_EXISTS_ERR;
+    if (err.message != AUTHOR_EXISTS_ERR) {
+      error = "Error saving author";
     }
     res.render("authors/new", {
       error,
@@ -90,11 +92,13 @@ router.get("/:id", async (req: Request, res: Response) => {
   const isAuth = req.user ? true : false;
   try {
     const author = await Author.findById(req.params.id).lean();
-    if (author == null) throw "Error looking up author";
+    if (author == null) throw DB_LOOKUP_ERR;
     const books = await Book.find({ $or: [{ author: author._id }, { coAuthor: author._id }] }).lean();
-    if (books == null) throw "Error looking up books";
+    if (books == null) throw DB_LOOKUP_ERR;
     res.render("authors/show", { author, books, isAuth, csrfToken: req.csrfToken() });
-  } catch(error) {
+  } catch(err) {
+    // Update this to render a 400 Error View
+    const error = err.message === DB_LOOKUP_ERR ? DB_LOOKUP_ERR : BAD_REQ_ERR;
     res.render("authors/index", { error, isAuth });
   }
 });
@@ -111,7 +115,7 @@ router.get("/:id/edit", isAuthenticated, async (req: Request, res: Response) => 
       csrfToken: req.csrfToken()
     });
   } catch {
-    res.render("authors/index", { error: "Error loading edit author page", isAuth: true });
+    res.render("authors/index", { error: PAGE_ERR, isAuth: true });
   }
 });
 
@@ -126,10 +130,8 @@ router.put("/:id", isAuthenticated, authorFormChecker, async (req: Request, res:
     author.name = req.body.name;
     await author.save();
     res.redirect(`/authors/${req.params.id}`);
-  } catch(error) {
-    if (author != null) {
-      error = "Failed to update author";
-    }
+  } catch {
+    const error = author != null ? "Failed to update author" : PAGE_ERR;
     res.render("authors/index", { error, isAuth: true });
   }
 });
@@ -141,13 +143,12 @@ router.delete("/:id", isAuthenticated, async (req: Request, res: Response) => {
   let author: IAuthor|null = null;
   try {
     author = await Author.findById(req.params.id);
-    if (author == null) throw "Author not found";
+    if (author == null) throw INVALID_AUTHOR_ERR;
     await author.remove();
     res.redirect("/authors");
-  } catch(error) {
-    if (error.message != "This author still has stored books") {
-      error = "Failed to remove author";
-    }
+  } catch(err) {
+    const { message } = err;
+    const error = message !== AUTHOR_HAS_BOOKS_ERR ? "Failed to remove author" : INVALID_AUTHOR_ERR;
     res.render("authors/index", { error, isAuth: true });
   }
 });

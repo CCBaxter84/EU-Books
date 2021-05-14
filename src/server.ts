@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 // Import npm libraries
-import express, { Application } from "express";
+import express, { Application, Request, Response, NextFunction } from "express";
 import handlebars from "express-handlebars";
 import Handlebars from "handlebars";
 import methodOverride from "method-override";
@@ -65,7 +65,6 @@ app.use((req, res, next) => {
 });
 
 // Configure routers
-app.use("/", indexRouter);
 app.use("/authors", authorRouter);
 app.use("/books", bookRouter);
 app.use("/login", loginRouter);
@@ -73,6 +72,7 @@ app.use("/registration", registrationRouter);
 app.use("/reset", resetRouter);
 app.use("/reset-confirm", resetConfirmRouter);
 app.use("/verify", verifyRouter);
+app.use("/", indexRouter);
 
 // Configure view
 app.engine("hbs", handlebars({

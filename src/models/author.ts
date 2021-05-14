@@ -1,6 +1,7 @@
 // Import dependencies
 import { Schema, Document, model, Model } from "mongoose";
 import Book from "./book";
+import { AUTHOR_EXISTS_ERR, AUTHOR_HAS_BOOKS_ERR } from "../lib/global-constants";
 
 // Define and export interface
 export interface IAuthor extends Document {
@@ -21,7 +22,7 @@ authorSchema.pre("remove", function(this: IAuthor, next) {
     if (error) {
       next(error);
     } else if (books.length > 0) {
-      next(new Error("This author still has stored books"));
+      next(new Error(AUTHOR_HAS_BOOKS_ERR));
     } else {
       next();
     }
@@ -34,7 +35,7 @@ authorSchema.pre("save", function(this: IAuthor, next) {
     if (error) {
       next(error);
     } else if (author.length >= 1) {
-      next(new Error("Author already exists"));
+      next(new Error(AUTHOR_EXISTS_ERR));
     } else {
       next();
     }
