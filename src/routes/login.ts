@@ -33,12 +33,11 @@ router.post("/", loginFormChecker, (req: Request, res: Response, next: NextFunct
       });
     } else {
       user.save();
-      console.log(user);
       req.logIn(user, error => {
         if (error) {
           res.send(error);
         }
-        setTimeout(() => res.redirect("/"), 1000);
+        res.redirect("/");
       });
     }
   })(req, res, next);

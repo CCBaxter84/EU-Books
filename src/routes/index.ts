@@ -20,7 +20,6 @@ router.get("/", async (req: Request, res: Response) => {
     res.render("main", { books, isAuth });
   } catch(error) {
     books = [];
-    console.log("Is Authorized? ", isAuth);
     res.render("main", {
       error: "Error: Could not get books",
       isAuth: isAuth
@@ -33,7 +32,5 @@ router.get("/", async (req: Request, res: Response) => {
 // @access  Private
 router.get("/logout", isAuthenticated, (req: Request, res: Response) => {
   req.logout();
-  setTimeout(() => {
-    res.redirect("/");
-  }, 1000);
+  res.redirect("/");
 });
