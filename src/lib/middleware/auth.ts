@@ -1,5 +1,5 @@
 // Import libraries and dependencies
-import { IMiddleware } from "./interface";
+import { IMiddleware } from "../types-interfaces";
 import PasswordReset from "../../models/passwordReset";
 import UserVerification from "../../models/userVerification";
 

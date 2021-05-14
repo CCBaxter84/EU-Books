@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { LeanDocument, Query } from "mongoose";
 import Book, { IBook, eras, Era } from "../models/book";
 import Author, { IAuthor } from "../models/author";
+import { EMPTY_FORM_ERR, PAGE_ERR } from "./global-constants";
 
 // Define types & interfaces
 type Form = "new" | "edit";
@@ -98,13 +99,14 @@ export const renderFormPage: IController = async function(req, res, book, hasErr
     }
     // Check for errors
     if (hasError) {
-      params.error = "Error -- please ensure all fields are completed";
+      params.error = EMPTY_FORM_ERR;
     }
     // Render given form with params
     res.render(`books/${form}`, params);
   } catch {
+    // *!!Replace this with a funny error view!!*
     res.render("books/index", {
-      error: "Error loading page",
+      error: PAGE_ERR,
       isAuth
     });
   }

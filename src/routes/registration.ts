@@ -5,7 +5,6 @@ if (process.env.NODE_ENV !== "production") {
 
 // Import dependencies
 import { Router, Request, Response } from "express";
-
 import { generatePassword } from "../lib/passwordUtils";
 import { isNotAlreadyLoggedIn } from "../lib/middleware/auth";
 import { checkForUserName, checkForEmail, regFormChecker, isStrongPassword, isEmail } from "../lib/middleware/forms";

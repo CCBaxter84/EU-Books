@@ -1,5 +1,5 @@
 // Import libraries and dependencies
-import { IMiddleware } from "./interface";
+import { IMiddleware } from "../types-interfaces";
 import Book, { IBook } from "../../models/book";
 import { renderNewPage } from "../bookControllers";
 

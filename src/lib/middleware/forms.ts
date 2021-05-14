@@ -1,63 +1,49 @@
 // Import libraries and dependencies
-import { IMiddleware } from "./interface";
+import { Form, IMiddleware } from "../types-interfaces";
 import User from "../../models/user";
+import { hasValue, renderForm, isComplexPassword, isLongPassword } from "../field-validators";
+import { EMAIL_EXISTS_ERR, EMPTY_FORM_ERR, NO_EMAIL_ERR, INVALID_EMAIL_ERR, USERNAME_EXISTS_ERR, DB_LOOKUP_ERR, NO_PASSWORD_ERR, NO_USERNAME_ERR, WEAK_PASSWORD_ERR, EMAIL_REGEX } from "../global-constants";
 
 export const authorFormChecker: IMiddleware = function(req, res, next) {
-  if (!req.body.name) {
-    res.render("authors/new", {
-      error: "Please complete all form fields"
-    });
-  } else {
+  const form: Form = "authors/new";
+  if (hasValue("name", req)) {
     next();
+  } else {
+    renderForm(form, req, res, EMPTY_FORM_ERR);
   }
 };
 
 export const loginFormChecker: IMiddleware = function(req, res, next) {
-  if (!req.body.username || req.body.username === "") {
-    res.render("auth/login", {
-      csrfToken: req.csrfToken(),
-      error: "Error: Username not provided"
-    });
-  } else if (!req.body.password || req.body.password === "") {
-    res.render("auth/login", {
-      csrfToken: req.csrfToken(),
-      error: "Error: Password not provided"
-    });
+  const form: Form = "auth/login";
+  if ( !hasValue("username", req) ) {
+    renderForm(form, req, res, NO_USERNAME_ERR);
+  } else if ( !hasValue("password", req) ) {
+    renderForm(form, req, res, NO_PASSWORD_ERR);
   } else {
     next();
   }
 };
 
 export const regFormChecker: IMiddleware = function(req, res, next) {
-  if (!req.body.email || req.body.email === "") {
-    res.render("auth/register", {
-      csrfToken: req.csrfToken(),
-      error: "Error: Email not provided"
-    });
-  } else if (!req.body.username || req.body.username === "") {
-    res.render("auth/register", {
-      csrfToken: req.csrfToken(),
-      error: "Error: Username not provided"
-    });
-  } else if (!req.body.password  || req.body.password === "") {
-    res.render("auth/register", {
-      csrfToken: req.csrfToken(),
-      error: "Error: Password not provided"
-    });
+  const form: Form = "auth/register";
+  if ( !hasValue("email", req) ) {
+    renderForm(form, req, res, NO_EMAIL_ERR);
+  } else if ( !hasValue("username", req) ) {
+    renderForm(form, req, res, NO_USERNAME_ERR);
+  } else if ( !hasValue("password", req) ) {
+    renderForm(form, req, res, NO_PASSWORD_ERR);
   } else {
     next();
   }
 }
 
 export const checkForEmail: IMiddleware = function(req, res, next) {
+  const form: Form = "auth/register";
   User.find({ email: req.body.email }, (error, user) => {
     if (error) {
-      next(error);
+      renderForm(form, req, res, DB_LOOKUP_ERR);
     } else if (user.length >= 1) {
-      res.render("auth/register", {
-        csrfToken: req.csrfToken(),
-        error: "Error: Email already registered"
-      });
+      renderForm(form, req, res, EMAIL_EXISTS_ERR);
     } else {
       next();
     }
@@ -65,14 +51,12 @@ export const checkForEmail: IMiddleware = function(req, res, next) {
 }
 
 export const checkForUserName: IMiddleware = function(req, res, next) {
+  const form: Form = "auth/register";
   User.find({ username: req.body.username }, (error, user) => {
     if (error) {
-      next(error);
+      renderForm(form, req, res, DB_LOOKUP_ERR);
     } else if (user.length >= 1) {
-      res.render("auth/register", {
-        csrfToken: req.csrfToken(),
-        error: "Error: Username already registered"
-      });
+      renderForm(form, req, res, USERNAME_EXISTS_ERR);
     } else {
       next();
     }
@@ -80,75 +64,58 @@ export const checkForUserName: IMiddleware = function(req, res, next) {
 };
 
 export const checkResetForm: IMiddleware = function(req, res, next) {
-  if (!req.body.email || req.body.email === "") {
-    res.render("reset/reset", {
-      csrfToken: req.csrfToken(),
-      error: "Error: Email not provided"
-    });
+  const form = "reset/reset";
+  if ( !hasValue("email", req) ) {
+    renderForm(form, req, res, NO_EMAIL_ERR);
   } else {
     next();
   }
 };
 
 export const isValidEmail: IMiddleware = async function(req, res, next) {
+  const form: Form = "reset/reset";
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
-      throw "Error: Invalid email"
+      throw INVALID_EMAIL_ERR;
     }
     next();
-  } catch(error) {
-    res.render("reset/reset", {
-      csrfToken: req.csrfToken(),
-      error: error
-    });
+  } catch(err) {
+    const error = err === INVALID_EMAIL_ERR ? INVALID_EMAIL_ERR : DB_LOOKUP_ERR;
+    renderForm(form, req, res, error);
   }
 };
 
 export const passwordsNotEmpty: IMiddleware = function(req, res, next) {
-  // Guard clause for empty passwords
   const { token } = req.params;
-  if (!req.body.password || req.body.password === "" || !req.body.confirm || req.body.confirm === "") {
-    res.render("reset/reset-confirm", {
-      csrfToken: req.csrfToken(),
-      error: "Error: Please ensure passwords fields are not empty.",
-      token
-    });
+  const form: Form = "reset/reset-confirm";
+  if ( !hasValue("password", req) || !hasValue("confirm", req) ) {
+    renderForm(form, req, res, NO_PASSWORD_ERR, token);
   } else {
     next();
   }
 };
 
 export const isStrongPassword: IMiddleware = function(req, res, next) {
-  try {
-    if (!req.body.password || req.body.password.length < 12) {
-      throw "Password must be at least 12 characters";
-    }
-    const regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-])/;
-    if (!regex.test(req.body.password)) {
-      throw "Password must contain at least one lowercase, uppercase, numerical, and special character"
-    }
+  const form = "auth/register";
+  const minPasswordLength = 12;
+  const { password } = req.body;
+  const shortPasswordErr = `Password must be at least ${minPasswordLength} characters`;
+
+  if ( !isLongPassword(password, minPasswordLength) ) {
+    renderForm(form, req, res, shortPasswordErr);
+  } else if ( !isComplexPassword(password) ) {
+    renderForm(form, req, res, WEAK_PASSWORD_ERR);
+  } else {
     next();
-  } catch(error) {
-    res.render("auth/register", {
-      csrfToken: req.csrfToken(),
-      error: error
-    });
   }
 };
 
 export const isEmail: IMiddleware = function(req, res, next) {
-  try {
-    const regex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
-    if (regex.test(req.body.email)) {
-      next();
-    } else {
-      throw "Error: Must provided a valid email address"
-    }
-  } catch(error) {
-    res.render("auth/register", {
-      csrfToken: req.csrfToken(),
-      error: error
-    });
+  const form = "auth/register";
+  if (EMAIL_REGEX.test(req.body.email)) {
+    next();
+  } else {
+    renderForm(form, req, res, INVALID_EMAIL_ERR);
   }
 };

@@ -2,7 +2,7 @@
 import { Router, Request, Response } from "express";
 import PasswordReset from "../models/passwordReset";
 import User from "../models/user";
-import { checkResetForm, isValidEmail } from "../lib/middleware/forms";
+import { checkResetForm, isValidEmail } from "../lib/middleware/formsv1";
 import { createToken, sendEmail } from "../lib/nodemailer";
 
 // Declare and export router
