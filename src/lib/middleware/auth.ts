@@ -2,14 +2,14 @@
 import { IMiddleware } from "../types-interfaces";
 import PasswordReset from "../../models/passwordReset";
 import UserVerification from "../../models/userVerification";
+import { renderError } from "../error-utils";
 
 // Middleware for checking user authentication
 export const isAuthenticated: IMiddleware = (req, res, next) => {
   if (req.isAuthenticated()) {
     next();
   } else {
-    // Update this to render a funny 401 Error View
-    res.status(401).json({ msg: "Not authorized to view this resource" });
+    renderError("unauth", res, false);
   }
 };
 
@@ -23,10 +23,11 @@ export const isNotAlreadyLoggedIn: IMiddleware = (req, res, next) => {
 
 // Middleware for checking whether user is an admin
 export const isAdmin: IMiddleware = (req, res, next) => {
-  if (req.isAuthenticated() && req.user.admin) {
+  const isAuth = req.isAuthenticated();
+  if (isAuth && req.user?.admin === true) {
     next();
   } else {
-    res.status(401).json({ msg: "Not authorized to view this resource" });
+    renderError("unauth", res, isAuth);
   }
 };
 
@@ -40,10 +41,7 @@ export const isValidResetToken: IMiddleware = async function(req, res, next) {
       next();
     }
   } catch {
-    res.render("auth/login", {
-      csrfToken: req.csrfToken(), isAuth: false,
-      error: "Error: Invalid reset request"
-    });
+    renderError("bad-request", res, req.isAuthenticated());
   }
 };
 
@@ -57,10 +55,7 @@ export const isValidVerifyToken: IMiddleware = async function(req, res, next) {
       next();
     }
   } catch {
-    res.render("main", {
-      csrfToken: req.csrfToken(), isAuth: false,
-      error: "Error: Invalid verify request"
-    });
+    renderError("bad-request", res, req.isAuthenticated());
   }
 };
 
