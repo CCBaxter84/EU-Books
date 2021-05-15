@@ -1,7 +1,7 @@
 import { Response } from "express";
-import { PAGE_ERR, BAD_REQ_ERR, UNAUTH_REQ_ERR } from "./global-constants";
+import { PAGE_ERR, NOT_FOUND_ERR, UNAUTH_REQ_ERR } from "./global-constants";
 
-type ErrType = "bad-request" | "unauth" | "server-err";
+type ErrType = "not-found" | "unauth" | "server-err";
 type Image = "/img/obi-wan.jpg" | "/img/lando.jpg" | "/img/han.jpg";
 interface IErrHandler {
   (type: ErrType, res: Response, isAuth: boolean): void
@@ -14,8 +14,8 @@ interface IData {
 
 const getData = (type: ErrType): IData => {
   switch(type) {
-    case "bad-request":
-      return { img: "/img/obi-wan.jpg", errorMsg: BAD_REQ_ERR };
+    case "not-found":
+      return { img: "/img/obi-wan.jpg", errorMsg: NOT_FOUND_ERR };
     case "unauth":
       return { img: "/img/han.jpg", errorMsg: UNAUTH_REQ_ERR };
     case "server-err":

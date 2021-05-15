@@ -41,7 +41,7 @@ export const isValidResetToken: IMiddleware = async function(req, res, next) {
       next();
     }
   } catch {
-    renderError("bad-request", res, req.isAuthenticated());
+    renderError("not-found", res, req.isAuthenticated());
   }
 };
 
@@ -55,7 +55,7 @@ export const isValidVerifyToken: IMiddleware = async function(req, res, next) {
       next();
     }
   } catch {
-    renderError("bad-request", res, req.isAuthenticated());
+    renderError("not-found", res, req.isAuthenticated());
   }
 };
 

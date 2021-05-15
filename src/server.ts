@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 // Import npm libraries
-import express, { Application, Request, Response, NextFunction } from "express";
+import express, { Application, Request, Response } from "express";
 import handlebars from "express-handlebars";
 import Handlebars from "handlebars";
 import methodOverride from "method-override";
@@ -102,7 +102,7 @@ app.use(express.static(__dirname + "/../public"));
 // Catch all Error Handler for bad requests
 app.use((req: Request, res: Response) => {
   const isAuth = req.user ? true : false;
-  renderError("bad-request", res, isAuth);
+  renderError("not-found", res, isAuth);
 })
 
 // Set the server to listen

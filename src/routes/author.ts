@@ -1,10 +1,10 @@
 // Import dependencies
 import { Router, Request, Response } from "express";
-import Author, { IAuthor } from "../models/author";
+import Author from "../models/author";
 import Book from "../models/book";
 import { isAuthenticated } from "../lib/middleware/auth";
 import { authorFormChecker } from "../lib/middleware/forms";
-import { DB_LOOKUP_ERR, BAD_REQ_ERR, PAGE_ERR, AUTHOR_EXISTS_ERR, AUTHOR_HAS_BOOKS_ERR, INVALID_AUTHOR_ERR } from "../lib/global-constants";
+import { DB_LOOKUP_ERR, AUTHOR_HAS_BOOKS_ERR, INVALID_AUTHOR_ERR } from "../lib/global-constants";
 import { renderError } from "../lib/error-utils";
 
 // Define interfaces
@@ -81,7 +81,7 @@ router.get("/:id", async (req: Request, res: Response) => {
     res.render("authors/show", { author, books, isAuth, csrfToken: req.csrfToken() });
   } catch(err) {
     // Update this to render a 400 Error View
-    const error = err.message === DB_LOOKUP_ERR ? "server-err" : "bad-request";
+    const error = err.message === DB_LOOKUP_ERR ? "server-err" : "not-found";
     renderError(error, res, isAuth);
   }
 });
@@ -115,7 +115,7 @@ router.put("/:id", isAuthenticated, authorFormChecker, async (req: Request, res:
     await author.save();
     res.redirect(`/authors/${req.params.id}`);
   } catch(error) {
-    const type = error.message === "Author not found" ? "server-err" : "bad-request";
+    const type = error.message === "Author not found" ? "server-err" : "not-found";
     renderError(type, res, isAuth);
   }
 });
@@ -131,7 +131,7 @@ router.delete("/:id", isAuthenticated, async (req: Request, res: Response) => {
     await author.remove();
     res.redirect("/authors");
   } catch(error) {
-    const type = error.message !== AUTHOR_HAS_BOOKS_ERR ? "server-err" : "bad-request";
+    const type = error.message !== AUTHOR_HAS_BOOKS_ERR ? "server-err" : "not-found";
     renderError(type, res, isAuth);
   }
 });
