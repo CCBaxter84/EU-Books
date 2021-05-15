@@ -7,6 +7,7 @@ import { queryBuilder, renderEditPage, renderNewPage, saveCover, saveCoAuthor, s
 import { bookFormChecker, bookCoverChecker } from "../lib/middleware/book";
 import { isAuthenticated } from "../lib/middleware/auth";
 import { renderError } from "../lib/error-utils";
+import { DB_LOOKUP_ERR } from "../lib/global-constants";
 
 // Define and export router
 export const router = Router();
@@ -60,7 +61,7 @@ router.get("/new", isAuthenticated, async (req: Request, res: Response) => {
 // @desc    Add a new book to the database
 // @access  Private
 router.post("/", isAuthenticated, bookFormChecker, bookCoverChecker, async (req: Request, res: Response) => {
-  const book = new Book({
+  let book = new Book({
     title: req.body.title,
     description: req.body.description,
     pageCount: req.body.pageCount,
@@ -84,26 +85,22 @@ router.post("/", isAuthenticated, bookFormChecker, bookCoverChecker, async (req:
 // @access  Public
 router.get("/:id", async (req: Request, res: Response) => {
   // Set vars to pass to views
-  let book: LeanDocument<IBook> | null = null;
-  let author: LeanDocument<IAuthor> | null = null;
   let coAuthor: LeanDocument<IAuthor> | null = null;
   const isAuth = req.user ? true : false;
   try {
-    book = await Book.findById(req.params.id).lean();
-    if (book == null) throw "Error looking up book";
-    author = await Author.findById(book.author).lean();
-    if (author == null) throw "Error looking up author";
+    const book = await Book.findById(req.params.id).lean();
+    if (book == null) throw DB_LOOKUP_ERR;
+    const author = await Author.findById(book.author).lean();
+    if (author == null) throw DB_LOOKUP_ERR;
 
     if (book.coAuthor != null && String(book.coAuthor) != "") {
       coAuthor = await Author.findById(book.coAuthor).lean();
     }
 
     res.render("books/show", { book, author, coAuthor, isAuth, csrfToken: req.csrfToken() });
-  } catch(error) {
-    if (book != null || author != null) {
-      error = "Could not load page"
-    }
-    res.render("books/index", { error, isAuth });
+  } catch(err) {
+    const error = err.message === DB_LOOKUP_ERR ? "server-err" : "not-found";
+    renderError(error, res, isAuth);
   }
 });
 
@@ -111,12 +108,13 @@ router.get("/:id", async (req: Request, res: Response) => {
 // @desc    Render form for editing an existing book
 // @access  Private
 router.get("/:id/edit", isAuthenticated, async (req: Request, res: Response) => {
+  const isAuth = req.user ? true : false;
   try {
     const book = await Book.findById(req.params.id);
     if (book === null) throw "No book found";
     renderEditPage(req, res, book);
-  } catch(error) {
-    res.render("main", { error });
+  } catch {
+    renderError("server-err", res, isAuth);
   }
 });
 
@@ -124,17 +122,17 @@ router.get("/:id/edit", isAuthenticated, async (req: Request, res: Response) => 
 // @desc    Update an existing book entry
 // @access  Public
 router.put("/:id", isAuthenticated, bookFormChecker, async (req: Request, res: Response) => {
-  let book;
+  const isAuth = req.user ? true : false;
   try {
-    book = await Book.findById(req.params.id);
-    if (book == null) throw "Book not found";
+    let book = await Book.findById(req.params.id);
+    if (book === null) throw "Book not found";
     book.title = req.body.title;
     book.author = req.body.author;
     book.publishDate = new Date(req.body.publishDate);
     book.pageCount = req.body.pageCount;
     book.description = req.body.description;
     book.era = req.body.era;
-    if (req.body.cover != null && req.body.cover !== "") {
+    if (req.body.cover !== null && req.body.cover !== "") {
       saveCover(book, req.body.cover);
     }
     saveCoAuthor(book, req);
@@ -142,12 +140,8 @@ router.put("/:id", isAuthenticated, bookFormChecker, async (req: Request, res: R
     await book.save();
     res.redirect(`/books/${req.params.id}`);
   } catch(error) {
-    console.log(error);
-    if (book != null) {
-      renderEditPage(req, res, book, true);
-    } else {
-      res.render("books/index", { error });
-    }
+    const type = error.message === "Book not found" ? "server-err" : "not-found";
+    renderError(type, res, isAuth);
   }
 });
 
@@ -155,19 +149,14 @@ router.put("/:id", isAuthenticated, bookFormChecker, async (req: Request, res: R
 // @desc    Remove a book from the database
 // @access  Private
 router.delete("/:id", isAuthenticated, async (req: Request, res: Response) => {
-  let book;
+  const isAuth = req.user ? true : false;
   try {
-    book = await Book.findById(req.params.id);
-    if (book == null) throw "Book not found";
+    const book = await Book.findById(req.params.id);
+    if (book === null) throw "Book not found";
     await book.remove();
     res.redirect("/books");
   } catch(error) {
-    if (book != null) {
-      res.render("books/show", {
-        book,
-        error: "Failed to remove book"
-      });
-    }
-    res.render("main", { error, isAuth: true });
+    const type = error.message === "Book not found" ? "not-found" : "server-err";
+    renderError(type, res, isAuth);
   }
 });

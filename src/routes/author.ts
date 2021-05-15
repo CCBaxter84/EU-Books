@@ -109,7 +109,7 @@ router.get("/:id/edit", isAuthenticated, async (req: Request, res: Response) => 
 router.put("/:id", isAuthenticated, authorFormChecker, async (req: Request, res: Response) => {
   const isAuth = req.user ? true : false;
   try {
-    const author = await Author.findById(req.params.id);
+    let author = await Author.findById(req.params.id);
     if (author == null) throw "Author not found";
     author.name = req.body.name;
     await author.save();
