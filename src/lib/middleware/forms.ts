@@ -20,7 +20,9 @@ export const authorFormChecker: IMiddleware = function(req, res, next) {
 
 export const loginFormChecker: IMiddleware = function(req, res, next) {
   const form: Form = "auth/login";
-  if ( !hasValue("username", req) ) {
+  if ( !hasValue("username", req) && !hasValue("password", req)) {
+    renderForm(form, req, res, EMPTY_FORM_ERR);
+  } else if ( !hasValue("username", req) ) {
     renderForm(form, req, res, NO_USERNAME_ERR);
   } else if ( !hasValue("password", req) ) {
     renderForm(form, req, res, NO_PASSWORD_ERR);
@@ -31,7 +33,9 @@ export const loginFormChecker: IMiddleware = function(req, res, next) {
 
 export const regFormChecker: IMiddleware = function(req, res, next) {
   const form: Form = "auth/register";
-  if ( !hasValue("email", req) ) {
+  if ( !hasValue("email", req) && !hasValue("username", req) || !hasValue("password", req)) {
+    renderForm(form, req, res, EMPTY_FORM_ERR);
+  } else if ( !hasValue("email", req) ) {
     renderForm(form, req, res, NO_EMAIL_ERR);
   } else if ( !hasValue("username", req) ) {
     renderForm(form, req, res, NO_USERNAME_ERR);
