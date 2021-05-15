@@ -11,6 +11,7 @@ import { checkForUserName, checkForEmail, regFormChecker, isStrongPassword, isEm
 import { createToken, sendEmail } from "../lib/nodemailer";
 import User from "../models/user";
 import UserVerification from "../models/userVerification";
+import { renderError } from "../lib/error-utils";
 
 // Define and export router
 export const router = Router();
@@ -58,10 +59,7 @@ router.post("/", regFormChecker, isEmail, checkForEmail, checkForUserName, isStr
       error: "Site access request sent. Please check for your email for approval notification.",
       isAuth: false
     });
-  } catch(error) {
-    res.render("auth/register", {
-      csrfToken: req.csrfToken(),
-      error: error
-    });
+  } catch {
+    renderError("server-err", res, false);
   }
 });
