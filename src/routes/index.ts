@@ -2,6 +2,7 @@
 import { Router, Request, Response } from "express";
 import Book, { IBook } from "../models/book";
 import { isAuthenticated } from "../lib/middleware/auth";
+import { PAGE_ERR, BAD_REQ_ERR } from "../lib/global-constants";
 
 // Define and export router
 export const router = Router();
@@ -10,18 +11,17 @@ export const router = Router();
 // @desc     Render main page to the screen
 // @access   Public
 router.get("/", async (req: Request, res: Response) => {
-  let books: IBook[]|[];
   const isAuth = req.user ? true : false;
   try {
-    books = await Book.find()
+    const books = await Book.find()
                       .sort({ createdAt: "desc" })
-                      .limit(9)
+                      .limit(12)
                       .lean();
     res.render("main", { books, isAuth });
-  } catch(error) {
-    books = [];
-    res.render("main", {
-      error: "Error: Could not get books",
+  } catch {
+    res.render("error", {
+      img: "/img/lando.jpg",
+      errorMsg: PAGE_ERR,
       isAuth: isAuth
     });
   }
@@ -39,5 +39,11 @@ router.get("/logout", isAuthenticated, (req: Request, res: Response) => {
 // @desc    Error handling for bad route
 // @access  Public
 router.get("/:any", (req: Request, res: Response) => {
-  res.send("your mom");
+  const isAuth = req.user ? true : false;
+
+  res.render("error", {
+    img: "/img/obi-wan.jpg",
+    errorMsg: BAD_REQ_ERR,
+    isAuth
+  });
 });

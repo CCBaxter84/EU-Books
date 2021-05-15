@@ -5,6 +5,7 @@
 @import "./books.css";
 @import "./forms.css";
 @import "./footer.css";
+@import "./errors.css";
 
 :root {
   color: var(--color-text-light);
@@ -24,11 +25,6 @@ main {
 
 main > * {
   margin: 2rem 0;
-}
-
-#error-msg {
-  color: red;
-  margin: 2rem 5rem;
 }
 
 .star {

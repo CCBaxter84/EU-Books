@@ -10,6 +10,7 @@ export const INVALID_EMAIL_ERR = "Error: Invalid email";
 export const WEAK_PASSWORD_ERR = "Error: Password must contain at least one lowercase, uppercase, numerical, and special character";
 export const PAGE_ERR = "Error: Something went wrong loading the page";
 export const BAD_REQ_ERR = "Error: Bad Request";
+export const UNAUTH_REQ_ERR = "Error: Unauthorized Request";
 export const AUTHOR_EXISTS_ERR = "Error: Author already exists";
 export const AUTHOR_HAS_BOOKS_ERR = "Error: This author still has stored books";
 export const INVALID_AUTHOR_ERR = "Error: Author does not exist";

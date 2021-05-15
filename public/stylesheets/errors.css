@@ -1,0 +1,24 @@
+#error-msg {
+  color: var(--color-text-light);
+  margin: 2rem 5rem;
+}
+
+.err-view {
+  margin-top: 0;
+}
+
+.img-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.error-img {
+  border: 2px solid ;
+  border-radius: 10px;
+  box-shadow: 0 0 20px var(--color-text-light);
+  height: 40%;
+  margin: 0 auto;
+  width: 75%;
+}
