@@ -31,11 +31,3 @@ router.get("/logout", isAuthenticated, (req: Request, res: Response) => {
   req.logout();
   res.redirect("/");
 });
-
-// @route   GET /:any
-// @desc    Error handling for bad route
-// @access  Public
-router.get("/:any", (req: Request, res: Response) => {
-  const isAuth = req.user ? true : false;
-  renderError("bad-request", res, isAuth);
-});

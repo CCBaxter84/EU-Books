@@ -26,6 +26,7 @@ import { router as resetRouter } from "./routes/reset";
 import { router as resetConfirmRouter } from "./routes/reset-confirm";
 import { router as verifyRouter } from "./routes/verify";
 import { connectToDB, sessionStore } from "./config/database";
+import { renderError } from "./lib/error-utils";
 
 // Set app and other variables
 const app: Application = express();
@@ -97,6 +98,12 @@ Handlebars.registerHelper("formatTags", formatTags);
 
 // Serve up static assets
 app.use(express.static(__dirname + "/../public"));
+
+// Catch all Error Handler for bad requests
+app.use((req: Request, res: Response) => {
+  const isAuth = req.user ? true : false;
+  renderError("bad-request", res, isAuth);
+})
 
 // Set the server to listen
 app.listen(PORT, () => {
