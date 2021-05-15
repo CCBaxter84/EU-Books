@@ -1,6 +1,6 @@
 <main>
-  <h2>Search Authors</h2>
-  <form action="/authors" method="GET" >
+  <h2 class="main-title">Search Authors</h2>
+  <form action="/authors" method="GET" class="form">
     <section class="label-n-input">
       <label>Name</label>
       <input autofocus class="text-box" type="text" name="name" value={{ searchOptions.name }}>
@@ -11,7 +11,7 @@
   <section class="authors-container">
     {{#each authors }}
       <section class="author-row">
-        <section class="author-name">{{ this.name }}</section>
+        <p class="author-name">{{ this.name }}</p>
         <section class="author-btns">
           <a href="/authors/{{ this._id }}">
             <button class="btn">View</button>

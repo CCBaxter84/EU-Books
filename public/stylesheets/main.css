@@ -20,7 +20,7 @@ body {
 main {
   max-height: 100%;
   min-height: 80vh;
-  margin: 5rem;
+  margin: 2rem 5rem;
 }
 
 main > * {
@@ -40,4 +40,36 @@ p {
   margin-top: 0;
   margin-bottom: .5rem;
   padding: 0;
+}
+
+/* Mobile Device re-sizing */
+@media screen and (max-width: 380px) {
+  header {
+    margin: 0.5rem;
+  }
+
+  .title-container, .nav-links, footer {
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  main {
+    margin: 1rem;
+  }
+
+  .main-title {
+    text-align: center;
+  }
+
+  .book-cover-large {
+    --book-cover-width: 200px;
+  }
+
+  .book-grid {
+    grid-template-columns: auto;
+  }
+
+  p {
+    font-size: 0.5rem;
+  }
 }

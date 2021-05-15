@@ -1,5 +1,5 @@
 .authors-container {
-  margin: 3rem 0;
+  margin: 3rem;
 }
 
 .author-row {
@@ -15,4 +15,16 @@
 
 .author-btns {
   display: flex;
+}
+
+/* Mobile device re-sizing */
+@media screen and (max-width: 380px) {
+  .authors-container {
+    margin: 1rem 0.5rem;
+  }
+
+  .author-name {
+    font-size: 1rem;
+  }
+
 }

@@ -1,6 +1,6 @@
 <main>
   <section>
-    <h2>{{ author.name }}</h2>
+    <h2 class="main-title">{{ author.name }}</h2>
     {{#if isAuth }}
       <section class="author-btns">
         {{>editButton url=(getURL author true) }}

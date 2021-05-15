@@ -39,3 +39,17 @@
 .approve-deny {
   width: 4.5rem;
 }
+
+/* Mobile device re-sizing */
+@media screen and (max-width: 380px) {
+  .btn {
+    font-size: 0.75rem;
+    min-height: 1.25rem;
+    min-width: 3rem;
+  }
+
+  .form-submit-btns {
+    margin-top: 1rem;
+  }
+
+}
