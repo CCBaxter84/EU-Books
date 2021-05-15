@@ -127,4 +127,13 @@ textarea {
   .label-n-input {
     margin: 0.5rem 0;
   }
+
+  .log-in, .registered {
+    max-width: 95%;
+  }
+
+  .registered {
+    max-width: 100%;
+  }
+
 }
