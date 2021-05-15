@@ -2,7 +2,7 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Types } from "mongoose";
 import User from "../models/user";
-import { validatePassword } from "../lib/passwordUtils";
+import { validatePassword } from "../lib/password-utils";
 
 const customFields = {
   usernameField: "username",

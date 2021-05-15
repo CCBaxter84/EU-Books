@@ -1,7 +1,7 @@
 // Import libraries and dependencies
-import { IMiddleware } from "../types-interfaces";
+import { IMiddleware } from "../form-types";
 import Book, { IBook } from "../../models/book";
-import { renderNewPage } from "../bookControllers";
+import { renderNewPage } from "../book-utils";
 
 // Middleware for checking book post and put requests
 export const bookFormChecker: IMiddleware = function(req, res, next) {

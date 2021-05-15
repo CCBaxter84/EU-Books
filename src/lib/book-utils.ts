@@ -4,6 +4,7 @@ import { LeanDocument, Query } from "mongoose";
 import Book, { IBook, eras, Era } from "../models/book";
 import Author, { IAuthor } from "../models/author";
 import { EMPTY_FORM_ERR, PAGE_ERR } from "./global-constants";
+import { renderError } from "./error-utils";
 
 // Define types & interfaces
 type Form = "new" | "edit";

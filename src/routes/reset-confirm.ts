@@ -4,7 +4,7 @@ import PasswordReset from "../models/passwordReset";
 import User from "../models/user";
 import { isValidResetToken, passwordsMatch } from "../lib/middleware/auth";
 import { passwordsNotEmpty } from "../lib/middleware/forms";
-import { generatePassword } from "../lib/passwordUtils";
+import { generatePassword } from "../lib/password-utils";
 
 // Declare and export router
 export const router = Router();

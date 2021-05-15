@@ -1,7 +1,7 @@
 // Import libraries and dependencies
 import { Request} from "express";
 import { IPasswordChecker, IRenderer, IChecker,
-IProps } from "./types-interfaces";
+IProps } from "./form-types";
 import { EMAIL_REGEX } from "./global-constants";
 
 export const hasValue: IChecker = (prop, req) => req.body[prop] && req.body[prop] !== "";

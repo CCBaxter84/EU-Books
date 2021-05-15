@@ -3,9 +3,10 @@ import { Router, Request, Response } from "express";
 import { LeanDocument } from "mongoose";
 import Author, { IAuthor } from "../models/author";
 import Book, { IBook, eras } from "../models/book";
-import { queryBuilder, renderEditPage, renderNewPage, saveCover, saveCoAuthor, saveTags } from "../lib/bookControllers";
+import { queryBuilder, renderEditPage, renderNewPage, saveCover, saveCoAuthor, saveTags } from "../lib/book-utils";
 import { bookFormChecker, bookCoverChecker } from "../lib/middleware/book";
 import { isAuthenticated } from "../lib/middleware/auth";
+import { renderError } from "../lib/error-utils";
 
 // Define and export router
 export const router = Router();
@@ -44,7 +45,7 @@ router.get("/", async (req: Request, res: Response) => {
       isAuth
     });
   } catch {
-    res.render("main", { error: "Failed to load books page", isAuth });
+    renderError("server-err", res, isAuth);
   }
 });
 

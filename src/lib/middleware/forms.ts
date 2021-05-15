@@ -1,5 +1,5 @@
 // Import libraries and dependencies
-import { Form, IMiddleware } from "../types-interfaces";
+import { Form, IMiddleware } from "../form-types";
 import User from "../../models/user";
 import { hasValue, renderForm, isComplexPassword, isLongPassword } from "../form-utils";
 import { EMAIL_EXISTS_ERR, EMPTY_FORM_ERR, NO_EMAIL_ERR, INVALID_EMAIL_ERR, USERNAME_EXISTS_ERR, DB_LOOKUP_ERR, NO_PASSWORD_ERR, NO_USERNAME_ERR, WEAK_PASSWORD_ERR, EMAIL_REGEX } from "../global-constants";
