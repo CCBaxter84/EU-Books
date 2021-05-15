@@ -42,6 +42,10 @@ p {
   padding: 0;
 }
 
+.main-title {
+  text-align: center;
+}
+
 /* Mobile Device re-sizing */
 @media screen and (max-width: 380px) {
   header {
@@ -57,19 +61,11 @@ p {
     margin: 1rem;
   }
 
-  .main-title {
-    text-align: center;
-  }
-
   .book-cover-large {
     --book-cover-width: 200px;
   }
 
   .book-grid {
     grid-template-columns: auto;
-  }
-
-  p {
-    font-size: 1rem;
   }
 }

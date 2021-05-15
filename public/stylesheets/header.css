@@ -14,3 +14,13 @@ header {
   padding: 1rem;
   text-decoration: none;
 }
+
+/* Mobile device re-sizing */
+@media screen and (max-width: 380px) {
+  .nav-links  {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+}

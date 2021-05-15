@@ -136,4 +136,8 @@ textarea {
     max-width: 100%;
   }
 
+  textarea {
+    height: 15rem;
+  }
+
 }

@@ -15,6 +15,11 @@
 
 .author-btns {
   display: flex;
+  justify-content: center;
+}
+
+.author-btns > form {
+  width: auto;
 }
 
 /* Mobile device re-sizing */
@@ -27,4 +32,8 @@
     font-size: 1rem;
   }
 
+  .author-row {
+    flex-direction: column;
+    margin-bottom: 2rem;
+  }
 }

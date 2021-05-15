@@ -1,7 +1,7 @@
 <main>
-  <h2 class="main-title">{{ book.title }}</h2>
+  <h1 class="main-title">{{ book.title }}</h1>
   <section class="book-details-container">
-    <section>
+    <section class="book-details-inner-ctr">
       <img class="book-cover" src={{ getCoverPath book }}>
       <section class="book-details-btn-grid">
         {{#if isAuth }}
@@ -9,7 +9,7 @@
           {{> deleteForm url=(getURL book false) csrfToken=csrfToken }}
         {{/if }}
         <a href="/authors/{{ book.author }}" class="book-details-author-btn">
-          <button class="btn">View Author</button>
+          <button class="btn view-author">View Author</button>
         </a>
       </section>
     </section>

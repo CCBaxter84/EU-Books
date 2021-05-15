@@ -1,5 +1,5 @@
 <main>
-  <h2 class="main-title">Edit Author</h2>
+  <h1 class="main-title">Edit Author</h1>
   <form method="POST" action="/authors/{{ author._id }}?_method=PUT">
     {{> authorForm author=author csrfToken=csrfToken }}
     <section class="form-submit-btns">

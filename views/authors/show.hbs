@@ -1,6 +1,6 @@
 <main>
   <section>
-    <h2 class="main-title">{{ author.name }}</h2>
+    <h1 class="main-title">{{ author.name }}</h1>
     {{#if isAuth }}
       <section class="author-btns">
         {{>editButton url=(getURL author true) }}
@@ -8,8 +8,9 @@
       </section>
     {{/if }}
   </section>
+  <br>
   <section class="authors-container">
-    <h2>Books By Author</h2>
+    <h2 class="main-title">Books By Author</h2>
     <section>
       {{> bookGrid books=books }}
     </section>
