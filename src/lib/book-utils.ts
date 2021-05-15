@@ -105,11 +105,7 @@ export const renderFormPage: IController = async function(req, res, book, hasErr
     // Render given form with params
     res.render(`books/${form}`, params);
   } catch {
-    // *!!Replace this with a funny error view!!*
-    res.render("books/index", {
-      error: PAGE_ERR,
-      isAuth
-    });
+    renderError("server-err", res, isAuth);
   }
 }
 

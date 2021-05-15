@@ -1,5 +1,5 @@
 // Import libraries and dependencies
-import { IMiddleware } from "../form-types";
+import { IMiddleware } from "../types";
 import PasswordReset from "../../models/passwordReset";
 import UserVerification from "../../models/userVerification";
 import { renderError } from "../error-utils";
