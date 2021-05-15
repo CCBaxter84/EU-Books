@@ -42,43 +42,74 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.router = void 0;
 // Import dependencies
 var express_1 = require("express");
-var book_1 = __importDefault(require("../models/book"));
+var passwordReset_1 = __importDefault(require("../models/passwordReset"));
+var user_1 = __importDefault(require("../models/user"));
 var auth_1 = require("../lib/middleware/auth");
+var forms_1 = require("../lib/middleware/forms");
+var password_utils_1 = require("../lib/password-utils");
 var error_utils_1 = require("../lib/error-utils");
-// Define and export router
+// Declare and export router
 exports.router = express_1.Router();
-// @route    GET /
-// @desc     Render main page to the screen
-// @access   Public
-exports.router.get("/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var isAuth, books, _a;
+// Define routes
+// @route   GET /reset-confirm/:token
+// @desc    Render form for updating password
+// @access  Public
+exports.router.get("/:token", auth_1.isValidResetToken, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var token;
+    return __generator(this, function (_a) {
+        token = req.params.token;
+        try {
+            res.render("reset/reset-confirm", {
+                token: token,
+                csrfToken: req.csrfToken(),
+            });
+        }
+        catch (_b) {
+            error_utils_1.renderError("server-err", res, false);
+        }
+        return [2 /*return*/];
+    });
+}); });
+// @route   POST /reset-confirm/:token
+// @desc    Submit form for updating password
+// @access  Public
+exports.router.post("/:token", forms_1.passwordsNotEmpty, auth_1.passwordsMatch, auth_1.isValidResetToken, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var token, passwordReset, user, _a;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                isAuth = req.user ? true : false;
+                token = req.params.token;
                 _b.label = 1;
             case 1:
-                _b.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, book_1.default.find()
-                        .sort({ createdAt: "desc" })
-                        .limit(12)
-                        .lean()];
+                _b.trys.push([1, 6, , 7]);
+                return [4 /*yield*/, passwordReset_1.default.findOne({ token: token })];
             case 2:
-                books = _b.sent();
-                res.render("main", { books: books, isAuth: isAuth });
-                return [3 /*break*/, 4];
+                passwordReset = _b.sent();
+                return [4 /*yield*/, user_1.default.findOne({ _id: passwordReset === null || passwordReset === void 0 ? void 0 : passwordReset.user })];
             case 3:
+                user = _b.sent();
+                // Guard clause in case user is not found
+                if (!user) {
+                    throw "Error looking up user";
+                }
+                user.passwordHash = password_utils_1.generatePassword(req.body.password);
+                return [4 /*yield*/, user.save()];
+            case 4:
+                _b.sent();
+                return [4 /*yield*/, passwordReset_1.default.deleteOne({ _id: passwordReset === null || passwordReset === void 0 ? void 0 : passwordReset._id })];
+            case 5:
+                _b.sent();
+                res.render("auth/login", {
+                    error: "Password updated",
+                    csrfToken: req.csrfToken(),
+                    isAuth: false
+                });
+                return [3 /*break*/, 7];
+            case 6:
                 _a = _b.sent();
-                error_utils_1.renderError("server-err", res, isAuth);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                error_utils_1.renderError("server-err", res, false);
+                return [3 /*break*/, 7];
+            case 7: return [2 /*return*/];
         }
     });
 }); });
-// @route   GET /logout
-// @desc    Logout the current user
-// @access  Private
-exports.router.get("/logout", auth_1.isAuthenticated, function (req, res) {
-    req.logout();
-    res.redirect("/");
-});

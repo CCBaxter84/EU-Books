@@ -40,45 +40,71 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.router = void 0;
+// Import .env file if not in production
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config();
+}
 // Import dependencies
 var express_1 = require("express");
-var book_1 = __importDefault(require("../models/book"));
+var password_utils_1 = require("../lib/password-utils");
 var auth_1 = require("../lib/middleware/auth");
+var forms_1 = require("../lib/middleware/forms");
+var nodemailer_1 = require("../lib/nodemailer");
+var user_1 = __importDefault(require("../models/user"));
+var userVerification_1 = __importDefault(require("../models/userVerification"));
 var error_utils_1 = require("../lib/error-utils");
 // Define and export router
 exports.router = express_1.Router();
-// @route    GET /
-// @desc     Render main page to the screen
-// @access   Public
-exports.router.get("/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var isAuth, books, _a;
+// @route   GET /registration
+// @desc    Submit and authenticate username and password
+// @access  Public
+exports.router.get("/", auth_1.isNotAlreadyLoggedIn, function (req, res) {
+    res.render("auth/register", { csrfToken: req.csrfToken() });
+});
+// @route   POST /registration
+// @desc    Submit new user to database
+// @access  Public
+exports.router.post("/", forms_1.regFormChecker, forms_1.isEmail, forms_1.checkForEmail, forms_1.checkForUserName, forms_1.isStrongPassword, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var passwordHash, newUser, savedUser, token, verifyLink, userToken, _a;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                isAuth = req.user ? true : false;
-                _b.label = 1;
+                _b.trys.push([0, 3, , 4]);
+                passwordHash = password_utils_1.generatePassword(req.body.password);
+                newUser = new user_1.default({
+                    email: req.body.email,
+                    username: req.body.username,
+                    passwordHash: passwordHash,
+                });
+                return [4 /*yield*/, newUser.save()];
             case 1:
-                _b.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, book_1.default.find()
-                        .sort({ createdAt: "desc" })
-                        .limit(12)
-                        .lean()];
+                savedUser = _b.sent();
+                token = nodemailer_1.createToken();
+                verifyLink = process.env.DOMAIN + "/verify/" + token;
+                userToken = new userVerification_1.default({
+                    user: savedUser._id,
+                    token: token
+                });
+                return [4 /*yield*/, userToken.save()];
             case 2:
-                books = _b.sent();
-                res.render("main", { books: books, isAuth: isAuth });
+                _b.sent();
+                // Email the link to approve/deny the request
+                nodemailer_1.sendEmail({
+                    to: "" + process.env.EMAIL_ADDRESS,
+                    subject: "New User Request",
+                    text: "A new user has requested site access. Here's a link to approve or deny the request: " + verifyLink
+                });
+                res.render("auth/login", {
+                    csrfToken: req.csrfToken(),
+                    error: "Site access request sent. Please check for your email for approval notification.",
+                    isAuth: false
+                });
                 return [3 /*break*/, 4];
             case 3:
                 _a = _b.sent();
-                error_utils_1.renderError("server-err", res, isAuth);
+                error_utils_1.renderError("server-err", res, false);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); });
-// @route   GET /logout
-// @desc    Logout the current user
-// @access  Private
-exports.router.get("/logout", auth_1.isAuthenticated, function (req, res) {
-    req.logout();
-    res.redirect("/");
-});

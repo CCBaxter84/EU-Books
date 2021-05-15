@@ -1,7 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.eras = void 0;
 // Import dependencies
 var mongoose_1 = require("mongoose");
+exports.eras = ["Legacy", "Rebellion", "Rise of the Empire", "Old Republic", "New Republic", "New Jedi Order", "Before the Republic"];
 // Define schema
 var bookSchema = new mongoose_1.Schema({
     title: {
@@ -37,7 +39,14 @@ var bookSchema = new mongoose_1.Schema({
         type: mongoose_1.Schema.Types.ObjectId,
         required: true,
         ref: "Author"
-    }
+    },
+    coAuthor: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "Author",
+        default: null
+    },
+    era: String,
+    tags: String
 });
 // Set virtual for coverImagePath to store base64 encoded value of the cover image
 bookSchema.virtual("coverImagePath").get(function () {

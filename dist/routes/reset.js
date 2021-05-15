@@ -42,43 +42,62 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.router = void 0;
 // Import dependencies
 var express_1 = require("express");
-var book_1 = __importDefault(require("../models/book"));
-var auth_1 = require("../lib/middleware/auth");
-var error_utils_1 = require("../lib/error-utils");
-// Define and export router
+var passwordReset_1 = __importDefault(require("../models/passwordReset"));
+var user_1 = __importDefault(require("../models/user"));
+var forms_1 = require("../lib/middleware/forms");
+var nodemailer_1 = require("../lib/nodemailer");
+// Declare and export router
 exports.router = express_1.Router();
-// @route    GET /
-// @desc     Render main page to the screen
-// @access   Public
-exports.router.get("/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var isAuth, books, _a;
+// Define routes
+// @route   GET /reset
+// @desc    Render form for requesting a password reset
+// @access  Public
+exports.router.get("/", function (req, res) {
+    res.render("reset/reset", {
+        csrfToken: req.csrfToken(), isAuth: false
+    });
+});
+// @route   POST /reset
+// @desc    Submit form for requesting a password reset
+// @access  Public
+exports.router.post("/", forms_1.checkResetForm, forms_1.isValidEmail, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var token, user, resetLink, _a;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                isAuth = req.user ? true : false;
+                token = nodemailer_1.createToken();
                 _b.label = 1;
             case 1:
-                _b.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, book_1.default.find()
-                        .sort({ createdAt: "desc" })
-                        .limit(12)
-                        .lean()];
+                _b.trys.push([1, 4, , 5]);
+                return [4 /*yield*/, user_1.default.findOne({ email: req.body.email })];
             case 2:
-                books = _b.sent();
-                res.render("main", { books: books, isAuth: isAuth });
-                return [3 /*break*/, 4];
+                user = _b.sent();
+                if (!user) {
+                    throw new Error();
+                }
+                return [4 /*yield*/, passwordReset_1.default.updateOne({ user: user._id }, { user: user._id, token: token }, { upsert: true })];
             case 3:
+                _b.sent();
+                resetLink = process.env.DOMAIN + "/reset-confirm/" + token;
+                nodemailer_1.sendEmail({
+                    to: user.email,
+                    subject: "Password Reset",
+                    text: "Hi " + user.username + ". To reset your password, please click the following link: " + resetLink + "."
+                });
+                res.render("auth/login", {
+                    error: "Check your email address for the password reset link",
+                    isAuth: false
+                });
+                return [3 /*break*/, 5];
+            case 4:
                 _a = _b.sent();
-                error_utils_1.renderError("server-err", res, isAuth);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                res.render("reset/reset", {
+                    csrfToken: req.csrfToken(),
+                    error: "Failed to generate reset link. Please try again.",
+                    isAuth: false
+                });
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
         }
     });
 }); });
-// @route   GET /logout
-// @desc    Logout the current user
-// @access  Private
-exports.router.get("/logout", auth_1.isAuthenticated, function (req, res) {
-    req.logout();
-    res.redirect("/");
-});

@@ -2,7 +2,7 @@
 import { Router, Request, Response } from "express";
 import { LeanDocument } from "mongoose";
 import Author, { IAuthor } from "../models/author";
-import Book, { IBook, eras } from "../models/book";
+import Book, { eras } from "../models/book";
 import { queryBuilder, renderEditPage, renderNewPage, saveCover, saveCoAuthor, saveTags } from "../lib/book-utils";
 import { bookFormChecker, bookCoverChecker } from "../lib/middleware/book";
 import { isAuthenticated } from "../lib/middleware/auth";
