@@ -1,6 +1,6 @@
 // Import dependencies
 import { Router, Request, Response } from "express";
-import Book, { IBook } from "../models/book";
+import Book from "../models/book";
 import { isAuthenticated } from "../lib/middleware/auth";
 import { PAGE_ERR, BAD_REQ_ERR } from "../lib/global-constants";
 
