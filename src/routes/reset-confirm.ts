@@ -5,6 +5,7 @@ import User from "../models/user";
 import { isValidResetToken, passwordsMatch } from "../lib/middleware/auth";
 import { passwordsNotEmpty } from "../lib/middleware/forms";
 import { generatePassword } from "../lib/password-utils";
+import { renderError } from "../lib/error-utils";
 
 // Declare and export router
 export const router = Router();
@@ -21,12 +22,8 @@ router.get("/:token", isValidResetToken, async (req: Request, res: Response) => 
       token,
       csrfToken: req.csrfToken(),
     });
-  } catch(error) {
-    res.render("reset/reset-confirm", {
-      error,
-      csrfToken: req.csrfToken(),
-      token
-    });
+  } catch {
+    renderError("server-err", res, false);
   }
 });
 
@@ -53,11 +50,7 @@ router.post("/:token", passwordsNotEmpty, passwordsMatch,isValidResetToken, asyn
       csrfToken: req.csrfToken(),
       isAuth: false
     });
-  } catch(error) {
-    res.render("reset/reset-confirm", {
-      error,
-      csrfToken: req.csrfToken(),
-      token
-    });
+  } catch {
+    renderError("server-err", res, false);
   }
 });
