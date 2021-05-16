@@ -3,10 +3,9 @@ const numStars = 300;
 
 // Loop over each star and randomly place it on the screen
 document.addEventListener("DOMContentLoaded", setStars);
-//window.addEventListener("resize", resetStars);
 
 function setStars() {
-  localStorage.clear();
+  window.localStorage.clear();
   localStorage.setItem("pgHeight", window.innerHeight);
   localStorage.setItem("pgWidth", window.innerWidth);
   for (let i = 0; i < numStars; i++) {
@@ -20,8 +19,8 @@ function setStars() {
     } else {
       const xy = getRandomPosition();
       localStorage.setItem(i, xy);
-      star.style.top = xy[0] + "px";
-      star.style.left = xy[1] + "px";
+      star.style.left = xy[0] + "px";
+      star.style.top = xy[1] + "px";
       document.body.append(star);
     }
   }
@@ -45,29 +44,66 @@ function resetStars() {
 }
 
 // Helper function for getting a random position
-function isDouble (x, y) {
-  return (x / 2) > y;
+function isDouble (a, b) {
+  return (a / 2) > b;
 }
-function isTriple (x, y) {
-  return (x / 3) > y;
+function isTriple (a, b) {
+  return (a / 3) > b;
 }
+
+function hasExtraHeight(a, b) {
+  return a > b;
+}
+
+function getPctDiff(a, b) {
+  let pctDiff = 0;
+  if (hasExtraHeight(a, b)) {
+    pctDiff = 1.00 - (b / a);
+  }
+  console.log(pctDiff)
+  return pctDiff;
+}
+
+function addExtraHeight(win, diff) {
+ let extra = 0;
+  if (diff > 0.75) {
+    extra = win;
+ } else if (diff > 0.5) {
+  extra = win * 0.5;
+ } else if (diff > 0.3) {
+  extra = win * 0.07;
+ } else if (diff > 0.1) {
+  extra = win * 0.05
+ }
+ return extra;
+}
+
+const h1 = document.getElementsByClassName("main-title")[0].textContent;
+const isMainPage = h1 === "Recently Added";
+const isBooksPage = h1 === "Search Books";
+const isLongPage = isMainPage || isBooksPage;
+console.log(isLongPage);
 
 function getRandomPosition() {
   const header = document.querySelector("header");
   const main = document.querySelector("main");
   const footer = document.querySelector("footer");
-  const y = globalThis.outerWidth;
-  const windowHeight = globalThis.outerHeight;
+  const windowHeight = window.innerHeight;
   const clientHeight = document.body.clientHeight;
-  let x = windowHeight
+  const x = window.innerWidth;
+  let y = windowHeight;
 
-  if ( isTriple(clientHeight, windowHeight) ) {
-    x += 1000;
-  } else if ( isDouble(clientHeight, windowHeight) ) {
-    x += 500;
-  } else if (clientHeight > windowHeight) {
-    x += 200;
+  if (isMainPage) {
+    y *= 3;
   }
+
+  else if (isBooksPage) {
+    if (hasExtraHeight(clientHeight, windowHeight)) {
+      const diff = getPctDiff(clientHeight, windowHeight);
+      y += addExtraHeight(windowHeight, diff);
+    }
+  }
+
   const randomX = Math.floor(Math.random() * x);
   const randomY = Math.floor(Math.random() * y);
   return [randomX, randomY];
