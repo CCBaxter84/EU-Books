@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // Import dependencies
 var chai_1 = require("chai");
-var handlebars_1 = require("../lib/handlebars");
+var handlebars_1 = require("../../lib/handlebars");
 describe("Handlebars Helper Functions", function () {
     describe("getDateString function", function () {
         it("Properly formats a date to be rendered in the view", function () {

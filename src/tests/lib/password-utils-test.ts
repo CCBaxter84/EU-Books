@@ -1,6 +1,6 @@
 // Import dependencies
 import { expect } from "chai";
-import { generatePassword, validatePassword, isLongPassword, isComplexPassword } from "../lib/password-utils";
+import { generatePassword, validatePassword, isLongPassword, isComplexPassword } from "../../lib/password-utils";
 
 describe("Password Helper Functions", () => {
   describe("validatePassword Function", () => {

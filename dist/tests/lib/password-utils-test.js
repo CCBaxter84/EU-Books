@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // Import dependencies
 var chai_1 = require("chai");
-var password_utils_1 = require("../lib/password-utils");
+var password_utils_1 = require("../../lib/password-utils");
 describe("Password Helper Functions", function () {
     describe("validatePassword Function", function () {
         var password = "password1234";

@@ -1,6 +1,6 @@
 // Import dependencies
 import { expect } from "chai";
-import { getDateString, getPubDate } from "../lib/handlebars";
+import { getDateString, getPubDate } from "../../lib/handlebars";
 
 describe("Handlebars Helper Functions", () => {
   describe("getDateString function", () => {
