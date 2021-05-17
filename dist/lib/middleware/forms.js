@@ -42,6 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.isEmail = exports.isStrongPassword = exports.passwordsNotEmpty = exports.isValidEmail = exports.checkResetForm = exports.checkForUserName = exports.checkForEmail = exports.regFormChecker = exports.loginFormChecker = exports.authorFormChecker = void 0;
 var user_1 = __importDefault(require("../../models/user"));
 var form_utils_1 = require("../form-utils");
+var password_utils_1 = require("../password-utils");
 var global_constants_1 = require("../global-constants");
 var authorFormChecker = function (req, res, next) {
     var form = "authors/new";
@@ -178,10 +179,10 @@ var isStrongPassword = function (req, res, next) {
     var minPasswordLength = 12;
     var password = req.body.password;
     var shortPasswordErr = "Password must be at least " + minPasswordLength + " characters";
-    if (!form_utils_1.isLongPassword(password, minPasswordLength)) {
+    if (!password_utils_1.isLongPassword(password, minPasswordLength)) {
         form_utils_1.renderForm(form, req, res, shortPasswordErr);
     }
-    else if (!form_utils_1.isComplexPassword(password)) {
+    else if (!password_utils_1.isComplexPassword(password)) {
         form_utils_1.renderForm(form, req, res, global_constants_1.WEAK_PASSWORD_ERR);
     }
     else {

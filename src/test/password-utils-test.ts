@@ -1,12 +1,8 @@
 // Import dependencies
-import mocha from "mocha";
 import { expect } from "chai";
-import { Request } from "express";
+import { generatePassword, validatePassword, isLongPassword, isComplexPassword } from "../lib/password-utils";
 
-// Import functions to test
-import { generatePassword, validatePassword } from "../lib/password-utils";
-
-describe("Password Validator", () => {
+describe("validatePassword Function", () => {
   const password = "password1234";
   const hashedPwd = generatePassword(password);
   it("Returns true when passwords match", (done) => {
@@ -22,5 +18,39 @@ describe("Password Validator", () => {
     expect(isValid).to.equal(false);
     done();
   });
+});
 
+describe("isLongPassword Function", () => {
+  it("Returns true if passwords equals or exceeds 12 characters", () => {
+    const password = "1234567890ab";
+    const isValid = isLongPassword(password);
+    expect(isValid).to.equal(true);
+  });
+
+  it("Returns false if passwords is less than 12", () => {
+    const password = "1234566890a";
+    const isValid = isLongPassword(password);
+    expect(isValid).to.equal(false);
+  });
+});
+
+describe("isComplexPassword Function", () => {
+  it("Returns true if password contains at least one uppercase, lowercase, numerical, and special character", () => {
+    const password = "ThisIsAStrongP@55word";
+    const isValid = isComplexPassword(password);
+    expect(isValid).to.equal(true);
+  });
+
+  it("Returns false if passwords does not contain at least one lowercase, uppercase, numerical, or special character", () => {
+    const weak = "THISISAWEAKP@55WORD";
+    const weak2 = "thisisaweakp@55word";
+    const weak3 = "ThisIsAWeakP@ssword";
+    const weak4 = "ThisIsAWeakPa55word";
+    const isValid = isComplexPassword(weak);
+    const isValid2 = isComplexPassword(weak2);
+    const isValid3 = isComplexPassword(weak3);
+    const isValid4 = isComplexPassword(weak4);
+    const results = [isValid, isValid2, isValid3, isValid4];
+    expect(results).to.eql([false, false, false, false]);
+  });
 })

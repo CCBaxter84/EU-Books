@@ -1,6 +1,5 @@
 // Import libraries and dependencies
 import { Request, Response } from "express";
-import { EMAIL_REGEX } from "./global-constants";
 import { Form } from "./types";
 
 // Form types & interfaces
@@ -15,9 +14,6 @@ interface IProps {
   csrfToken: string,
   error: string,
   token?: string
-}
-interface IPasswordChecker {
-  (password: string, length?: number): boolean
 }
 
 // Form checking and rendering helper functions
@@ -36,12 +32,4 @@ export const renderForm: IRenderer = (form, req, res, error, token) => {
 
 export const hasEmail = (req: Request): boolean => {
   return hasValue("email", req);
-}
-
-export const isLongPassword: IPasswordChecker = (password, length = 12) => {
-  return password.length >= length;
-}
-
-export const isComplexPassword: IPasswordChecker = password => {
-  return EMAIL_REGEX.test(password);
 }
