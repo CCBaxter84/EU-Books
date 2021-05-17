@@ -60,7 +60,10 @@ var authorFormChecker = function (req, res, next) {
 exports.authorFormChecker = authorFormChecker;
 var loginFormChecker = function (req, res, next) {
     var form = "auth/login";
-    if (!form_utils_1.hasValue("username", req)) {
+    if (!form_utils_1.hasValue("username", req) && !form_utils_1.hasValue("password", req)) {
+        form_utils_1.renderForm(form, req, res, global_constants_1.EMPTY_FORM_ERR);
+    }
+    else if (!form_utils_1.hasValue("username", req)) {
         form_utils_1.renderForm(form, req, res, global_constants_1.NO_USERNAME_ERR);
     }
     else if (!form_utils_1.hasValue("password", req)) {
@@ -73,7 +76,10 @@ var loginFormChecker = function (req, res, next) {
 exports.loginFormChecker = loginFormChecker;
 var regFormChecker = function (req, res, next) {
     var form = "auth/register";
-    if (!form_utils_1.hasValue("email", req)) {
+    if (!form_utils_1.hasValue("email", req) && !form_utils_1.hasValue("username", req) || !form_utils_1.hasValue("password", req)) {
+        form_utils_1.renderForm(form, req, res, global_constants_1.EMPTY_FORM_ERR);
+    }
+    else if (!form_utils_1.hasValue("email", req)) {
         form_utils_1.renderForm(form, req, res, global_constants_1.NO_EMAIL_ERR);
     }
     else if (!form_utils_1.hasValue("username", req)) {

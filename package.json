@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc -p .",
     "dev": "nodemon src/server.ts",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "test": "mocha dist --recursive --exit"
   },
   "author": "Chris Clark",
   "license": "ISC",
@@ -18,6 +19,7 @@
     "@types/express-mongo-sanitize": "^1.3.2",
     "@types/express-session": "^1.17.3",
     "@types/method-override": "0.0.31",
+    "@types/mocha": "^8.2.2",
     "@types/node": "^14.14.41",
     "@types/nodemailer": "^6.4.1",
     "@types/passport": "^1.0.6",
@@ -31,6 +33,8 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
     "connect-mongodb-session": "^2.4.1",
     "csurf": "^1.11.0",
     "express": "^4.17.1",
@@ -42,6 +46,8 @@
     "handlebars-intl": "^1.1.2",
     "helmet": "^4.5.0",
     "method-override": "^3.0.0",
+    "mocha": "^8.4.0",
+    "mockgoose": "^8.0.4",
     "mongoose": "^5.12.7",
     "nodemailer": "^6.6.0",
     "passport": "^0.4.1",
