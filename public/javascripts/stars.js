@@ -108,20 +108,3 @@ function getRandomPosition() {
   const randomY = Math.floor(Math.random() * y);
   return [randomX, randomY];
 }
-/*
-function memoizeRenderStars() {
-  for (let i = 0; i < numStars; i++) {
-    const star = document.createElement("div");
-    star.className = "star";
-    console.log(typeof localStorage.getItem(i));
-    if (!localStorage.getItem(i)) {
-      const xy = getRandomPosition();
-      localStorage.setItem(i, xy);
-    }
-    const xy = localStorage.getItem(i).split(",");
-    star.style.top = xy[0] + "px";
-    star.style.left = xy[1] + "px";
-    document.body.append(star);
-  }
-}
-*/
