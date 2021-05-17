@@ -59,7 +59,7 @@ var getDateString = function (date) {
 };
 exports.getDateString = getDateString;
 var getPubDate = function (date) {
-    return date == null ? "" : date.toISOString().split("T")[0];
+    return date === null ? "" : date.toISOString().split("T")[0];
 };
 exports.getPubDate = getPubDate;
 var formatDescription = function (description) {
