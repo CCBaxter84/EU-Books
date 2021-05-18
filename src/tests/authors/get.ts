@@ -12,17 +12,17 @@ export const getAuthors = function() {
 
   // @route   GET /authors/new
   describe("GET /authors/new", function() {
-    getError("/authors/new", "Should render Unauthorized Error when attempting GET /authors/new while not authenticated", UNAUTH_REQ_ERR);
+    getError("/authors/new", "Should render 'Unauthorized Error' when attempting GET /authors/new while not authenticated", UNAUTH_REQ_ERR);
   });
 
   // @route   GET /authors/:id
   describe("GET /authors/:id", function() {
-    getError("/authors/1", "Should render Not Found Error when attempting to GET an invalid author page", NOT_FOUND_ERR);
+    getError("/authors/1", "Should render 'Not Found Error' when attempting to GET an invalid author page", NOT_FOUND_ERR);
   });
 
   // @route   GET /authors/:id/edit
   describe("GET /authors/:id/edit", function() {
-    getError("/authors/1/edit", "Should render Unauthorized Error when attempting to GET an author edit page while logged out", UNAUTH_REQ_ERR);
+    getError("/authors/1/edit", "Should render 'Unauthorized Error' when attempting to GET an author edit page while logged out", UNAUTH_REQ_ERR);
   });
 
 

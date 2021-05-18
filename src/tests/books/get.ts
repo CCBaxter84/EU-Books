@@ -11,17 +11,17 @@ export const getBooks = function() {
 
   // @route   GET /authors/new
   describe("GET /books/new", function() {
-    getError("/books/new", "Should render Unauthorized Err when attempting GET /books/new while not authenticated", UNAUTH_REQ_ERR);
+    getError("/books/new", "Should render 'Unauthorized Error' when attempting GET /books/new while not authenticated", UNAUTH_REQ_ERR);
   });
 
     // @route   GET /books/:id
     describe("GET /books/:id", function() {
-      getError("/authors/1", "Should render Not Found Error when attempting to GET an invalid book page", NOT_FOUND_ERR);
+      getError("/authors/1", "Should render 'Not Found Error' when attempting to GET an invalid book page", NOT_FOUND_ERR);
     });
 
     // @route   GET /authors/:id/edit
     describe("GET /books/:id/edit", function() {
-      getError("/books/1/edit", "Should render Unauthorized Error when attempting to GET a book edit page while logged out", UNAUTH_REQ_ERR);
+      getError("/books/1/edit", "Should render 'Unauthorized Error' when attempting to GET a book edit page while logged out", UNAUTH_REQ_ERR);
     });
 
 }
