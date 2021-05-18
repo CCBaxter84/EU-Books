@@ -27,7 +27,7 @@ router.get("/", isNotAlreadyLoggedIn, (req: Request, res: Response) => {
 // @route   POST /registration
 // @desc    Submit new user to database
 // @access  Public
-router.post("/", regFormChecker, isEmail, checkForEmail, checkForUserName, isStrongPassword, async (req: Request, res: Response) => {
+router.post("/", regFormChecker, checkForEmail, checkForUserName, isEmail, isStrongPassword, async (req: Request, res: Response) => {
   try {
     const passwordHash = generatePassword(req.body.password);
     const newUser = new User({

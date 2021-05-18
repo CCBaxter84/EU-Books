@@ -64,7 +64,7 @@ exports.router.get("/", auth_1.isNotAlreadyLoggedIn, function (req, res) {
 // @route   POST /registration
 // @desc    Submit new user to database
 // @access  Public
-exports.router.post("/", forms_1.regFormChecker, forms_1.isEmail, forms_1.checkForEmail, forms_1.checkForUserName, forms_1.isStrongPassword, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+exports.router.post("/", forms_1.regFormChecker, forms_1.checkForEmail, forms_1.checkForUserName, forms_1.isEmail, forms_1.isStrongPassword, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var passwordHash, newUser, savedUser, token, verifyLink, userToken, _a;
     return __generator(this, function (_b) {
         switch (_b.label) {

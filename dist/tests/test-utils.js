@@ -36,7 +36,6 @@ chai_1.default.use(chai_http_1.default);
 // Declare and export functions
 // Get an unauthenticated route
 var getRoute = function (path, view, viewContent) {
-    partials_1.checkHeaderFooterLogout();
     it("Should render the '" + view + "' view", function (done) {
         chai_1.default.request(server_1.default)
             .get(path)
@@ -48,6 +47,7 @@ var getRoute = function (path, view, viewContent) {
         });
         done();
     });
+    partials_1.checkHeaderFooterLogout();
 };
 exports.getRoute = getRoute;
 // Get an unauthorized or unavailable route

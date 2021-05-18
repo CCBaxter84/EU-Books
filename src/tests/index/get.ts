@@ -2,21 +2,11 @@
 import { getRoute, getError } from "../test-utils";
 import { UNAUTH_REQ_ERR } from "../../lib/global-constants";
 
-// Declare and export tests for each route
-
-// @route   GET /
+// Declare and Export Index Router Tests
 export const getIndex = function() {
+  // @route   GET /
   getRoute("/", "main", ["Recently Added"]);
+
+  // @route   GET /logout
   getError("/logout", "Should render Unauthorized Err when attempting to logout while not authenticated", UNAUTH_REQ_ERR);
 }
-
-/*
-it("Should render Unauthorized Err when attempting to logout while not authenticated", done => {
-  chai.request(app)
-    .get("/logout")
-    .end((error, res) => {
-      expect(res).to.have.header("content-type", HTML_HEADER);
-      expect(res.text).to.contain(UNAUTH_REQ_ERR);
-    });
-    done();
-});*/

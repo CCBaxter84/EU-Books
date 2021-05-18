@@ -48,6 +48,7 @@ var database_1 = require("../config/database");
 var get_1 = require("./index/get");
 var get_2 = require("./authors/get");
 var get_3 = require("./books/get");
+var get_4 = require("./login/get");
 // Set chai to use chaiHttp
 chai_1.default.use(chai_http_1.default);
 // Tests
@@ -69,14 +70,10 @@ describe("Routes Tests", function () {
                 });
             })()
                 .then(function () {
-                resolve();
+                setTimeout(function () { resolve(); }, 2000);
             });
         });
     });
-    /*before((done) => {
-      connectToDB();
-      setTimeout(() => { done() }, 2000);
-    });*/
     // Disconnect from mock database after completing tests
     after(function (done) {
         database_1.close()
@@ -89,4 +86,6 @@ describe("Routes Tests", function () {
     describe("GET /authors", get_2.getAuthors);
     // Testing block for GET /books
     describe("GET /books", get_3.getBooks);
+    // Testing block for GET /login
+    describe("GET /login", get_4.getLogin);
 });

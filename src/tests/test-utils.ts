@@ -15,9 +15,7 @@ chai.use(chaiHttp);
 
 // Get an unauthenticated route
 export const getRoute = function(path: string, view: string, viewContent: string[]) {
-  checkHeaderFooterLogout();
-
-  it(`Should render the '${view}' view`, done => {
+    it(`Should render the '${view}' view`, done => {
     chai.request(app)
       .get(path)
       .end((error, res) => {
@@ -28,6 +26,7 @@ export const getRoute = function(path: string, view: string, viewContent: string
       });
       done();
   });
+  checkHeaderFooterLogout();
 }
 
 // Get an unauthorized or unavailable route

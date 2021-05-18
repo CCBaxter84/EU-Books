@@ -8,7 +8,7 @@ import { connectToDB, close } from "../config/database";
 import { getIndex } from "./index/get";
 import { getAuthors } from "./authors/get";
 import { getBooks } from "./books/get";
-import { doesNotMatch } from "node:assert";
+import { getLogin } from "./login/get";
 
 // Set chai to use chaiHttp
 chai.use(chaiHttp);
@@ -17,15 +17,9 @@ chai.use(chaiHttp);
 describe("Routes Tests", function() {
   this.timeout(15_000);
   // Connect to mock database before running tests
-  before(() => {
-    return new Promise<void>((resolve) => {
-      (async function() {
-        await connectToDB();
-      })()
-        .then(() => {
-          resolve();
-        });
-    });
+  before((done) => {
+    connectToDB();
+    setTimeout(() => done(), 2000);
   });
 
   // Disconnect from mock database after completing tests
@@ -43,6 +37,9 @@ describe("Routes Tests", function() {
 
   // Testing block for GET /books
   describe("GET /books", getBooks);
+
+  // Testing block for GET /login
+  describe("GET /login", getLogin);
 });
 
 
