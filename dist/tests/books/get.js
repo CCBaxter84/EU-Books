@@ -14,5 +14,13 @@ var getBooks = function () {
     describe("GET /books/new", function () {
         test_utils_1.getError("/books/new", "Should render Unauthorized Err when attempting GET /books/new while not authenticated", global_constants_1.UNAUTH_REQ_ERR);
     });
+    // @route   GET /books/:id
+    describe("GET /books/:id", function () {
+        test_utils_1.getError("/authors/1", "Should render Not Found Error when attempting to GET an invalid book page", global_constants_1.NOT_FOUND_ERR);
+    });
+    // @route   GET /authors/:id/edit
+    describe("GET /books/:id/edit", function () {
+        test_utils_1.getError("/books/1/edit", "Should render Unauthorized Error when attempting to GET a book edit page while logged out", global_constants_1.UNAUTH_REQ_ERR);
+    });
 };
 exports.getBooks = getBooks;

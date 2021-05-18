@@ -12,7 +12,15 @@ var getAuthors = function () {
     });
     // @route   GET /authors/new
     describe("GET /authors/new", function () {
-        test_utils_1.getError("/authors/new", "Should render Unauthorized Err when attempting GET /authors/new while not authenticated", global_constants_1.UNAUTH_REQ_ERR);
+        test_utils_1.getError("/authors/new", "Should render Unauthorized Error when attempting GET /authors/new while not authenticated", global_constants_1.UNAUTH_REQ_ERR);
+    });
+    // @route   GET /authors/:id
+    describe("GET /authors/:id", function () {
+        test_utils_1.getError("/authors/1", "Should render Not Found Error when attempting to GET an invalid author page", global_constants_1.NOT_FOUND_ERR);
+    });
+    // @route   GET /authors/:id/edit
+    describe("GET /authors/:id/edit", function () {
+        test_utils_1.getError("/authors/1/edit", "Should render Unauthorized Error when attempting to GET an author edit page while logged out", global_constants_1.UNAUTH_REQ_ERR);
     });
     /*// @route   POST /authors
     getError("/authors", "Should render Unauthorized Err when attempting POST /authors while not authenticated", UNAUTH_REQ_ERR);*/
