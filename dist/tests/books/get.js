@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getIndex = void 0;
+exports.getBooks = void 0;
 // Set env to test so that mockgoose is used
 process.env.NODE_ENV = "test";
 // Import dependencies
@@ -31,30 +31,25 @@ var chai_http_1 = __importDefault(require("chai-http"));
 var server_1 = __importDefault(require("../../server"));
 var constants_1 = require("../constants");
 var partials_1 = require("../partials");
-var global_constants_1 = require("../../lib/global-constants");
 // Set chai to use chaiHttp
 chai_1.default.use(chai_http_1.default);
-var getIndex = function () {
-    it("Should render the 'main' view", function (done) {
+var getBooks = function () {
+    it("Should render the 'books/index' view", function (done) {
         chai_1.default.request(server_1.default)
-            .get("/")
+            .get("/books")
             .end(function (error, res) {
             chai_1.expect(res).to.have.header("content-type", constants_1.HTML_HEADER);
-            chai_1.expect(res.text).to.contain("Recently Added");
+            chai_1.expect(res.text).to.contain("Search Books");
+            chai_1.expect(res.text).to.contain("Title");
+            chai_1.expect(res.text).to.contain("Keywords");
+            chai_1.expect(res.text).to.contain("Published After");
+            chai_1.expect(res.text).to.contain("Published Before");
+            chai_1.expect(res.text).to.contain("Search");
             done();
         });
     });
     it(constants_1.HEADER_TEST, partials_1.headerTest);
     it(constants_1.FOOTER_TEST, partials_1.footerTest);
     it(constants_1.IS_LOGGED_OUT, partials_1.isLoggedOutTest);
-    it("Should render Unauthorized Err when attempting to logout while not authenticated", function (done) {
-        chai_1.default.request(server_1.default)
-            .get("/logout")
-            .end(function (error, res) {
-            chai_1.expect(res).to.have.header("content-type", constants_1.HTML_HEADER);
-            chai_1.expect(res.text).to.contain(global_constants_1.UNAUTH_REQ_ERR);
-        });
-        done();
-    });
 };
-exports.getIndex = getIndex;
+exports.getBooks = getBooks;

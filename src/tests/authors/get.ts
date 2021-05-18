@@ -7,18 +7,19 @@ import chaiHttp from "chai-http";
 import app from "../../server";
 import { HEADER_TEST, HTML_HEADER, FOOTER_TEST, IS_LOGGED_OUT } from "../constants";
 import { headerTest, footerTest, isLoggedOutTest } from "../partials";
-import { UNAUTH_REQ_ERR } from "../../lib/global-constants";
 
 // Set chai to use chaiHttp
 chai.use(chaiHttp);
 
-export const getIndex = function() {
-  it("Should render the 'main' view", done => {
+export const getAuthors = function() {
+  it("Should render the 'authors/index' view", done => {
     chai.request(app)
-      .get("/")
+      .get("/authors")
       .end((error, res) => {
         expect(res).to.have.header("content-type", HTML_HEADER);
-        expect(res.text).to.contain("Recently Added");
+        expect(res.text).to.contain("Search Authors");
+        expect(res.text).to.contain("Name");
+        expect(res.text).to.contain("Search");
         done();
       });
   });
@@ -28,14 +29,4 @@ export const getIndex = function() {
   it(FOOTER_TEST, footerTest);
 
   it(IS_LOGGED_OUT, isLoggedOutTest);
-
-  it("Should render Unauthorized Err when attempting to logout while not authenticated", done => {
-    chai.request(app)
-      .get("/logout")
-      .end((error, res) => {
-        expect(res).to.have.header("content-type", HTML_HEADER);
-        expect(res.text).to.contain(UNAUTH_REQ_ERR);
-      });
-      done();
-  });
 };

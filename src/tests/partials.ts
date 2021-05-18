@@ -3,6 +3,7 @@ import chai, { expect } from "chai";
 import { Done } from "mocha";
 import chaiHttp from "chai-http";
 import app from "../server";
+import { UNAUTH_REQ_ERR } from "../lib/global-constants";
 
 // Set chai to use chaiHttp
 chai.use(chaiHttp);
