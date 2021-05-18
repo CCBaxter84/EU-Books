@@ -109,3 +109,6 @@ app.use((req: Request, res: Response) => {
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });
+
+// Export app for testing
+export default app;

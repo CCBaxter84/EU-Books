@@ -7,7 +7,7 @@
     "build": "tsc -p .",
     "dev": "nodemon src/server.ts",
     "start": "node dist/server.js",
-    "test": "mocha dist --recursive --exit"
+    "test": "mocha dist/tests --recursive --exit"
   },
   "author": "Chris Clark",
   "license": "ISC",

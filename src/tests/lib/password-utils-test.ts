@@ -6,13 +6,13 @@ describe("Password Helper Functions", () => {
   describe("validatePassword Function", () => {
     const password = "password1234";
     const hashedPwd = generatePassword(password);
-    it("Returns true when passwords match", () => {
+    it("Should return true when passwords match", () => {
       const passwordAttempt = "password1234";
       const isValid = validatePassword(passwordAttempt, hashedPwd);
       expect(isValid).to.eql(true);
     });
 
-    it("Returns false when passwords do not match", () => {
+    it("Should return false when passwords do not match", () => {
       const passwordAttempt = "password12345";
       const isValid = validatePassword(passwordAttempt, hashedPwd);
       expect(isValid).to.eql(false);
@@ -20,13 +20,13 @@ describe("Password Helper Functions", () => {
   });
 
   describe("isLongPassword Function", () => {
-    it("Returns true if passwords equals or exceeds 12 characters", () => {
+    it("Should return true if password equals or exceeds 12 characters", () => {
       const password = "1234567890ab";
       const isValid = isLongPassword(password);
       expect(isValid).to.eql(true);
     });
 
-    it("Returns false if passwords is less than 12", () => {
+    it("Should return false if password is less than 12", () => {
       const password = "1234566890a";
       const isValid = isLongPassword(password);
       expect(isValid).to.eql(false);
@@ -34,13 +34,13 @@ describe("Password Helper Functions", () => {
   });
 
   describe("isComplexPassword Function", () => {
-    it("Returns true if password contains at least one uppercase, lowercase, numerical, and special character", () => {
+    it("Should return true if password contains at least one uppercase, lowercase, numerical, and special character", () => {
       const password = "ThisIsAStrongP@55word";
       const isValid = isComplexPassword(password);
       expect(isValid).to.eql(true);
     });
 
-    it("Returns false if passwords does not contain at least one lowercase, uppercase, numerical, or special character", () => {
+    it("Should return false if password does not contain at least one lowercase, uppercase, numerical, or special character", () => {
       const weak = "THISISAWEAKP@55WORD";
       const weak2 = "thisisaweakp@55word";
       const weak3 = "ThisIsAWeakP@ssword";
