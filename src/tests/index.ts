@@ -9,6 +9,7 @@ import { getIndex } from "./index/get";
 import { getAuthors } from "./authors/get";
 import { getBooks } from "./books/get";
 import { getLogin } from "./login/get";
+import { getRegistration } from "./registration/get";
 
 // Set chai to use chaiHttp
 chai.use(chaiHttp);
@@ -40,6 +41,9 @@ describe("Routes Tests", function() {
 
   // Testing block for GET /login
   describe("GET /login", getLogin);
+
+  // Testing block for GET /registration
+  describe("GET /registration", getRegistration);
 });
 
 
