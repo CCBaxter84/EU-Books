@@ -6,10 +6,15 @@ import { UNAUTH_REQ_ERR } from "../../lib/global-constants";
 export const getAuthors = function() {
 
   // @route   GET /authors
-  getRoute("/authors", "authors/index", ["Search Authors", "Name", "Search"]);
+  describe("GET /authors", function() {
+    getRoute("/authors", "authors/index", ["Search Authors", "Name", "Search"]);
+  });
 
   // @route   GET /authors/new
-  getError("/authors/new", "Should render Unauthorized Err when attempting GET /authors/new while not authenticated", UNAUTH_REQ_ERR);
+  describe("GET /authors/new", function() {
+    getError("/authors/new", "Should render Unauthorized Err when attempting GET /authors/new while not authenticated", UNAUTH_REQ_ERR);
+  });
+
 
   /*// @route   POST /authors
   getError("/authors", "Should render Unauthorized Err when attempting POST /authors while not authenticated", UNAUTH_REQ_ERR);*/

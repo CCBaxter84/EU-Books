@@ -4,9 +4,14 @@ import { UNAUTH_REQ_ERR } from "../../lib/global-constants";
 
 // Declare and Export Books Router Tests
 export const getBooks = function() {
-  // @route   GET /authors
-  getRoute("/books", "books/index", ["Search Books", "Title", "Keywords", "Published After", "Published Before", "Search"]);
+  // @route   GET /books
+  describe("GET /books", function() {
+    getRoute("/books", "books/index", ["Search Books", "Title", "Keywords", "Published After", "Published Before", "Search"]);
+  });
 
   // @route   GET /authors/new
-  getError("/books/new", "Should render Unauthorized Err when attempting GET /books/new while not authenticated", UNAUTH_REQ_ERR);
+  describe("GET /books/new", function() {
+    getError("/books/new", "Should render Unauthorized Err when attempting GET /books/new while not authenticated", UNAUTH_REQ_ERR);
+  });
+
 }

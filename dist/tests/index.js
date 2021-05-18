@@ -30,12 +30,12 @@ describe("Routes Tests", function () {
             .then(function () { return done(); })
             .catch(function (err) { return done(err); });
     });
-    // Testing block for GET /
-    describe("GET /", get_1.getIndex);
-    // Testing block for GET /authors
-    describe("GET /authors", get_2.getAuthors);
-    // Testing block for GET /books
-    describe("GET /books", get_3.getBooks);
+    // Testing block for Index GET Requests
+    describe("Index GET Requests", get_1.getIndex);
+    // Testing block for Authors GET Requests
+    describe("Authors GET Requests", get_2.getAuthors);
+    // Testing block for Books GET Requests
+    describe("Books GET Requests", get_3.getBooks);
     // Testing block for GET /login
     describe("GET /login", get_4.getLogin);
     // Testing block for GET /registration
