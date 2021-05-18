@@ -1,14 +1,18 @@
+// Set env to test so that mockgoose is used
+process.env.NODE_ENV = "test";
+
 // Import dependencies
 import chai, { expect } from "chai";
 import { Done } from "mocha";
 import chaiHttp from "chai-http";
 import app from "../server";
+import { HEADER_TEST, FOOTER_TEST, IS_LOGGED_OUT } from "./constants";
 
 // Set chai to use chaiHttp
 chai.use(chaiHttp);
 
 // Define & export partial testing functions
-export const headerTest = function(done: Done) {
+const headerTest = function(done: Done) {
   chai.request(app)
     .get("/")
     .end((error, res) => {
@@ -19,7 +23,7 @@ export const headerTest = function(done: Done) {
     });
 }
 
-export const footerTest = function(done: Done) {
+const footerTest = function(done: Done) {
   chai.request(app)
     .get("/")
     .end((error, res) => {
@@ -52,4 +56,16 @@ export const isLoggedInTest = function(done: Done) {
       expect(res.text).not.to.contain("Log In");
       done();
     });
+}
+
+// Check for Header and Footer
+export const checkHeaderFooter = function() {
+  it(HEADER_TEST, headerTest);
+
+  it(FOOTER_TEST, footerTest);
+}
+
+export const checkHeaderFooterLogout = function() {
+  checkHeaderFooter();
+  it(IS_LOGGED_OUT, isLoggedOutTest);
 }

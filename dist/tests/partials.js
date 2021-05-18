@@ -22,11 +22,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isLoggedInTest = exports.isLoggedOutTest = exports.footerTest = exports.headerTest = void 0;
+exports.checkHeaderFooterLogout = exports.checkHeaderFooter = exports.isLoggedInTest = exports.isLoggedOutTest = void 0;
+// Set env to test so that mockgoose is used
+process.env.NODE_ENV = "test";
 // Import dependencies
 var chai_1 = __importStar(require("chai"));
 var chai_http_1 = __importDefault(require("chai-http"));
 var server_1 = __importDefault(require("../server"));
+var constants_1 = require("./constants");
 // Set chai to use chaiHttp
 chai_1.default.use(chai_http_1.default);
 // Define & export partial testing functions
@@ -40,7 +43,6 @@ var headerTest = function (done) {
         done();
     });
 };
-exports.headerTest = headerTest;
 var footerTest = function (done) {
     chai_1.default.request(server_1.default)
         .get("/")
@@ -51,7 +53,6 @@ var footerTest = function (done) {
         done();
     });
 };
-exports.footerTest = footerTest;
 var isLoggedOutTest = function (done) {
     chai_1.default.request(server_1.default)
         .get("/")
@@ -76,3 +77,14 @@ var isLoggedInTest = function (done) {
     });
 };
 exports.isLoggedInTest = isLoggedInTest;
+// Check for Header and Footer
+var checkHeaderFooter = function () {
+    it(constants_1.HEADER_TEST, headerTest);
+    it(constants_1.FOOTER_TEST, footerTest);
+};
+exports.checkHeaderFooter = checkHeaderFooter;
+var checkHeaderFooterLogout = function () {
+    exports.checkHeaderFooter();
+    it(constants_1.IS_LOGGED_OUT, exports.isLoggedOutTest);
+};
+exports.checkHeaderFooterLogout = checkHeaderFooterLogout;
