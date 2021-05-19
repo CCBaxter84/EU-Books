@@ -1,3 +1,5 @@
+{{> header isAuth=isAuth }}
+{{> errorMessage }}
 <main>
   <h1 class="main-title">Update Book</h1>
   <form method="POST" action="/books/{{ book._id }}?_method=PUT">

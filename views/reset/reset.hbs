@@ -1,3 +1,5 @@
+{{> header isAuth=isAuth }}
+{{> errorMessage }}
 <main>
   <form class="log-in" method="POST" action="/reset">
     <input type="hidden" name="_csrf" value={{ csrfToken }}>
