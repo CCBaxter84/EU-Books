@@ -10,6 +10,7 @@ import { getAuthors } from "./authors/get";
 import { getBooks } from "./books/get";
 import { getLogin } from "./login/get";
 import { getRegistration } from "./registration/get";
+import { postRegistration } from "./registration/post";
 import { getReset } from "./reset/get";
 
 // Set chai to use chaiHttp
@@ -48,6 +49,9 @@ describe("Routes Tests", function() {
 
   // Testing block for GET /reset
   describe("Reset GET Requests", getReset);
+
+  // Testing block for POST /registration
+  describe("POST /registration", postRegistration);
 });
 
 

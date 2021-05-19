@@ -79,8 +79,8 @@ var isLoggedInTest = function (done) {
 exports.isLoggedInTest = isLoggedInTest;
 // Check for Header and Footer
 var checkHeaderFooter = function () {
-    it(constants_1.HEADER_TEST, headerTest);
     it(constants_1.FOOTER_TEST, footerTest);
+    it(constants_1.HEADER_TEST, headerTest);
 };
 exports.checkHeaderFooter = checkHeaderFooter;
 var checkHeaderFooterLogout = function () {

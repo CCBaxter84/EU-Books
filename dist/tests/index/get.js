@@ -12,7 +12,7 @@ var getIndex = function () {
     });
     // @route   GET /logout
     describe("GET /logout", function () {
-        test_utils_1.getError("/logout", "Should render Unauthorized Err when attempting to logout while not authenticated", global_constants_1.UNAUTH_REQ_ERR);
+        test_utils_1.requestError("/logout", "Should render Unauthorized Err when attempting to logout while not authenticated", global_constants_1.UNAUTH_REQ_ERR);
     });
 };
 exports.getIndex = getIndex;

@@ -12,7 +12,7 @@ var getReset = function () {
     });
     // @route   GET /reset-confirm/:token
     describe("GET /reset-confirm/:token", function () {
-        test_utils_1.getError("/reset-confirm/1", "Should render 'Not Found Error' when attempting to get to an invalid reset token page", global_constants_1.NOT_FOUND_ERR);
+        test_utils_1.requestError("/reset-confirm/1", "Should render 'Not Found Error' when attempting to get to an invalid reset token page", global_constants_1.NOT_FOUND_ERR);
     });
 };
 exports.getReset = getReset;

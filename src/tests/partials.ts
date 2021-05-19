@@ -60,9 +60,10 @@ export const isLoggedInTest = function(done: Done) {
 
 // Check for Header and Footer
 export const checkHeaderFooter = function() {
-  it(HEADER_TEST, headerTest);
+
 
   it(FOOTER_TEST, footerTest);
+  it(HEADER_TEST, headerTest);
 }
 
 export const checkHeaderFooterLogout = function() {

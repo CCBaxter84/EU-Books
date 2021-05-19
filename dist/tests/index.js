@@ -14,6 +14,7 @@ var get_2 = require("./authors/get");
 var get_3 = require("./books/get");
 var get_4 = require("./login/get");
 var get_5 = require("./registration/get");
+var post_1 = require("./registration/post");
 var get_6 = require("./reset/get");
 // Set chai to use chaiHttp
 chai_1.default.use(chai_http_1.default);
@@ -43,4 +44,6 @@ describe("Routes Tests", function () {
     describe("GET /registration", get_5.getRegistration);
     // Testing block for GET /reset
     describe("Reset GET Requests", get_6.getReset);
+    // Testing block for POST /registration
+    describe("POST /registration", post_1.postRegistration);
 });

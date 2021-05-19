@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getError = exports.getRoute = void 0;
+exports.requestError = exports.getRoute = void 0;
 // Set env to test so that mockgoose is used
 process.env.NODE_ENV = "test";
 // Import dependencies
@@ -50,8 +50,20 @@ var getRoute = function (path, view, viewContent) {
     partials_1.checkHeaderFooterLogout();
 };
 exports.getRoute = getRoute;
+var requestError = function (path, desc, errMessage, reqType, data) {
+    if (reqType === void 0) { reqType = "GET"; }
+    switch (reqType) {
+        case "POST":
+            postError(path, desc, errMessage, "POST", data);
+            break;
+        default:
+            getError(path, desc, errMessage);
+    }
+};
+exports.requestError = requestError;
 // Get an unauthorized or unavailable route
-var getError = function (path, desc, errMessage) {
+var getError = function (path, desc, errMessage, reqType) {
+    if (reqType === void 0) { reqType = "GET"; }
     it(desc, function (done) {
         chai_1.default.request(server_1.default)
             .get(path)
@@ -63,4 +75,18 @@ var getError = function (path, desc, errMessage) {
     });
     partials_1.checkHeaderFooterLogout();
 };
-exports.getError = getError;
+// Post to an unauthorized or unavailable route
+var postError = function (path, desc, errMessage, reqType, data) {
+    if (reqType === void 0) { reqType = "POST"; }
+    it(desc, function (done) {
+        chai_1.default.request(server_1.default)
+            .post(path)
+            .send({
+            data: data
+        })
+            .end(function (error, res) {
+            chai_1.expect(res.text).to.contain(errMessage);
+        });
+        done();
+    });
+};

@@ -27,6 +27,7 @@ import { router as resetConfirmRouter } from "./routes/reset-confirm";
 import { router as verifyRouter } from "./routes/verify";
 import { connectToDB, sessionStore } from "./config/database";
 import { renderError } from "./lib/error-utils";
+import csurf from "csurf";
 
 // Set app and other variables
 const app: Application = express();
@@ -55,7 +56,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 // Configure app for security against XSS, CSRF, NoSQL Injection, and other threats
 app.use(helmet());
-app.use(csrf());
+app.use(
+  process.env.NODE_ENV === "test" ?
+  csurf({ ignoreMethods: ["GET", "POST"]}) :
+  csrf());
 app.use(mongoSanitize());
 app.use((req, res, next) => {
   res.setHeader(

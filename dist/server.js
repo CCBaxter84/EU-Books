@@ -29,6 +29,7 @@ var reset_confirm_1 = require("./routes/reset-confirm");
 var verify_1 = require("./routes/verify");
 var database_1 = require("./config/database");
 var error_utils_1 = require("./lib/error-utils");
+var csurf_2 = __importDefault(require("csurf"));
 // Set app and other variables
 var app = express_1.default();
 var PORT = process.env.PORT || 5000;
@@ -54,7 +55,9 @@ app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
 // Configure app for security against XSS, CSRF, NoSQL Injection, and other threats
 app.use(helmet_1.default());
-app.use(csurf_1.default());
+app.use(process.env.NODE_ENV === "test" ?
+    csurf_2.default({ ignoreMethods: ["GET", "POST"] }) :
+    csurf_1.default());
 app.use(express_mongo_sanitize_1.default());
 app.use(function (req, res, next) {
     res.setHeader('Content-Security-Policy', "default-src 'self'; font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com; img-src * blob: data:; worker-src * blob:; script-src 'self' https://unpkg.com; style-src 'self' https://fonts.googleapis.com https://unpkg.com; frame-src 'self'");
