@@ -83,7 +83,6 @@ const h1 = title.textContent;
 const isMainPage = h1 === "Recently Added";
 const isBooksPage = h1 === "Search Books";
 const isLongPage = isMainPage || isBooksPage;
-console.log(isLongPage);
 
 function getRandomPosition() {
   const header = document.querySelector("header");

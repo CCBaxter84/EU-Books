@@ -63,7 +63,7 @@ export const getDateString = function(date: Date): string {
 }
 
 export const getPubDate = function(date: Date|null): string {
-  return date === null ? "" : date.toISOString().split("T")[0];
+  return date == null ? "" : date.toISOString().split("T")[0];
 }
 
 export const formatDescription = function(description: string): string[] {
@@ -72,4 +72,8 @@ export const formatDescription = function(description: string): string[] {
 
 export const formatTags = function(tags: string): string {
   return tags ? tags : "";
+}
+
+export const isLoggedIn = function(isAuth: boolean): boolean {
+  return isAuth;
 }

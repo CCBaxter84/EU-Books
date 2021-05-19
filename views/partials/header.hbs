@@ -15,9 +15,9 @@
         <a href="/authors/new">Add Author</a>
       {{/if }}
       {{#if isAuth }}
-      <a href="/logout">Log Out</a>
+      <a id="log-out" class="logger" href="/logout">Log Out</a>
       {{else }}
-      <a href="/login">Log In</a>
+      <a id="log-in" class="logger" href="/login">Log In</a>
       {{/if }}
     </article>
   </nav>

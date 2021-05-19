@@ -1,5 +1,3 @@
-{{> header isAuth=isAuth }}
-{{> errorMessage }}
 <main>
   <h1 class="login-title">Sign In</h1>
   <form class="log-in" method="POST" action="/login">
@@ -10,7 +8,7 @@
       <label>Password: </label>
       <input type="password" name="password">
     </section>
-    <button class="btn submit-btn" type="submit">Submit</button>
+    <button class="btn submit-btn logger" type="submit">Submit</button>
   </form>
   <br>
   <section class="registered">

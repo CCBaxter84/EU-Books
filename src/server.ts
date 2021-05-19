@@ -16,7 +16,7 @@ import mongoSanitize from "express-mongo-sanitize";
 
 
 // Import functions and routers
-import { getURL, getTokenURL, isAuthorMatch, getCoverPath, getDateString, getPubDate, formatDescription, isEraMatch, formatTags } from "./lib/handlebars";
+import { getURL, getTokenURL, isAuthorMatch, getCoverPath, getDateString, getPubDate, formatDescription, isEraMatch, formatTags, isLoggedIn } from "./lib/handlebars";
 import { router as indexRouter } from "./routes/index";
 import { router as authorRouter } from "./routes/author";
 import { router as bookRouter } from "./routes/book";
@@ -99,6 +99,7 @@ Handlebars.registerHelper("getPubDate", getPubDate);
 Handlebars.registerHelper("formatDescription", formatDescription);
 Handlebars.registerHelper("isEraMatch", isEraMatch);
 Handlebars.registerHelper("formatTags", formatTags);
+Handlebars.registerHelper("isLoggedIn", isLoggedIn);
 
 // Serve up static assets
 app.use(express.static(__dirname + "/../public"));

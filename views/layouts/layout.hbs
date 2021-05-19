@@ -24,6 +24,7 @@
     <!-- Import scripts from public folder -->
     <script defer type="text/javascript" src="/javascripts/stars.js"></script>
     <script defer type="text/javascript" src="/javascripts/fileUpload.js"></script>
+    <script defer type="text/javascript" src="/javascripts/reload.js"></script>
 
     <!-- Tab Title -->
     <title>EU Holocron</title>
@@ -31,6 +32,8 @@
 
   <!-- Render header and body views to UI -->
   <body id="body">
+    {{> header isAuth=(isLoggedIn isAuth) }}
+    {{> errorMessage }}
     {{{ body }}}
     {{> footer }}
   </body>
