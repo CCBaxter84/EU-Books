@@ -91,6 +91,7 @@ handlebars_1.default.registerHelper("getPubDate", handlebars_2.getPubDate);
 handlebars_1.default.registerHelper("formatDescription", handlebars_2.formatDescription);
 handlebars_1.default.registerHelper("isEraMatch", handlebars_2.isEraMatch);
 handlebars_1.default.registerHelper("formatTags", handlebars_2.formatTags);
+handlebars_1.default.registerHelper("isLoggedIn", handlebars_2.isLoggedIn);
 // Serve up static assets
 app.use(express_1.default.static(__dirname + "/../public"));
 // Catch all Error Handler for bad requests

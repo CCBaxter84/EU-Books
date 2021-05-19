@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.formatTags = exports.formatDescription = exports.getPubDate = exports.getDateString = exports.getCoverPath = exports.isEraMatch = exports.isAuthorMatch = exports.getTokenURL = exports.getURL = void 0;
+exports.isLoggedIn = exports.formatTags = exports.formatDescription = exports.getPubDate = exports.getDateString = exports.getCoverPath = exports.isEraMatch = exports.isAuthorMatch = exports.getTokenURL = exports.getURL = void 0;
 // Define and export helper functions
 var getURL = function (model, isAuthor) {
     if (isAuthor) {
@@ -59,7 +59,7 @@ var getDateString = function (date) {
 };
 exports.getDateString = getDateString;
 var getPubDate = function (date) {
-    return date === null ? "" : date.toISOString().split("T")[0];
+    return date == null ? "" : date.toISOString().split("T")[0];
 };
 exports.getPubDate = getPubDate;
 var formatDescription = function (description) {
@@ -70,3 +70,7 @@ var formatTags = function (tags) {
     return tags ? tags : "";
 };
 exports.formatTags = formatTags;
+var isLoggedIn = function (isAuth) {
+    return isAuth;
+};
+exports.isLoggedIn = isLoggedIn;
