@@ -5,7 +5,9 @@ exports.getRegistration = void 0;
 var test_utils_1 = require("../test-utils");
 // Declare and Export Authors Router Tests
 var getRegistration = function () {
-    // @route   GET /login
-    test_utils_1.getRoute("/registration", "auth/register", ["Email:", "Username:", "Password:", "Submit"]);
+    describe("GET /registration", function () {
+        var pgContent = ["Email:", "Username:", "Password:", "Submit"];
+        test_utils_1.getRoute("/registration", "auth/register", pgContent);
+    });
 };
 exports.getRegistration = getRegistration;

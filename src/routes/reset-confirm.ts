@@ -30,7 +30,7 @@ router.get("/:token", isValidResetToken, async (req: Request, res: Response) => 
 // @route   POST /reset-confirm/:token
 // @desc    Submit form for updating password
 // @access  Public
-router.post("/:token", passwordsNotEmpty, passwordsMatch,isValidResetToken, async (req: Request, res: Response) => {
+router.post("/:token", isValidResetToken, passwordsNotEmpty, passwordsMatch, async (req: Request, res: Response) => {
   // Get token from Request
   const { token } = req.params;
   try {

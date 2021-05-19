@@ -15,7 +15,9 @@ var get_3 = require("./books/get");
 var get_4 = require("./login/get");
 var get_5 = require("./registration/get");
 var post_1 = require("./registration/post");
+var post_2 = require("./login/post");
 var get_6 = require("./reset/get");
+var post_3 = require("./reset/post");
 // Set chai to use chaiHttp
 chai_1.default.use(chai_http_1.default);
 // Tests
@@ -32,18 +34,15 @@ describe("Routes Tests", function () {
             .then(function () { return done(); })
             .catch(function (err) { return done(err); });
     });
-    // Testing block for Index GET Requests
-    describe("Index GET Requests", get_1.getIndex);
-    // Testing block for Authors GET Requests
-    describe("Authors GET Requests", get_2.getAuthors);
-    // Testing block for Books GET Requests
-    describe("Books GET Requests", get_3.getBooks);
-    // Testing block for GET /login
-    describe("GET /login", get_4.getLogin);
-    // Testing block for GET /registration
-    describe("GET /registration", get_5.getRegistration);
-    // Testing block for GET /reset
-    describe("Reset GET Requests", get_6.getReset);
-    // Testing block for POST /registration
-    describe("POST /registration", post_1.postRegistration);
+    // Testing block for GET Requests
+    get_1.getIndex();
+    get_2.getAuthors();
+    get_3.getBooks();
+    get_4.getLogin();
+    get_5.getRegistration();
+    get_6.getReset();
+    // Testing block for POST Requests
+    post_1.postRegistration();
+    post_2.postLogin();
+    post_3.postReset();
 });

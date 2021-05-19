@@ -56,7 +56,7 @@ app.use(passport_1.default.session());
 // Configure app for security against XSS, CSRF, NoSQL Injection, and other threats
 app.use(helmet_1.default());
 app.use(process.env.NODE_ENV === "test" ?
-    csurf_2.default({ ignoreMethods: ["GET", "POST"] }) :
+    csurf_2.default({ ignoreMethods: ["GET", "POST", "DELETE"] }) :
     csurf_1.default());
 app.use(express_mongo_sanitize_1.default());
 app.use(function (req, res, next) {

@@ -11,7 +11,9 @@ import { getBooks } from "./books/get";
 import { getLogin } from "./login/get";
 import { getRegistration } from "./registration/get";
 import { postRegistration } from "./registration/post";
+import { postLogin } from "./login/post";
 import { getReset } from "./reset/get";
+import { postReset } from "./reset/post";
 
 // Set chai to use chaiHttp
 chai.use(chaiHttp);
@@ -32,26 +34,18 @@ describe("Routes Tests", function() {
       .catch(err => done(err));
   });
 
-  // Testing block for Index GET Requests
-  describe("Index GET Requests", getIndex);
+  // Testing block for GET Requests
+  getIndex();
+  getAuthors();
+  getBooks();
+  getLogin();
+  getRegistration();
+  getReset();
 
-  // Testing block for Authors GET Requests
-  describe("Authors GET Requests", getAuthors);
-
-  // Testing block for Books GET Requests
-  describe("Books GET Requests", getBooks);
-
-  // Testing block for GET /login
-  describe("GET /login", getLogin);
-
-  // Testing block for GET /registration
-  describe("GET /registration", getRegistration);
-
-  // Testing block for GET /reset
-  describe("Reset GET Requests", getReset);
-
-  // Testing block for POST /registration
-  describe("POST /registration", postRegistration);
+  // Testing block for POST Requests
+  postRegistration();
+  postLogin();
+  postReset();
 });
 
 

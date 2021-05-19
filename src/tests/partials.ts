@@ -11,8 +11,13 @@ import { HEADER_TEST, FOOTER_TEST, IS_LOGGED_OUT } from "./constants";
 // Set chai to use chaiHttp
 chai.use(chaiHttp);
 
+// Define interfaces
+interface ITestFn {
+  (done: Done): void
+}
+
 // Define & export partial testing functions
-const headerTest = function(done: Done) {
+const headerTest: ITestFn = function(done) {
   chai.request(app)
     .get("/")
     .end((error, res) => {
@@ -23,7 +28,7 @@ const headerTest = function(done: Done) {
     });
 }
 
-const footerTest = function(done: Done) {
+const footerTest: ITestFn = function(done) {
   chai.request(app)
     .get("/")
     .end((error, res) => {
@@ -34,7 +39,7 @@ const footerTest = function(done: Done) {
     });
 }
 
-export const isLoggedOutTest = function(done: Done) {
+export const isLoggedOutTest: ITestFn = function(done) {
   chai.request(app)
     .get("/")
     .end((error, res) => {
@@ -46,7 +51,7 @@ export const isLoggedOutTest = function(done: Done) {
     });
 }
 
-export const isLoggedInTest = function(done: Done) {
+export const isLoggedInTest: ITestFn = function(done) {
   chai.request(app)
     .get("/")
     .end((error, res) => {
@@ -59,14 +64,12 @@ export const isLoggedInTest = function(done: Done) {
 }
 
 // Check for Header and Footer
-export const checkHeaderFooter = function() {
-
-
+export const checkHeaderFooter = function(): void {
   it(FOOTER_TEST, footerTest);
   it(HEADER_TEST, headerTest);
 }
 
-export const checkHeaderFooterLogout = function() {
+export const checkHeaderFooterLogout = function(): void {
   checkHeaderFooter();
   it(IS_LOGGED_OUT, isLoggedOutTest);
 }

@@ -73,7 +73,7 @@ exports.router.get("/:token", auth_1.isValidResetToken, function (req, res) { re
 // @route   POST /reset-confirm/:token
 // @desc    Submit form for updating password
 // @access  Public
-exports.router.post("/:token", forms_1.passwordsNotEmpty, auth_1.passwordsMatch, auth_1.isValidResetToken, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+exports.router.post("/:token", auth_1.isValidResetToken, forms_1.passwordsNotEmpty, auth_1.passwordsMatch, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var token, passwordReset, user, _a;
     return __generator(this, function (_b) {
         switch (_b.label) {

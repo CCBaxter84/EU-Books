@@ -58,7 +58,7 @@ app.use(passport.session());
 app.use(helmet());
 app.use(
   process.env.NODE_ENV === "test" ?
-  csurf({ ignoreMethods: ["GET", "POST"]}) :
+  csurf({ ignoreMethods: ["GET", "POST", "DELETE"]}) :
   csrf());
 app.use(mongoSanitize());
 app.use((req, res, next) => {
