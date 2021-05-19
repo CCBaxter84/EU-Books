@@ -46,6 +46,10 @@ p {
   text-align: center;
 }
 
+.login-title {
+  margin-left: 5rem;
+}
+
 /* Mobile Device re-sizing */
 @media screen and (max-width: 380px) {
   header {

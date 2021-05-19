@@ -78,7 +78,8 @@ function addExtraHeight(win, diff) {
  return extra;
 }
 
-const h1 = document.getElementsByClassName("main-title")[0].textContent;
+const title = document.getElementsByClassName("main-title")[0] ?? document.getElementsByClassName("login-title")[0];
+const h1 = title.textContent;
 const isMainPage = h1 === "Recently Added";
 const isBooksPage = h1 === "Search Books";
 const isLongPage = isMainPage || isBooksPage;
